@@ -41,11 +41,16 @@ class Solution {
     }
 }
 ```
-if (numMap.containsKey(complement) && numMap.get(complement) != i) { ... }: 
+**for (int i = 0; i < n; i++) { numMap.put(nums[i], i); }: **
+
+This loop iterates through the nums array, and for each element nums[i], it adds a key-value pair to the numMap where **the key is the element itself (nums[i])** and the value is its index (i).
+This effectively creates a hash table with the elements of the nums array and their indices for easy lookup.
+
+**if (numMap.containsKey(complement) && numMap.get(complement) != i) { ... }: **
 
 The code checks if the complement exists in the numMap and ensures that the index of the complement is not equal to the current index i. This condition is necessary to avoid using the same element twice in the solution.
 
-return new int[]{i, numMap.get(complement)};: 
+**return new int[]{i, numMap.get(complement)};: **
 
 If a valid pair is found (i.e., the complement exists in the numMap and has a different index), the function returns an array containing the indices i and numMap.get(complement), representing the indices of the two elements whose sum is equal to the target.
 
