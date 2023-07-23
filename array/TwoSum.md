@@ -41,6 +41,15 @@ class Solution {
     }
 }
 ```
+if (numMap.containsKey(complement) && numMap.get(complement) != i) { ... }: 
+
+The code checks if the complement exists in the numMap and ensures that the index of the complement is not equal to the current index i. This condition is necessary to avoid using the same element twice in the solution.
+
+return new int[]{i, numMap.get(complement)};: 
+
+If a valid pair is found (i.e., the complement exists in the numMap and has a different index), the function returns an array containing the indices i and numMap.get(complement), representing the indices of the two elements whose sum is equal to the target.
+
+
 Approach 3: One-pass Hash Table
 The third solution is an optimized version of the second approach. Instead of using two passes, it employs a one-pass hash table. While iterating through the array, it calculates the complement for each element and checks if it already exists in the hash table. If found, it returns the indices of the two numbers. If not found, it adds the current element and its index to the hash table. This approach also has a time complexity of O(n) and is more efficient than the brute force method.
 
