@@ -1,4 +1,5 @@
 The Two Sum problem is a classic programming problem that involves finding two numbers in an array that add up to a given target value. It's often used as an interview question and is a good exercise for practicing problem-solving skills. The task is to return the indices of the two numbers that form the target sum.
+
 Approach 1: Brute Force
 The first solution provided is a brute force approach. It uses nested loops to consider every pair of elements in the array and checks if their sum equals the target. The time complexity of this approach is O(n^2), where n is the number of elements in the array.
 ```java
@@ -62,9 +63,13 @@ class Solution {
 }
 ```
 When to Choose Each Approach:
+
 Brute Force: The brute force approach can be chosen when you don't have any constraints on the time complexity, or the array size is relatively small. It's straightforward to implement but becomes inefficient for large arrays due to its O(n^2) time complexity.
+
 Two-pass Hash Table: The two-pass hash table approach is suitable when the array is not sorted, and you need to return the indices of the two numbers that add up to the target. This approach ensures O(n) time complexity and is more efficient than the brute force approach.
+
 One-pass Hash Table: The one-pass hash table approach is the most efficient and recommended solution for the Two Sum problem. It works for both sorted and unsorted arrays, and it guarantees O(n) time complexity. This approach should be preferred in most scenarios.
+
 It's essential to consider the problem's specific requirements and constraints when choosing the appropriate solution. The one-pass hash table approach is widely used in real-world applications for its efficiency and simplicity.
 
 
