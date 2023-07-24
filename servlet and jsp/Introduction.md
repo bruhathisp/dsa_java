@@ -12,24 +12,26 @@ Discussing the concept of dynamic web pages, web containers (like Tomcat), servl
 
 6. **Web Servers and Application Servers**: Web containers are often part of application servers. Tomcat is a popular web container and can also function as a standalone web server. Application servers, like JBoss or WebSphere, include additional features beyond web container functionality.
 
-7. **XML and Annotations**: Traditionally, servlet mapping was done using the `web.xml` file. However, in Servlet 3.0 and later versions, annotations can be used to define servlet mappings, avoiding the need for an XML file.
+7. **XML and Annotations**: Traditionally, servlet-mapping was done using the `web.xml` file. However, in Servlet 3.0 and later versions, annotations can be used to define servlet mappings, avoiding the need for an XML file.
 
 In summary, dynamic web pages are generated at the time of the request using servlets, which are Java classes that process client requests and generate dynamic responses. The web container, like Tomcat, manages the servlets and uses the deployment descriptor (web.xml or annotations) to map URLs to the appropriate servlets. This process enables the server to handle dynamic content and respond to client requests with dynamically generated pages.
 
 Here's a simple summary:
 
-#*Dynamic Web Pages* 
+# Dynamic Web Pages
+
 are pages that are created on the spot when a user asks for them. They are not pre-made and change based on what the user needs.
 
-#*Web Containers* 
+# Web Containers
 are like assistants for the server. They receive requests from users and help generate the right responses.
 
-#*Servlets* 
+# Servlets
 are special code files that the server uses to understand and process user requests. They create the dynamic content for the web pages.
 
-#*Deployment Descriptor (web.xml)* 
+# Deployment Descriptor (web.xml)
 is a file that helps the server know which servlet to use for different requests.
 
-#URL stands for "Uniform Resource Locator." 
+# URL 
+stands for "Uniform Resource Locator." 
 It is a reference or an address used to access resources on the internet. URLs are used to identify and locate specific web pages, files, images, videos, and other resources hosted on web servers. They are essential for navigating the World Wide Web and are typically entered into a web browser's address bar to access a specific webpage or resource.
 In a nutshell, when you ask for a dynamic web page, the server uses servlets and a web container to create the page just for you!
