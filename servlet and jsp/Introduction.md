@@ -18,12 +18,18 @@ In summary, dynamic web pages are generated at the time of the request using ser
 
 Here's a simple summary:
 
-*Dynamic Web Pages* are pages that are created on the spot when a user asks for them. They are not pre-made and change based on what the user needs.
+#*Dynamic Web Pages* 
+are pages that are created on the spot when a user asks for them. They are not pre-made and change based on what the user needs.
 
-*Web Containers* are like assistants for the server. They receive requests from users and help generate the right responses.
+#*Web Containers* 
+are like assistants for the server. They receive requests from users and help generate the right responses.
 
-*Servlets* are special code files that the server uses to understand and process user requests. They create the dynamic content for the web pages.
+#*Servlets* 
+are special code files that the server uses to understand and process user requests. They create the dynamic content for the web pages.
 
-*Deployment Descriptor (web.xml)* is a file that helps the server know which servlet to use for different requests.
+#*Deployment Descriptor (web.xml)* 
+is a file that helps the server know which servlet to use for different requests.
 
+#URL stands for "Uniform Resource Locator." 
+It is a reference or an address used to access resources on the internet. URLs are used to identify and locate specific web pages, files, images, videos, and other resources hosted on web servers. They are essential for navigating the World Wide Web and are typically entered into a web browser's address bar to access a specific webpage or resource.
 In a nutshell, when you ask for a dynamic web page, the server uses servlets and a web container to create the page just for you!
