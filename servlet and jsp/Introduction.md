@@ -15,3 +15,15 @@ Discussing the concept of dynamic web pages, web containers (like Tomcat), servl
 7. **XML and Annotations**: Traditionally, servlet mapping was done using the `web.xml` file. However, in Servlet 3.0 and later versions, annotations can be used to define servlet mappings, avoiding the need for an XML file.
 
 In summary, dynamic web pages are generated at the time of the request using servlets, which are Java classes that process client requests and generate dynamic responses. The web container, like Tomcat, manages the servlets and uses the deployment descriptor (web.xml or annotations) to map URLs to the appropriate servlets. This process enables the server to handle dynamic content and respond to client requests with dynamically generated pages.
+
+Here's a simple summary:
+
+*Dynamic Web Pages* are pages that are created on the spot when a user asks for them. They are not pre-made and change based on what the user needs.
+
+*Web Containers* are like assistants for the server. They receive requests from users and help generate the right responses.
+
+*Servlets* are special code files that the server uses to understand and process user requests. They create the dynamic content for the web pages.
+
+*Deployment Descriptor (web.xml)* is a file that helps the server know which servlet to use for different requests.
+
+In a nutshell, when you ask for a dynamic web page, the server uses servlets and a web container to create the page just for you!
