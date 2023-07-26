@@ -84,11 +84,23 @@ class Solution {
         return false;
     }
 }
-// seen.getOrDefault(num, 0): This is a method call on the HashMap seen. It tries to retrieve the value associated with the key num. If the key num is present in the HashMap, it returns its value (the count of occurrences of num). If the key num is not present, it returns the default value 0.
+// seen.getOrDefault(num, 0): This is a method call on the HashMap seen.
 
-// seen.getOrDefault(num, 0) + 1: This is adding 1 to the count of occurrences of the element num. If num is already present in the HashMap, this will increase its count by 1. If num is not present, it will start its count from 1.
+// It tries to retrieve the value associated with the key num. If the key num is present in the HashMap,
 
-// seen.put(num, seen.getOrDefault(num, 0) + 1): Finally, we use the put method on the seen HashMap to update the count of occurrences of the element num. If num is already present in the HashMap, this will update its count to the new value. If num is not present, it will add num as a new key with a count of 1.
+// it returns its value (the count of occurrences of num).
+
+// If the key num is not present, it returns the default value 0.
+
+// seen.getOrDefault(num, 0) + 1: This is adding 1 to the count of occurrences of the element num.
+
+// If num is already present in the HashMap, this will increase its count by 1. If num is not present, it will start its count from 1.
+
+// seen.put(num, seen.getOrDefault(num, 0) + 1): Finally, we use the put method on the seen HashMap
+
+// to update the count of occurrences of the element num. If num is already present in the HashMap,
+
+// this will update its count to the new value. If num is not present, it will add num as a new key with a count of 1.
 
 
 
