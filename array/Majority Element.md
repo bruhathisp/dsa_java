@@ -37,6 +37,7 @@ Explanation:
 
 1 The code begins by initializing a hash map m to store the count of occurrences of each element.
 It then iterates through the array nums using a for loop.
+
 2 For each element nums[i], it increments its count in the hash map m by using the line m[nums[i]]++;.
 
 If nums[i] is encountered for the first time, it will be added to the hash map with a count of 1.
