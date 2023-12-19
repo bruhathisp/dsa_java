@@ -2,6 +2,7 @@
 
 
 The code has a time complexity of O(n) and space complexity of O(1), where n is the length of the nums array.
+Just add the non zero numbers to the array then update i. Next step will be filling zeros from i to nums.length -1.
 
 ``` java
 class Solution {
