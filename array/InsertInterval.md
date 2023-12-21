@@ -40,7 +40,9 @@ create a dynamic array--> use if statement and find overlap--> find the min star
 add the updated `newInterval` to the dynamic array--> convert the dynamic array to normal array--> sort and return
 
 
-Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+## Explanation: 
+
+Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
 
 So I wrote down all the scenarios an interval can overlap another and kept as a condition for the if statement
 1. [3,5] and [4,8]
