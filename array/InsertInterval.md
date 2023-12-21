@@ -8,6 +8,7 @@ Lessons Learnt:
 3. Conversion to List:  To use `add` method
    
 The use of `List<int[]>` is convenient when dynamically adding intervals. **Arrays in Java have fixed sizes**, and using a **list allows for flexibility** when dealing with a variable number of intervals.
+
 4. Since we have the result in `List<int[]>` type we need to convert it to `array` again. so we use `int[][] resultArray = result.toArray(new int[result.size()][]);`
 
 `new int[result.size()][]` creates a new 2D array of integers with the same number of rows as the size of the list (result.size()). Each row will correspond to an int[] in the list.
@@ -101,6 +102,11 @@ result.add(intervals[i]);
 # Method 2
 
 The exact implementation in much cleaner code 
+
+This code executes a while loop that executes only when 
+1. `intervals.get(i).end < newInterval.start`--> add the elements of the array
+2. `intervals.get(i).start <= newInterval.end` --> find the min start and max end --> Update newInterval --> add it to the `result` List
+3.  `while (i < intervals.size()) result.add(intervals.get(i++)); ` add the rest of the intervals to the result
 
 ``` java
 public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
