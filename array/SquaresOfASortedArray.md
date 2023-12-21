@@ -5,7 +5,6 @@ Lesson learnt-
 2. Use two pointers when you have to sort with O(n) complexity
 
 
-
 Sorting: If your primary goal is to sort a collection of elements, especially if you're dealing with a large dataset, merge sort or other efficient sorting algorithms (like quicksort) are appropriate.
 Pointers: Searching or Manipulating: If you need to efficiently search for elements or perform operations on elements based on some condition, the two-pointer technique might be more suitable.
 It can be more efficient than some sorting algorithms for specific tasks, especially when the array is already partially sorted.
