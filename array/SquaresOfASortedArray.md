@@ -3,10 +3,11 @@
 Lesson learnt- 
 1. ALWAYS create a new array in case of an operation+sorting
 2. Use two pointers when you have to sort with O(n) complexity
+3. When to initiate an array of length use, int[] result = new int[nums.length];
 
 
-Sorting: If your primary goal is to sort a collection of elements, especially if you're dealing with a large dataset, merge sort or other efficient sorting algorithms (like quicksort) are appropriate.
-Pointers: Searching or Manipulating: If you need to efficiently search for elements or perform operations on elements based on some condition, the two-pointer technique might be more suitable.
+Sorting: If your primary goal is to sort a collection of elements, especially if you're dealing with a large dataset, `merge` sort or other efficient sorting algorithms (like quicksort) are appropriate.
+Pointers: Searching or Manipulating: If you need to efficiently search for elements or perform operations on elements based on some condition, the `two-pointer` technique might be more suitable.
 It can be more efficient than some sorting algorithms for specific tasks, especially when the array is already partially sorted.
 It's particularly useful in situations where you need to iterate through the array and compare or manipulate elements efficiently.
 
