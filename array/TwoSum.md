@@ -1,6 +1,11 @@
 The Two Sum problem is a classic programming problem that involves finding two numbers in an array that add up to a given target value. It's often used as an interview question and is a good exercise for practicing problem-solving skills. The task is to return the indices of the two numbers that form the target sum.
 
-Approach 1: Brute Force
+
+Lessons Learnt:
+1. How to create a Hash Table (or unordered map in C++) `numMap.put(nums[i], i);` --> key, value --> element, index
+2. We can use `containsKey` and `get` method for Hash Table `numMap.containsKey(complement) && numMap.get(complement) != i`
+
+## Approach 1: Brute Force
 The first solution provided is a brute force approach. It uses nested loops to consider every pair of elements in the array and checks if their sum equals the target. The time complexity of this approach is O(n^2), where n is the number of elements in the array.
 ```java
 class Solution {
@@ -17,8 +22,14 @@ class Solution {
     }
 }
 ```
-Approach 2: Two-pass Hash Table
-The second solution uses a two-pass hash table (or unordered_map in C++). In the first pass, it builds a hash table that maps each element of the array to its index. Then, in the second pass, it iterates through the array and checks if the complement (target minus the current element) exists in the hash table. If found, it returns the indices of the two numbers. This approach has a time complexity of O(n) since hash table lookups take constant time on average.
+## Approach 2: Two-pass Hash Table: Time complexity of O(n)
+The second solution uses a two-pass hash table (or unordered_map in C++). 
+
+In the first pass, it **builds a hash table** `(element, index)` that maps each element of the array to its index. 
+
+Then, in the second pass, it iterates through the array and **checks if the complement** (target minus the current element) exists in the hash table and **not equal to the current element**. 
+
+If found, it returns the indices of the two numbers. 
 
 ```java 
 class Solution {
@@ -55,7 +66,7 @@ The code checks if the complement exists in the numMap and ensures that the inde
 If a valid pair is found (i.e., the complement exists in the numMap and has a different index), the function returns an array containing the indices i and numMap.get(complement), representing the indices of the two elements whose sum is equal to the target.
 
 
-Approach 3: One-pass Hash Table
+## Approach 3: One-pass Hash Table
 The third solution is an optimized version of the second approach. Instead of using two passes, it employs a one-pass hash table. While iterating through the array, it calculates the complement for each element and checks if it already exists in the hash table. If found, it returns the indices of the two numbers. If not found, it adds the current element and its index to the hash table. This approach also has a time complexity of O(n) and is more efficient than the brute force method.
 
 ```java 
