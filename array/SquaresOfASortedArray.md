@@ -19,9 +19,9 @@ Input [-5,-4,-3,-2-1]
 Output  [1, 4, 9, 25]
 
 
-The issue in your code arises from the fact that you're directly modifying the `nums` array during the sorting process. This leads to incorrect results because the values in the array are changing, and the changes affect the subsequent comparisons.
+The issue in my code arises when I directly modified the `nums` array during the sorting process. This leads to incorrect results because the values in the array are changing, and the changes affect the subsequent comparisons.
 
-Let's break down the problematic part of your code:
+Let's break down the problematic part of my previous code:
 
 Copy and run this code 
 
