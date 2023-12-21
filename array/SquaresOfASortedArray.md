@@ -3,7 +3,7 @@
 Lesson learnt- 
 1. ALWAYS create a new array in case of an operation+sorting
 2. Use two pointers when you have to sort with O(n) complexity
-3. When to initiate an array of length use, int[] result = new int[nums.length];
+3. When to initiate an array of length use, `int[] result = new int[nums.length];`
 
 
 Sorting: If your primary goal is to sort a collection of elements, especially if you're dealing with a large dataset, `merge` sort or other efficient sorting algorithms (like quicksort) are appropriate.
