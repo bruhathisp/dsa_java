@@ -1,6 +1,18 @@
 # Solution 
 
+Lesson learnt- 
+1. ALWAYS create a new array in case of an operation+sorting
+2. Use two pointers when you have to sort with O(n) complexity
 
+
+
+Sorting: If your primary goal is to sort a collection of elements, especially if you're dealing with a large dataset, merge sort or other efficient sorting algorithms (like quicksort) are appropriate.
+Pointers: Searching or Manipulating: If you need to efficiently search for elements or perform operations on elements based on some condition, the two-pointer technique might be more suitable.
+It can be more efficient than some sorting algorithms for specific tasks, especially when the array is already partially sorted.
+It's particularly useful in situations where you need to iterate through the array and compare or manipulate elements efficiently.
+
+
+## Approach
 
 Input [-5,-4,-3,-2-1]
 
@@ -78,7 +90,7 @@ In the `if (square1 > square2)` block, you're modifying the `nums` array directl
 
 To resolve this issue, you should use a separate array, like your `result` array, to store the sorted square values. This ensures that the original array (`nums`) remains unchanged during the sorting process, and the results are correct.
 
-The corrected code would look like this:
+## The corrected code would look like this:
 
 ```java
 class Solution {
