@@ -11,6 +11,11 @@ The use of `List<int[]>` is convenient when dynamically adding intervals. **Arra
 
 4. Since we have the result in `List<int[]>` type we need to convert it to `array` again. so we use `int[][] resultArray = result.toArray(new int[result.size()][]);`
 
+5. Use `result.size()` to find the length of the result `ArrayList` and use that to create a `nestedArray int[][]` called `resultArray`.
+
+6. Note: DO NOT USE result.length because it is not a static array.
+
+
 `new int[result.size()][]` creates a new 2D array of integers with the same number of rows as the size of the list (result.size()). Each row will correspond to an int[] in the list.
 
 5. `(x, y) -> Integer.compare(x[0], y[0]):` This is a lambda expression representing a comparator. It's defining how to compare two elements x and y from the array during the sorting process.
