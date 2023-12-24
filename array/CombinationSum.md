@@ -1,7 +1,14 @@
 ## Solution
 
 
-I'll try to explain backtracking, why do you use backtracking in this sum is to avoid duplicate combinations. This diagram explains the process.
+### What is backtracking
+A brute force approach uses depth-first search(DFS) to explore all possible solutions. If the current solution is not satisfy the constraints, then eliminate that and go back(backtrack) and check for other solutions.
+![image](https://github.com/bruhathisp/dsa_java/assets/91585301/9db3c0a9-e9c2-4992-8a9a-aacf4248ff05)
+Source yuminlee2
+
+I'll try to explain backtracking, The backtracking in this sum is used to find distinct combinations and avoids duplicate combinations. This diagram explains the process.
+
+YOU CANNOT BRUTE FORCE WITH A DECISION TREE IF YOU WANT UNIQUE COMBINATIONS. WE END UP GETTING DUPLICATE COMBINATIONS.
 
 It is a recursive method. Consider the array candidates[i] and target. We have a start variable to start over the iteration this is going to help us 
 
@@ -12,6 +19,34 @@ Step 2: Else we go inside the loop. The value of i doesn't update till `target -
 It is like a stack LIFO. Now backtrack with start=i. and the whole process is done again.
 
 For clarity [Watch the video](https://youtu.be/GBKI9VSKdGg?feature=shared)
+
+Here's a step-by-step summary of the decision tree:
+
+1. Start with an empty combination and a target of 7.
+
+2. First decision: Include or skip the number 2.
+
+3. If included, move to the next decision with a reduced target of 5.
+If skipped, continue with the original target of 7.
+Second decision: Include or skip another 2.
+
+4. If included, move to the next decision with a further reduced target.
+If skipped, continue the decision tree.
+Third decision: Include or skip a third 2. Continue recursively.
+
+5. If included, check if the target is met. If not, continue.
+If skipped, move to the next decision.
+Continue the process, making decisions for the number 3 and other available numbers.
+
+6. When the target is met, add the current combination to the result.
+
+7. If the target is exceeded or all elements are exhausted, backtrack to the previous decision point.
+
+The recursive nature of the process ensures that different combinations are explored, and duplicates are avoided.
+
+The key idea is to explore all possible combinations by making decisions at each step, considering the inclusion or exclusion of numbers. 
+
+### Backtracking is employed to ensure unique combinations and avoid duplicates. 
 
 
 
