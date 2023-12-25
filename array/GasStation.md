@@ -7,9 +7,9 @@ Cost 3 4 5 1 2 1 2 10 1
 
 Ooutput 8
 
-Method 
+Method   [Wathc this video](https://youtu.be/3wUa7Lf1Xjk?feature=shared)
 
-1. Find if the `sum=gas - cost` is positive or negative.
+1. Find if the `sum= gas - cost` is positive or negative.
 2. Update `total += sum` if the sum is negative.
 3. If `sum` is negative update `sum = 0` and `position = i + 1`.
 4. So the `total`, `sum=0` and `position` is not updated, when the `sum` is positive, i.e. the `sum` is started fresh when it is negative and the `sum` gets added up when it is positive. So after when a negative `sum` is encountered, the accumulated `sum` is added with total. Again the sum is set to 0.
