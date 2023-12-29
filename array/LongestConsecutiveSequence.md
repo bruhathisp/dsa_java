@@ -1,3 +1,17 @@
+## Solution
+
+1. Create a parent array with the index of the nums array. The corresponding array element is its own parent in the initial stage. So in this example ` nums= [ 100 4 200 1 3 2]` and ` parents= [ 0 1 2 3 4 5]`
+2. Create a hashmap `size` where the elements are the key and their index as the values.
+3. Take two terms, `nums[i]-1` and `nums[i]+1` if the size map has the values, union the values `nums[i] and nums[i-1]` and `nums[i] and nums[i+1]` respectively.
+4. In union method, the parent array of the neighbour value is updated to the value of the parent itself.
+5. How do you find the value of the parent node? See the explanation below.
+6. Final parent array is obtained.
+7. Then we calculate the maximum consecutive sequence by looking up the parent array. More explanation given below.
+   
+   
+
+
+
 
 ``` java
 class Solution {
@@ -12,19 +26,21 @@ class Solution {
             size.put(nums[i], i);
         }
         for(int i = 0; i < nums.length; i++){
-            if(size.containsKey(nums[i] - 1) && find(parent,  i) != find(parent,size.get(nums[i] - 1))){
+            if(size.containsKey(nums[i] - 1) ){
                 union(parent, i, size.get(nums[i] - 1));
             }
-            if(size.containsKey(nums[i] + 1) && find(parent, i) != find(parent, size.get(nums[i] + 1))){
+            if(size.containsKey(nums[i] + 1)){
                 union(parent, i, size.get(nums[i] + 1));
             }
         }
         //return max 
         int res = 0;
+        int findValue=0;
         int[] count = new int[parent.length];
         for(int value : size.values()){
-            count[find(parent, value)] ++;
-            res = Math.max(res, count[find(parent, value)]);
+            findValue = find(parent, value);
+            count[findValue] ++;
+            res = Math.max(res, count[findValue]);
         }
         return res;
     }
@@ -47,16 +63,18 @@ class Solution {
 
 ```
 
+
+### Updating parent array
 Let's go through the code step by step and create a table to keep track of the parameters and function calls. The input array is [100, 4, 200, 1, 3, 2], and the expected output is 4.
 
 | Iteration | i  | nums[i] |  size | Union Operation (nums[i] - 1) | Updated Parent Array | Union Operation (nums[i] + 1) | Updated Parent Array | 
 |-----------|----|---------|-----------------------------|-----------------------|------|-----------------------------|-----------------------|
-| 1         | 0  | 100     |  {100=0} | -                           | [0, 1, 2, 3, 4, 5]     | -                           | [0, 1, 2, 3, 4, 5]     | 
-| 2         | 1  | 4       |  {100=0, 4=1} | Union(parent, 1, 4)            | [0, 4, 2, 3, 4, 5]     | -           |  [0, 4, 2, 3, 4, 5]    | 
-| 3         | 2  | 200     |  {100=0, 4=4, 200=2} | -                           | [0, 4, 2, 3, 4, 5]    | -                           | [0, 4, 2, 3, 4, 5]    | 
-| 4         | 3  | 1       |  {100=0, 4=4, 200=2, 1=3} | -            | -    | Union(parent, 3, 5)            | [0, 4, 2, 5, 5, 5]     | 
-| 5         | 4  | 3       |  {100=0, 4=4, 200=2, 1=5, 3=4} | Union(parent, 4, 5)            | [0, 4, 2, 5, 5, 5]     | Union(parent, 4, 1)            | [0, 5, 2, 5, 5, 5]     |
-| 6         | 5  | 2       | {100=0, 4=5, 200=2, 1=5, 3=5, 2=5} | Union(parent, 5, 3)            | [0, 4, 2, 5, 5, 5]      |    Union(parent, 5, 4)                          | [0, 5, 2, 5, 5, 5]     | 
+| 1         | 0  | 100     |  {100=0, 4=5, 200=2, 1=3, 3=4, 2=5} | -                           | [0, 1, 2, 3, 4, 5]     | -                           | [0, 1, 2, 3, 4, 5]     | 
+| 2         | 1  | 4       |   {100=0, 4=5, 200=2, 1=3, 3=4, 2=5} | Union(parent, 1, 4)            | [0, 4, 2, 3, 4, 5]     | -           |  [0, 4, 2, 3, 4, 5]    | 
+| 3         | 2  | 200     |   {100=0, 4=5, 200=2, 1=3, 3=4, 2=5} | -                           | [0, 4, 2, 3, 4, 5]    | -                           | [0, 4, 2, 3, 4, 5]    | 
+| 4         | 3  | 1       |   {100=0, 4=5, 200=2, 1=3, 3=4, 2=5} | -            | -    | Union(parent, 3, 5)            | [0, 4, 2, 5, 5, 5]     | 
+| 5         | 4  | 3       |  {100=0, 4=5, 200=2, 1=3, 3=4, 2=5}  | Union(parent, 4, 5)            | [0, 4, 2, 5, 5, 5]     | Union(parent, 4, 1)            | [0, 5, 2, 5, 5, 5]     |
+| 6         | 5  | 2       | {100=0, 4=5, 200=2, 1=3, 3=4, 2=5} | Union(parent, 5, 3)            | [0, 4, 2, 5, 5, 5]      |    Union(parent, 5, 4)                          | [0, 5, 2, 5, 5, 5]     | 
 
 The final result is 3, and the longest consecutive sequence is [1, 2, 3, 4].
 
@@ -110,6 +128,29 @@ now the updated array is [0 5 2 5 5 5].
 now the while condition parent[5] != 5 which is not true so the loop breaks.
 
 updated parent: `parent[ 0 5 2 5 5 5]`
+
+
+### Calculating result value
+
+1. `value` is the index of elements for the nums. Since in parents array the consecutive elements have the same value `parents=[0 5 2 5 5 5]` and `value=[ 0 1 2 3 4 5]` and `count[0 0 0 0 0]`
+2. `findResult=find(parent,value)` finds the root node in the parents array.
+3. `count[findValue]++` updates the index of the root value.
+4. Then `res` value is compared and updated
+
+   `parent =[0 5 2 5 5 5 5]`
+
+   nums
+
+   
+| previous res|  value  |  findResult  | count   | res   |  
+|-----------|----|---------|-----------------------------|-----------------------|
+| 0|  0  |  0 find(parent,0) | [1 0 0 0 0 0 0]   | 1   |  
+| 0|  1  |  5 find(parent,1) | [1 0 0 0 0 0 1]   | 1   | 
+| 0|  2  |  2 find(parent,2) | [1 0 1 0 0 0 1]   | 1   |
+| 0|  3  |  5 find(parent,3) | [1 0 1 0 0 0 2]   | 2   | 
+| 0|  4  |  5  find(parent,4) | [1 0 1 0 0 0 3]   | 3  | 
+| 0|  5  |  5 find(parent,5) | [1 0 1 0 0 0 4]   | 4   | 
+
 
 
  
