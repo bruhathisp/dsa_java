@@ -47,7 +47,7 @@ class Solution {
 
 ```
 
-Certainly! Let's go through the code step by step and create a table to keep track of the parameters and function calls. The input array is [100, 4, 200, 1, 3, 2], and the expected output is 4.
+Let's go through the code step by step and create a table to keep track of the parameters and function calls. The input array is [100, 4, 200, 1, 3, 2], and the expected output is 4.
 
 | Iteration | i  | nums[i] |  size | Union Operation (nums[i] - 1) | Updated Parent Array | Union Operation (nums[i] + 1) | Updated Parent Array | 
 |-----------|----|---------|-----------------------------|-----------------------|------|-----------------------------|-----------------------|
@@ -55,8 +55,8 @@ Certainly! Let's go through the code step by step and create a table to keep tra
 | 2         | 1  | 4       |  {100=0, 4=1} | Union(parent, 1, 4)            | [0, 4, 2, 3, 4, 5]     | -           |  [0, 4, 2, 3, 4, 5]    | 
 | 3         | 2  | 200     |  {100=0, 4=4, 200=2} | -                           | [0, 4, 2, 3, 4, 5]    | -                           | [0, 4, 2, 3, 4, 5]    | 
 | 4         | 3  | 1       |  {100=0, 4=4, 200=2, 1=3} | -            | -    | Union(parent, 3, 5)            | [0, 4, 2, 5, 5, 5]     | 
-| 5         | 4  | 3       |  {100=0, 4=4, 200=2, 1=4, 3=4} | Union(parent, 4, 5)            | [0, 4, 2, 5, 5, 5]     | Union(parent, 4, 1)            | [0, 5, 2, 5, 5, 5]     |
-| 6         | 5  | 2       | {100=0, 4=5, 200=2, 1=3, 3=5, 2=5} | -            | -     |    Union(parent, 5, 4)                          | [0, 5, 2, 5, 5, 5]     | 
+| 5         | 4  | 3       |  {100=0, 4=4, 200=2, 1=5, 3=4} | Union(parent, 4, 5)            | [0, 4, 2, 5, 5, 5]     | Union(parent, 4, 1)            | [0, 5, 2, 5, 5, 5]     |
+| 6         | 5  | 2       | {100=0, 4=5, 200=2, 1=5, 3=5, 2=5} | Union(parent, 5, 3)            | [0, 4, 2, 5, 5, 5]      |    Union(parent, 5, 4)                          | [0, 5, 2, 5, 5, 5]     | 
 
 The final result is 3, and the longest consecutive sequence is [1, 2, 3, 4].
 
