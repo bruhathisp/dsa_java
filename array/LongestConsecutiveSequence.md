@@ -234,9 +234,87 @@ Final Result: 4
         }
         return answer+1;
     }
-}```
+}
+```
+
+### BFS 
+``` java
+  /*
+     * BFS:
+     *     ~ N + N => O(N) time,
+     *     O(N) space
+     */
+    public int longestConsecutive2(int[] nums) {
+        int maxLength = 0;
+        if (nums.length != 0) {
+            // get all numbers: ~ N => O(N) time
+            HashMap<Integer, Integer> isVisited = new HashMap<>();
+            for (int i = 0; i < nums.length; i++) {
+                isVisited.put(nums[i], 0);
+            }
+
+            // BFS: ~ N => O(N) time
+            for (int i = 0; i < nums.length; i++) {
+                int length = 0;
+                List<Integer> queue = new ArrayList<>(Arrays.asList(nums[i]));
+                while (!queue.isEmpty()) {
+                    int num = queue.remove(0),
+                        prev = num - 1,
+                        next = num + 1;
+                    isVisited.put(num, 1); // mark as visited
+                    length++;
+                    if (isVisited.containsKey(prev) && isVisited.get(prev) == 0) {
+                        isVisited.put(prev, 1); // mark as visited (avoid duplicate enqueue)
+                        queue.add(prev);
+                    }
+                    if (isVisited.containsKey(next) && isVisited.get(next) == 0) {
+                        isVisited.put(next, 1); // mark as visited (avoid duplicate enqueue)
+                        queue.add(next);
+                    }
+                }
+                if (maxLength < length) {
+                    maxLength = length;
+                }
+            }
+        }
+        return maxLength;
+    }
+```
 
 ## UnorderedMap or HashMap method. Complexity O(n^2)
+
+``` java 
+    /*
+     * hash map:
+     */
+    public int longestConsecutive(int[] nums) {
+        int maxLength = 0;
+        HashMap<Integer, Integer> lengthMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if (!lengthMap.containsKey(num)) { // no sequence length
+                // calculate sequence length (by iterating array so far)
+                int prevLength = lengthMap.containsKey(num - 1)? lengthMap.get(num - 1): 0,
+                    nextLength = lengthMap.containsKey(num + 1)? lengthMap.get(num + 1): 0,
+                    length = 1 + prevLength + nextLength;
+
+                // set the length value to the number
+                lengthMap.put(num, length);
+
+                // use prevLength and nextLength to locate the end numbers of the sequences to the left and right
+                // set the length values to the end numbers (no impacts if the end number doesn't exist)
+                lengthMap.put(num - prevLength, length);
+                lengthMap.put(num + nextLength, length);
+
+                if (maxLength < length) {
+                    maxLength = length;
+                }
+            }
+        }
+        return maxLength;
+    }
+}
+```
 
 
 
