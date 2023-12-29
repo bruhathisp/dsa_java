@@ -1,5 +1,8 @@
 ## Solution
 
+
+
+### Union Find ---> Time Complexity O(n)
 1. Create a parent array with the index of the nums array. The corresponding array element is its own parent in the initial stage. So in this example ` nums= [ 100 4 200 1 3 2]` and ` parents= [ 0 1 2 3 4 5]`
 2. Create a hashmap `size` where the elements are the key and their index as the values.
 3. Take two terms, `nums[i]-1` and `nums[i]+1` if the size map has the values, union the values `nums[i] and nums[i-1]` and `nums[i] and nums[i+1]` respectively.
@@ -139,7 +142,7 @@ updated parent: `parent[ 0 5 2 5 5 5]`
 
    `parent =[0 5 2 5 5 5 5]`
 
-   nums
+   `nums=[100 4 200 1 3 2]`
 
    
 | previous res|  value  |  findResult  | count   | res   |  
@@ -150,6 +153,90 @@ updated parent: `parent[ 0 5 2 5 5 5]`
 | 0|  3  |  5 find(parent,3) | [1 0 1 0 0 0 2]   | 2   | 
 | 0|  4  |  5  find(parent,4) | [1 0 1 0 0 0 3]   | 3  | 
 | 0|  5  |  5 find(parent,5) | [1 0 1 0 0 0 4]   | 4   | 
+
+Iterating over size.values():
+inside while loop
+Iteration0
+parent[ 3] --> 3
+find(parent, 5, 2) -> 5
+count[find(parent, 3, 1)]++ -> count[5] = 1
+Value: 3
+Parent: 5
+Count: [0, 0, 0, 0, 0, 1]
+MaxCount: 1
+
+find(parent, 5, 2) -> 5
+count[find(parent, 5, 2)]++ -> count[5] = 2
+Value: 5
+Parent: 5
+Count: [0, 0, 0, 0, 0, 2]
+MaxCount: 2
+
+inside while loop
+Iteration0
+parent[ 4] --> 4
+find(parent, 5, 2) -> 5
+count[find(parent, 4, 3)]++ -> count[5] = 3
+Value: 4
+Parent: 5
+Count: [0, 0, 0, 0, 0, 3]
+MaxCount: 3
+
+find(parent, 0, 100) -> 0
+count[find(parent, 0, 100)]++ -> count[0] = 1
+Value: 0
+Parent: 0
+Count: [1, 0, 0, 0, 0, 3]
+MaxCount: 3
+
+inside while loop
+Iteration0
+parent[ 1] --> 1
+find(parent, 5, 2) -> 5
+count[find(parent, 1, 4)]++ -> count[5] = 4
+Value: 1
+Parent: 5
+Count: [1, 0, 0, 0, 0, 4]
+MaxCount: 4
+
+find(parent, 2, 200) -> 2
+count[find(parent, 2, 200)]++ -> count[2] = 1
+Value: 2
+Parent: 2
+Count: [1, 0, 1, 0, 0, 4]
+MaxCount: 4
+
+Final Result: 4
+
+### using sort function
+
+``` java
+ class Solution {
+    public int longestConsecutive(int[] nums) {
+        if(nums.length==0){
+            return 0;
+        }
+        int answer = 0;
+        Arrays.sort(nums);
+        int count=0;
+        // 1,2,3,4,100,200
+        for(int i=1 ;i<nums.length; i++){
+            if(nums[i-1]==nums[i]){
+                continue;
+            }
+            if(nums[i]-nums[i-1]==1){
+                ++count;//count=3
+            }else{
+                answer = Math.max(answer, count);
+                count=0;
+            }
+            answer = Math.max(answer, count);
+        }
+        return answer+1;
+    }
+}```
+
+## UnorderedMap or HashMap method. Complexity O(n^2)
 
 
 
