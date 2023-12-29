@@ -81,7 +81,7 @@ The final result is 3, and the longest consecutive sequence is [1, 2, 3, 4].
 
 
 
-In iteration 4:
+### In iteration 4:
 
 In this we need to union element 3 and 2 and  also the element 3 and 4. 
 
@@ -91,11 +91,11 @@ so union(parent,4,5) and union(parent,4,1)  are called.  because   of the statem
 
 updated parent: `parent[ 0 4 2 3 4 5]`
 
-in `union(parent,4,5)` the parents of the element is the element itself so it doesn't go inside the while loop and the updated array will be `[0 4 2 5 5 5]` . 
+###### in `union(parent,4,5)` the parents of the element is the element itself so it doesn't go inside the while loop and the updated array will be `[0 4 2 5 5 5]` . 
 
 updated parent: `parent[ 0 4 2 5 4 5]`
 
-now going to `union(parent,4,1)`. here, parent[1] is not equal to 1. so it goes into the while loop and updates parent[1]=parent[4] ` parent[1]=5` and c=4 
+######  now going to `union(parent,4,1)`. here, parent[1] is not equal to 1. so it goes into the while loop and updates parent[1]=parent[4] ` parent[1]=5` and c=4 
 
 now the updated array is [0 5 2 5 5 5].  
 
@@ -104,11 +104,11 @@ now the while condition parent[4] != 5 which is not true so the loop breaks.
 updated parent: `parent[ 0 5 2 3 4 5]`
 
 
-In iteration 5: (No changes)
+### In iteration 5: (No changes)
 
 In this we need to union element 3 and 2 and  also the element 3 and 4. 
 
-so union(parent,5,3) and union(parent,5,4)  called.  because   of the statement  `size.get(nums[i] + 1)`.
+######  so union(parent,5,3) and union(parent,5,4)  called.  because   of the statement  `size.get(nums[i] + 1)`.
 
 `size.get(1) =3` and `size.get(3)=4`
 
@@ -121,7 +121,7 @@ now the while condition parent[5] != 5 which is not true so the loop breaks.
 
 updated parent: `parent[ 0 5 2 5 5 5]`
 
-now going to `union(parent,5,4) `. here, parent[4] is not equal to 4. so it goes into the while loop and updates parent[4]=parent[5] ` parent[4]=5` and c=5 
+######  now going to `union(parent,5,4) `. here, parent[4] is not equal to 4. so it goes into the while loop and updates parent[4]=parent[5] ` parent[4]=5` and c=5 
 
 now the updated array is [0 5 2 5 5 5].  
 
