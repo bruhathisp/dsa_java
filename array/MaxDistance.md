@@ -69,71 +69,89 @@ Output1:  2
 
 
 
-Iteration: 1
+### Iteration: 1
+
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 0, A[0]: 3
 Current j: 0, A[0]: 3
-minLeft[0]: 3
+
 maxRight[0]: 5
+
 maxDistance updated: 0
+
 New i: 0, New j: 1
 
-Iteration: 2
+### Iteration: 2
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 0, A[0]: 3
 Current j: 1, A[1]: 5
-minLeft[0]: 3
+
 maxRight[1]: 5
+
 maxDistance updated: 1
 New i: 0, New j: 2
 
-Iteration: 3
+### Iteration: 3
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 0, A[0]: 3
 Current j: 2, A[2]: 4
-minLeft[0]: 3
+
 maxRight[2]: 4
+
 maxDistance updated: 2
 New i: 0, New j: 3
 
-Iteration: 4
+### Iteration: 4
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 0, A[0]: 3
 Current j: 3, A[3]: 2
-minLeft[0]: 3
+
 maxRight[3]: 2
+
 New i: 1, New j: 3
 
-Iteration: 5
+### Iteration: 5
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 1, A[1]: 5
 Current j: 3, A[3]: 2
-minLeft[1]: 3
+
 maxRight[3]: 2
+
 New i: 2, New j: 3
 
-Iteration: 6
+### Iteration: 6
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 2, A[2]: 4
 Current j: 3, A[3]: 2
-minLeft[2]: 3
+
 maxRight[3]: 2
+
 New i: 3, New j: 3
 
-Iteration: 7
+### Iteration: 7
 Array A: [3, 5, 4, 2]
 maxRight: [5, 5, 4, 2]
+
 Current i: 3, A[3]: 2
 Current j: 3, A[3]: 2
+
 maxRight[3]: 2
-maxDistance updated: 2
 New i: 3, New j: 4
+
+maxDistance updated: 2
+
 
 2
 
