@@ -1,6 +1,8 @@
 ## Solution
 
 
+[Link to problem](https://www.interviewbit.com/problems/max-distance/)
+
 Step 1: Initialize variables
     Set n as array length
     Create an array `maxRight` of size n to store the maximum element on the right.
