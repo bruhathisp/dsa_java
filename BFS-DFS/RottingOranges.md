@@ -1,5 +1,22 @@
 ## Solution
 
+
+
+Lessons learnt:
+1. Whenever there's a layer that grows over time use bfs or dfs
+### Time Complexity 
+The time complexity of the solution is O(rows * cols), where rows is the number of rows in the grid and cols is the number of columns in the grid.
+
+Here's a breakdown of the time complexity:
+
+**Grid Initialization:** O(rows * cols) - The algorithm initializes the grid and counts the number of fresh oranges, which requires iterating through the entire grid.
+
+**BFS Iterations:** The main part of the algorithm involves using BFS to simulate the rotting process. In the worst case, each cell is added to the queue once and dequeued once. Therefore, the time complexity of BFS is O(rows * cols).
+
+Total Time Complexity: O(rows * cols) + O(rows * cols) ≈ O(rows * cols)
+
+The BFS iteration dominates the overall time complexity, and since each cell is processed at most once, the time complexity is proportional to the number of cells in the grid.
+
 Breadth-First Search (BFS) is used in the "Rotting Oranges" problem because it involves exploring the grid in layers, level by level, starting from the initial rotten oranges. BFS is a natural fit for problems where you need to explore in a systematic way, layer by layer, especially when the problem involves finding the shortest path or the minimum number of steps.
 
 ``` java
