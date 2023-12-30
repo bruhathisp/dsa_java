@@ -4,7 +4,9 @@
 
 Lessons learnt:
 1. Whenever there's a layer that grows over time use bfs or dfs
-2. 
+2. This is crucial for finding the shortest path in a graph or matrix where edges have uniform weights (or no weights). If the problem required finding any path (not necessarily the shortest), DFS could be a valid choice.
+
+   
 ### Time Complexity 
 The time complexity of the solution is O(rows * cols), where rows is the number of rows in the grid and cols is the number of columns in the grid.
 
