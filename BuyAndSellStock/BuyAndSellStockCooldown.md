@@ -38,7 +38,7 @@
 ```
 
 
-
+## Testcase prices= [7,1,5,3,6,4]
 
 
 | **Day** | **Initial Max Profit After Buying** `max(maxProfitBeforeSellingCooldown - prices[currentDay], maxProfitAfterBuying)` | **Initial Max Profit After Selling** `max(maxProfitAfterBuying + prices[currentDay], maxProfitAfterSelling)` | **Initial Max Profit Before Selling Cooldown** `temp` | <-- **Temp Variable** ` maxProfitAfterSelling` | **Final Max Profit After Selling** |
