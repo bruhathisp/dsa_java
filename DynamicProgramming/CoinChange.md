@@ -2,6 +2,7 @@
 
 Find minimum number of coins needed to make change for the target amount.
 
+[Watch this](https://www.simplilearn.com/tutorials/data-structure-tutorial/coin-change-problem-with-dynamic-programming)
 
  dp array is used to store the minimum number of coins needed to make change for each amount from 0 to the target amount (amount). 
 
