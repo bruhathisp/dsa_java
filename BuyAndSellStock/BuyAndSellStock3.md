@@ -207,3 +207,70 @@ Day 5: maxProfit9
 
 
 Final Max Profit: 9
+
+
+
+``` java
+      import java.util.*;
+
+public class MyClass {
+    public static int maxProfit(int[] prices) {
+        int n = prices.length;
+
+        if (n <= 1) {
+            return 0;
+        }
+
+        int[] profit = new int[n];
+
+        int maxPrice = prices[n - 1];
+
+        // First Pass (Selling)
+        System.out.println("First Pass (Selling):");
+        for (int i = n - 2; i >= 0; i--) {
+            maxPrice = Math.max(maxPrice, prices[i]);
+            System.out.println("Day " + i + ": Max Price: " + maxPrice);
+            profit[i] = Math.max(profit[i + 1], maxPrice - prices[i]);
+            System.out.println("Day " + i + ": Profit: " + Arrays.toString(profit));
+        }
+
+        // Second Pass (Buying)
+        int minPrice = prices[0];
+        int maxProfit = profit[0];
+
+        System.out.println("\nSecond Pass (Buying):");
+        for (int i = 1; i < n; i++) {
+            System.out.println("Day " + i + ": MaxPrice=" + maxPrice + ", Profit[" + i + "]=" + profit[i]);
+
+            minPrice = Math.min(minPrice, prices[i]);
+            profit[i] = Math.max(profit[i - 1], profit[i] + prices[i] - minPrice);
+
+            // Update maxProfit if needed
+            maxProfit = Math.max(maxProfit, profit[i]);
+
+            System.out.println("Day " + i + ": profit: " + profit[i]);
+            System.out.println("Day " + i + ": prices[i]: " + prices[i]);
+            System.out.println("Day " + i + ": minPrice: " + minPrice);
+            int some =(profit[i] - prices[i] - minPrice);
+            System.out.println("Day " + i + ": profit[i] + prices[i] - minPrice: " + some);
+            
+            System.out.println("Day " + i + ": profit[i - 1]: " + profit[i - 1]);
+            
+            System.out.println("Day " + i + ": maxProfit" + maxProfit);
+            System.out.println(Arrays.toString(profit));
+        }
+
+        // Print the final result
+        System.out.println("Final Max Profit: " + maxProfit);
+
+        return maxProfit;
+    }
+
+    public static void main(String[] args) {
+        int[] prices = { 1, 3, 1, 2, 4, 8 };
+        maxProfit(prices);
+    }
+}
+
+
+```
