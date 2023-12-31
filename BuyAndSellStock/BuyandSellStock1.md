@@ -1,5 +1,8 @@
+## Solution
 
-The given Java solution aims to find the maximum profit that can be achieved by buying and selling a stock represented by an array of `prices`. The variable names used in the solution have the following meanings:
+
+
+The given Java solution aims to find the maximum profit that can be achieved by buying and selling a stock `at most one time` represented by an array of `prices`. The variable names used in the solution have the following meanings:
 
 
 Concept Tag:
