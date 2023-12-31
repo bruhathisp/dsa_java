@@ -1,5 +1,12 @@
 ## Solution
 
+
+
+**Lessons learnt**
+
+1. In this case, this.matrix is assigned the value of the input matrix passed to the spiralOrder method. It allows other methods, such as borderFrom, to access the matrix without any ambiguity or naming conflicts.
+
+Steps:
 1. After calling `borderFrom` function decrement both m(row) and n(col) by 2
 2. `borderFrom` functions takes 4 turns each call. and this is how it adds to the `res` array.
    ``` java
