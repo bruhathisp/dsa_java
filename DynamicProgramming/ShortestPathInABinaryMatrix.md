@@ -163,134 +163,63 @@ This code appears to be an implementation of a shortest path algorithm for a bin
 
 ```
 
+### Testcase    ` Input [[000][110][110]]      Output 4`
 
-## Output 
 
-Let's break down the provided table and the output of the code for each stage:
 
-**Input Matrix:**
-```plaintext
-A = [[1, 2, 3, 4], 
-     [2, 2, 3, 4], 
-     [3, 2, 3, 4], 
-     [4, 5, 6, 7]]
-```
+Initial Grid:
+000,
+110,
+110,
+Root added to the queue: 0, 0
 
-**Dynamic Programming Table (dp) Initialization:**
-```plaintext
-dp = [[1, 0, 0, 0], 
-      [0, 0, 0, 0], 
-      [0, 0, 0, 0], 
-      [0, 0, 0, 0]]
-```
+Current Queue:
+(0, 0, 1) 
 
-**First Loop (Rows) - i: 1 to 3:**
-```plaintext
-i: 1, j: 0, A[i - 1][0] < A[i][0]: 1 < 2, dp[1][0]: 2, res: 2
-dp = [[1, 0, 0, 0], 
-      [2, 0, 0, 0], 
-      [0, 0, 0, 0], 
-      [0, 0, 0, 0]]
+Exploring cell: 0, 0 (Length So Far: 1)
+Neighbor added to the queue: 0, 1
+isSeen Array:
+110
+000
+000
 
-i: 2, j: 0, A[i - 1][0] < A[i][0]: 2 < 3, dp[2][0]: 3, res: 3
-dp = [[1, 0, 0, 0], 
-      [2, 0, 0, 0], 
-      [3, 0, 0, 0], 
-      [0, 0, 0, 0]]
+Current Queue:
+(0, 1, 2) 
 
-i: 3, j: 0, A[i - 1][0] < A[i][0]: 3 < 4, dp[3][0]: 4, res: 4
-dp = [[1, 0, 0, 0], 
-      [2, 0, 0, 0], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
-```
+Exploring cell: 0, 1 (Length So Far: 2)
+Neighbor added to the queue: 0, 2
+Neighbor added to the queue: 1, 2
+isSeen Array:
+111
+001
+000
 
-**Second Loop (Columns) - i: 1 to 2:**
-```plaintext
-i: 0, j: 1, A[0][i - 1] < A[0][i]: 1 < 2, dp[0][i]: 2, res: 4
-dp = [[1, 2, 0, 0], 
-      [2, 0, 0, 0], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
+Current Queue:
+(0, 2, 3) (1, 2, 3) 
 
-i: 0, j: 2, A[0][i - 1] < A[0][i]: 2 < 3, dp[0][i]: 3, res: 4
-dp = [[1, 2, 3, 0], 
-      [2, 0, 0, 0], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
+Exploring cell: 0, 2 (Length So Far: 3)
+isSeen Array:
+111
+001
+000
 
-i: 0, j: 3, A[0][i - 1] < A[0][i]: 3 < 4, dp[0][i]: 4, res: 4
-dp = [[1, 2, 3, 4], 
-      [2, 0, 0, 0], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
-```
+Current Queue:
+(1, 2, 3) 
 
-**Third Loop (Nested Rows and Columns) - i: 1 to 3, j: 1 to 3:**
-```plaintext
-No conditions met at i: 1, j: 1, dp[i][j]: -1
-dp = [[1, 2, 3, 4], 
-      [2, -1, 0, 0], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
+Exploring cell: 1, 2 (Length So Far: 3)
+Neighbor added to the queue: 2, 2
+isSeen Array:
+111
+001
+001
 
-No conditions met at i: 1, j: 2, dp[i][j]: -1
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, 0], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
+Current Queue:
+(2, 2, 4) 
 
-No conditions met at i: 1, j: 3, dp[i][j]: -1
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, 0, 0, 0], 
-      [4, 0, 0, 0]]
+Exploring cell: 2, 2 (Length So Far: 4)
+Destination reached! Shortest path length: 4
+4
 
-No conditions met at i: 2, j: 1, dp[i][j]: -1
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, -1, 0, 0], 
-      [4, 0, 0, 0]]
-
-No conditions met at i: 2, j: 2, dp[i][j]: -1
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, -1, -1, 0], 
-      [4, 0, 0, 0]]
-
-No conditions met at i: 2, j: 3, dp[i][j]: -1
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, -1, -1, -1], 
-      [4, 0, 0, 0]]
-
-i: 3, j: 1, A[i][j] > A[i][j - 1]: 5 > 4, dp[i][j]: 0, res: 4
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, -1, -1, -1], 
-      [4, 5, 0, 0]]
-
-i: 3, j: 2, A[i][j] > A[i][j - 1]: 6 > 5, dp[i][j]: 0, res: 5
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, -1, -1, -1], 
-      [4, 5, 6, 0]]
-
-i: 3, j: 3, A[i][j] > A[i][j - 1]: 7 > 6, dp[i][j]: 
-
-0, res: 6
-dp = [[1, 2, 3, 4], 
-      [2, -1, -1, -1], 
-      [3, -1, -1, -1], 
-      [4, 5, 6, 7]]
-```
-
-**Result:**
-```plaintext
-The length of the longest increasing path ending at the bottom-right corner: 7
-```
-
-This shows how the dynamic programming table is updated in each iteration of the loops and how the algorithm finds the length of the longest increasing path. The final result is 7, indicating the length of the longest increasing path from the top-left to the bottom-right corner.
 
 ### To make the above print use this code 
 
