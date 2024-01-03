@@ -90,7 +90,7 @@ A: mississippi B. mis*i?*p*i
 
 Certainly! Here's the table in Markdown format with "mis*i?*p*i" as both row and column fields:
 
-```markdown
+
 |     |   |   |   |   |   |   |   |   |   |   |   |
 |-----|---|---|---|---|---|---|---|---|---|---|---|
 |  Empty   |  Empty|    M | i | s | * | i | ? | * | p | * | i |
@@ -106,7 +106,7 @@ Certainly! Here's the table in Markdown format with "mis*i?*p*i" as both row and
 | *   | F | F | F | F | T | F | F | T | T | T | F |
 | i   | F | F | F | F | T | F | F | T | F | T | T |
 
-```
+
 
 This table represents the dynamic programming matrix after the update (11, 10) for the given strings "Mississippi" and "mis*i?*p*i".
 
