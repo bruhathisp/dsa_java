@@ -91,20 +91,21 @@ A: mississippi B. mis*i?*p*i
 Certainly! Here's the table in Markdown format with "mis*i?*p*i" as both row and column fields:
 
 ```markdown
+|     |   |   |   |   |   |   |   |   |   |   |   |
+|-----|---|---|---|---|---|---|---|---|---|---|---|
+|  Empty   |  Empty|    M | i | s | * | i | ? | * | p | * | i |
+|-----|---|---|---|---|---|---|---|---|---|---|---|
+| M   | T | F | F | F | F | F | F | F | F | F | F |
+| i   | F | T | F | F | T | F | F | F | F | F | F |
+| s   | F | F | T | F | F | F | F | F | F | F | F |
+| *   | F | F | F | T | F | F | F | F | F | F | F |
+| i   | F | F | F | F | T | F | F | F | F | F | F |
+| ?   | F | F | F | F | T | T | F | F | F | F | F |
+| *   | F | F | F | F | T | F | T | T | F | F | F |
+| p   | F | F | F | F | T | F | F | T | F | F | F |
+| *   | F | F | F | F | T | F | F | T | T | T | F |
+| i   | F | F | F | F | T | F | F | T | F | T | T |
 
-|-----|Empty|m|i|s|s|i|s|s|i|p|p|i|
-|Empty|true false false false false false false false false false false 
-|m|false true false false false false false false false false false 
-|i |false false true false false false false false false false false 
-|s| false false false true true false false false false false false 
-|*| false false false false true false false false false false false 
-|i| false false false false true true false false false false false 
-|?| false false false false true false true true false false false 
-|*| false false false false true false false true false false false 
-|p| false false false false true true false true false false false 
-|*| false false false false true false true true true true false 
-|i| false false false false true false false true true true false 
-|| false false false false true true false true false true true 
 ```
 
 This table represents the dynamic programming matrix after the update (11, 10) for the given strings "Mississippi" and "mis*i?*p*i".
