@@ -93,18 +93,21 @@ Certainly! Here's the table in Markdown format with "mis*i?*p*i" as both row and
 
 |     |   |   |   |   |   |   |   |   |   |   |   |
 |-----|---|---|---|---|---|---|---|---|---|---|---|
-|  Empty   |  Empty|    M | i | s | * | i | ? | * | p | * | i |
+|     |  Empty|    M | i | s | * | i | ? | * | p | * | i |
 |-----|---|---|---|---|---|---|---|---|---|---|---|
-| M   | T | F | F | F | F | F | F | F | F | F | F |
-| i   | F | T | F | F | T | F | F | F | F | F | F |
-| s   | F | F | T | F | F | F | F | F | F | F | F |
-| *   | F | F | F | T | F | F | F | F | F | F | F |
-| i   | F | F | F | F | T | F | F | F | F | F | F |
-| ?   | F | F | F | F | T | T | F | F | F | F | F |
-| *   | F | F | F | F | T | F | T | T | F | F | F |
-| p   | F | F | F | F | T | F | F | T | F | F | F |
+
+| Empty  | T | F | F | F | F | F | F | F | F | F | F |
+| m   | F | T | F | F | T | F | F | F | F | F | F |
+| i   | F | F | T | F | F | F | F | F | F | F | F |
+| s   | F | F | F | T | F | F | F | F | F | F | F |
+| *   | F | F | F | F | T | F | F | F | F | F | F |
+| i   | F | F | F | F | T | T | F | F | F | F | F |
+| ?   | F | F | F | F | T | F | T | T | F | F | F |
+| *   | F | F | F | F | T | F | F | T | F | F | F |
+| p   | F | F | F | F | T | F | T | T | T | T | F |
 | *   | F | F | F | F | T | F | F | T | T | T | F |
 | i   | F | F | F | F | T | F | F | T | F | T | T |
+
 
 
 
