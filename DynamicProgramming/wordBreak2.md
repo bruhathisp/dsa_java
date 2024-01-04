@@ -12,7 +12,7 @@ Steps:
 1. dp is a array of strings with the length of A+1
 2. Loop through the A (`i->A.length()`) and for every word B   `end` index of the substring being considered.:  `end = i + length;`
    1. If dp is null skip iteration (when there is no valid entry in the dp )
-   2.   Update dp if a valid word is found: `A.substring(i, end).equals(word)`
+   2.   Update dp if a valid word is found: `A.substring(i, end).equals(word)`. Update by `dp[end].add(word);`
       1. If dp[end] is null, create a new ArrayList and add the current word. If it's not null, simply add the word to the existing ArrayList.
 3. If dp is null return empty array. else call `dfs(dp, A.length(), resultSet, temp);` and have a temp variable which is an array of strings
 
