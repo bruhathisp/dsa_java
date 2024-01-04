@@ -89,3 +89,443 @@ This code is part of the `isValid` method, which checks whether it's valid to pl
 
 If none of the above conditions is met for any `i` (from 0 to 8), it means the placement of `c` in the current position (`row`, `col`) is valid, and `true` is returned.
 
+
+
+
+``` java
+   class Solution {
+    void sudokuSolver(char[][] sudoku) {
+        solveSudoku(sudoku);
+    }
+
+    private void solveSudoku(char[][] board) {
+        dfs(board, 0);
+    }
+
+    private boolean dfs(char[][] board, int s) {
+        if (s == 81)
+            return true;
+
+        final int i = s / 9;
+        final int j = s % 9;
+
+        if (board[i][j] != '.')
+            return dfs(board, s + 1);
+
+        for (char c = '1'; c <= '9'; ++c)
+            if (isValid(board, i, j, c)) {
+                board[i][j] = c;
+                if (dfs(board, s + 1))
+                    return true;
+                board[i][j] = '.';
+            }
+
+        return false;
+    }
+
+    private boolean isValid(char[][] board, int row, int col, char c) {
+        for (int i = 0; i < 9; ++i)
+            if (board[i][col] == c || board[row][i] == c ||
+                board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == c)
+                return false;
+        return true;
+    }
+}
+
+
+```
+
+
+```
+i: 0, j: 0
+Current Board:
+2 5 . . . 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 0
+isValid Status: false
+Cell already filled. Moving to the next.
+i: 0, j: 1
+Current Board:
+2 5 . . . 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 1
+isValid Status: false
+Cell already filled. Moving to the next.
+i: 0, j: 2
+Current Board:
+2 5 . . . 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 2
+isValid Status: false
+Trying to place '1' at (0, 2)
+i: 0, j: 3
+Current Board:
+2 5 1 . . 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 3
+isValid Status: false
+Trying to place '4' at (0, 3)
+i: 0, j: 4
+Current Board:
+2 5 1 4 . 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 4
+isValid Status: false
+Trying to place '7' at (0, 4)
+i: 0, j: 5
+Current Board:
+2 5 1 4 7 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 5
+isValid Status: false
+Cell already filled. Moving to the next.
+i: 0, j: 6
+Current Board:
+2 5 1 4 7 3 . . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 6
+isValid Status: false
+Trying to place '6' at (0, 6)
+i: 0, j: 7
+Current Board:
+2 5 1 4 7 3 6 . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . -7 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 7
+isValid Status: false
+Trying to place '8' at (0, 7)
+i: 0, j: 8
+Current Board:
+2 5 1 4 7 3 6 8 . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 8
+isValid Status: false
+No valid number to place. Backtracking from (0, 8)
+Backtracking from (0, 7)
+No valid number to place. Backtracking from (0, 7)
+Backtracking from (0, 6)
+Trying to place '9' at (0, 6)
+i: 0, j: 7
+Current Board:
+2 5 1 4 7 3 9 . . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 7
+isValid Status: false
+Trying to place '6' at (0, 7)
+i: 0, j: 8
+Current Board:
+2 5 1 4 7 3 9 6 . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 8
+isValid Status: false
+No valid number to place. Backtracking from (0, 8)
+Backtracking from (0, 7)
+Trying to place '8' at (0, 7)
+i: 0, j: 8
+Current Board:
+2 5 1 4 7 3 9 8 . 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 8
+isValid Status: false
+Trying to place '6' at (0, 8)
+i: 1, j: 0
+Current Board:
+2 5 1 4 7 3 9 8 6 
+. . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 9
+isValid Status: false
+Trying to place '3' at (1, 0)
+i: 1, j: 1
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 . . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 10
+isValid Status: false
+Trying to place '4' at (1, 1)
+i: 1, j: 2
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 . . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 11
+isValid Status: false
+Trying to place '6' at (1, 2)
+i: 1, j: 3
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 6 . . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 12
+isValid Status: false
+Trying to place '5' at (1, 3)
+i: 1, j: 4
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 6 5 . . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 13
+isValid Status: false
+Trying to place '1' at (1, 4)
+i: 1, j: 5
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 6 5 1 . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 14
+isValid Status: false
+No valid number to place. Backtracking from (1, 5)
+Backtracking from (1, 4)
+Trying to place '8' at (1, 4)
+i: 1, j: 5
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 6 5 8 . 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 14
+isValid Status: false
+Trying to place '1' at (1, 5)
+i: 1, j: 6
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 6 5 8 1 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 15
+isValid Status: false
+Cell already filled. Moving to the next.
+i: 1, j: 7
+Current Board:
+2 5 1 4 7 3 9 8 6 
+3 4 6 5 8 1 2 7 . 
+8 7 . . . 6 4 . . 
+. 2 . . . 8 1 9 3 
+. 1 5 . 4 . 8 . . 
+. . . 1 . . . . 4 
+. . . 7 3 4 . . . 
+. . . 6 . . . . 9 
+. 6 4 . . 9 . 5 8 
+s: 16
+isValid Status: false
+Cell already filled. Moving to the next.
+i: 1, j: 8
+
+```
+
+
+``` java
+   public class MyClass {
+   static void sudokuSolver(char[][] sudoku) {
+        solveSudoku(sudoku);
+    }
+
+    private static  void solveSudoku(char[][] board) {
+        dfs(board, 0);
+    }
+
+    private static  boolean dfs(char[][] board, int s) {
+        if (s == 81)
+            return true;
+
+        final int i = s / 9;
+        final int j = s % 9;
+
+        System.out.println("i: " + i + ", j: " + j);
+        System.out.println("Current Board:");
+        printBoard(board);
+        System.out.println("s: " + s);
+        System.out.println("isValid Status: " + isValid(board, i, j, board[i][j]));
+
+        if (board[i][j] != '.') {
+            System.out.println("Cell already filled. Moving to the next.");
+            return dfs(board, s + 1);
+        }
+
+        for (char c = '1'; c <= '9'; ++c) {
+            if (isValid(board, i, j, c)) {
+                System.out.println("Trying to place '" + c + "' at (" + i + ", " + j + ")");
+                board[i][j] = c;
+                if (dfs(board, s + 1)) {
+                    System.out.println("Successfully placed '" + c + "' at (" + i + ", " + j + ")");
+                    return true;
+                }
+                System.out.println("Backtracking from (" + i + ", " + j + ")");
+                board[i][j] = '.';
+            }
+        }
+
+        System.out.println("No valid number to place. Backtracking from (" + i + ", " + j + ")");
+        return false;
+    }
+
+    private static  boolean isValid(char[][] board, int row, int col, char c) {
+        for (int i = 0; i < 9; ++i)
+            if (board[i][col] == c || board[row][i] == c ||
+                board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == c)
+                return false;
+        return true;
+    }
+
+    private static  void printBoard(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        
+
+        // Custom input
+        char[][] customInput = {
+            {'2', '5', '.', '.', '.', '3', '.', '.', '.'},
+            {'.', '.', '.', '.', '.', '.', '2', '7', '.'},
+            {'8', '7', '.', '.', '.', '6', '4', '.', '.'},
+            {'.', '2', '.', '.', '.', '8', '1', '9', '3'},
+            {'.', '1', '5', '.', '4', '.', '8', '.', '.'},
+            {'.', '.', '.', '1', '.', '.', '.', '.', '4'},
+            {'.', '.', '.', '7', '3', '4', '.', '.', '.'},
+            {'.', '.', '.', '6', '.', '.', '.', '.', '9'},
+            {'.', '6', '4', '.', '.', '9', '.', '5', '8'}
+        };
+
+        // Solve Sudoku
+        sudokuSolver(customInput);
+    }
+}
+
+
+```
