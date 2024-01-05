@@ -1,11 +1,14 @@
 ## Solution
 
-Steps
+#### Steps Time complexity O(m*n)
 1. `i <= tar`  iterate through this
 2. `numi : num` the iterate through each element in num
-3. Only when `i <= tar` is true, update `dp[i]` as `dp[i]+dp[i-numi]`
+3. Only when `i <= tar` is true, update `dp[i]` as `dp[i]+dp[i-numi]` i.e add the last element.
 4. After the iteration return the dp[tar]
 
+
+
+### Difference between i 2 and 4 
 Let's differentiate Combination Sum I, Combination Sum II, and the new problem (Combo Sum 3) based on the problem statements and solutions.
 
 ### Combination Sum I:
