@@ -4,7 +4,8 @@
 1. `i <= tar`  iterate through this
 2. `numi : num` the iterate through each element in num
 3. Only when `i <= tar` is true, update `dp[i]` as `dp[i]+dp[i-numi]` i.e add the last element.
-4. After the iteration return the dp[tar]
+4. The above step is the same as `target - candidates[i] >= 0`
+5. After the iteration return the dp[tar]
 
 
 
