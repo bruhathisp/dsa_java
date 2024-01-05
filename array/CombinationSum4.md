@@ -8,7 +8,7 @@
 
 
 
-### Difference between i 2 and 4 
+### Difference between 1 2 and 4 
 Let's differentiate Combination Sum I, Combination Sum II, and the new problem (Combo Sum 3) based on the problem statements and solutions.
 
 ### Combination Sum I:
