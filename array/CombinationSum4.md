@@ -1,4 +1,12 @@
-Certainly! Let's differentiate Combination Sum I, Combination Sum II, and the new problem (Combo Sum 3) based on the problem statements and solutions.
+## Solution
+
+Steps
+1. `i <= tar`  iterate through this
+2. `numi : num` the iterate through each element in num
+3. Only when `i <= tar` is true, update `dp[i]` as `dp[i]+dp[i-numi]`
+4. After the iteration return the dp[tar]
+
+Let's differentiate Combination Sum I, Combination Sum II, and the new problem (Combo Sum 3) based on the problem statements and solutions.
 
 ### Combination Sum I:
 
@@ -65,4 +73,102 @@ public class Solution {
 }
 ```
 
-This solution uses dynamic programming to count the number of ways to achieve the target sum.
+```
+[1, 0, 0, 0, 0, 0]
+i  0
+numi  1
+numi  2
+numi  5
+[1, 0, 0, 0, 0, 0]
+i  1
+numi  1
+i >= numi
+numi1dp[i]1  i   1
+numi  2
+numi  5
+[1, 1, 0, 0, 0, 0]
+i  2
+numi  1
+i >= numi
+numi1dp[i]1  i   2
+numi  2
+i >= numi
+numi2dp[i]2  i   2
+numi  5
+[1, 1, 2, 0, 0, 0]
+i  3
+numi  1
+i >= numi
+numi1dp[i]2  i   3
+numi  2
+i >= numi
+numi2dp[i]3  i   3
+numi  5
+[1, 1, 2, 3, 0, 0]
+i  4
+numi  1
+i >= numi
+numi1dp[i]3  i   4
+numi  2
+i >= numi
+numi2dp[i]5  i   4
+numi  5
+[1, 1, 2, 3, 5, 0]
+i  5
+numi  1
+i >= numi
+numi1dp[i]5  i   5
+numi  2
+i >= numi
+numi2dp[i]8  i   5
+numi  5
+i >= numi
+numi5dp[i]9  i   5
+[1, 1, 2, 3, 5, 9]
+[1, 1, 2, 3, 5, 9]
+Number of ways: 9
+
+
+```
+
+
+``` java
+    import java.util.*;
+
+public class MyClass {
+    public static int findWays(int num[], int tar) {
+        int[] dp = new int[tar + 1];
+        dp[0] = 1;
+        System.out.println(Arrays.toString(dp));
+        for (int i = 0; i <= tar; ++i) {
+            System.out.println("i  " +i);
+            
+            for (final int numi : num) {
+                
+                System.out.println("numi  " +numi);
+                if (i >= numi) {
+                    System.out.println("i >= numi");
+                    dp[i] += dp[i - numi];
+                    System.out.println("numi"  +numi+  "dp[i]"+dp[i]+"  i   "+i);
+                }
+            }
+
+            // Print dp array after each iteration
+            System.out.println(Arrays.toString(dp));
+        }
+
+        // Print final dp array
+        System.out.println(Arrays.toString(dp));
+
+        return dp[tar];
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 5};
+        int target = 5;
+        System.out.println("Number of ways: " + findWays(nums, target));
+    }
+}
+
+
+```
