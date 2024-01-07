@@ -11,7 +11,8 @@ In the context of serialization, where you are building a string representation 
 
 2. In queue, you initialse with this statement (for integerqueue) `Queue<Integer> intQueue = new LinkedList<>();` and `order` to enqueue and `poll` to dequeue.
 3. `intQueue.offer(10);` and `int firstElement = intQueue.poll();`
-4. 
+4. Split a string into an array of substrings based on the space character (' ').  `String[] values = serializedString.split(" ")`
+5. Convert the first string in `values` to integer and add it to the Node `Node root = new Node(Integer.parseInt(values[0]));`
 
 Steps: `String serialize(Node root) ` Level Order traversal
 
