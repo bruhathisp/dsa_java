@@ -1,5 +1,11 @@
 ## Solution
 
+Steps: 
+
+1. Do the inorder traversal.
+2. Initialise a new stack and create a function to push left nodes to the stack. `while (root != null) --> stack.push(root);-->root = root.left;`
+3. In the `hasNext` function create a simple return that checks whether the stack is not empty `!stack.isEmpty()`
+4. In the `next()` function, pop the top node from the stack i.e. `node` and push the nodes on the right tree, (Left, root, right) `pushLeftNodes(node.right);` then return the node.
 
 ```
     2
@@ -51,53 +57,111 @@ Output 11 14 28
 
 
 ``` java
-
-// import java.util.Stack;
-
-// class Node {
-//     public Node left;
-//     public Node right;
-//     public int data;
-
-//     public Node(int data) {
-//         this.data = data;
-//     }
-// }
-
 class BSTIterator {
     private Stack<Node> stack;
 
+    // Constructor
     public BSTIterator(Node root) {
         stack = new Stack<>();
-        // Initialize the stack with nodes along the leftmost path
-        populateStack(root);
+        // Call the helper method to push nodes to the stack
+        pushLeftNodes(root);
     }
 
+    // Check if there is a next element in the traversal
     public boolean hasNext() {
         return !stack.isEmpty();
     }
 
+    // Move the pointer to the next node in the traversal and return the node
     public Node next() {
-        if (!hasNext()) {
-            throw new IllegalStateException("No next element");
-        }
-
-        // Node at the top of the stack is the next node in the inorder traversal
-        Node current = stack.pop();
-        // Add nodes from the right subtree of the current node to the stack
-        populateStack(current.right);
-
-        return current;
+        // Pop the top node from the stack
+        Node node = stack.pop();
+        // Call the helper method to push nodes of the right subtree
+        pushLeftNodes(node.right);
+        return node;
     }
 
-    private void populateStack(Node node) {
-        // Add nodes along the leftmost path to the stack
-        while (node != null) {
-            stack.push(node);
-            node = node.left;
+    // Helper method to push nodes of the left subtree onto the stack
+    private void pushLeftNodes(Node root) {
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
         }
     }
 }
+
+
+```
+
+
+## Example
+
+```
+
+     7
+    / \
+   3  12
+  / \   \
+ 1   5  11
+    /     \
+   4       10
+
+Output 1 3 4 5 7 10 11 12
+
+Pushing to stack: 7
+
+Pushing to stack: 3
+
+Pushing to stack: 1
+Updated stack: [7, 3, 1]
+Left Node: null
+Right Node: null
+
+Complete Inorder Traversal:
+Updated stack: [7, 3]
+Left Node: null
+Right Node: null
+1 
+
+Pushing to stack: 5
+
+Pushing to stack: 4
+Updated stack: [7, 5, 4]
+Left Node: null
+Right Node: null
+3 
+Updated stack: [7, 5]
+Left Node: null
+Right Node: null
+4 
+Updated stack: [7]
+Left Node: null
+Right Node: null
+5 
+
+Pushing to stack: 12
+
+Pushing to stack: 11
+
+Pushing to stack: 10
+Updated stack: [12, 11, 10]
+Left Node: null
+Right Node: null
+7 
+Updated stack: [12, 11]
+Left Node: null
+Right Node: null
+10 
+Updated stack: [12]
+Left Node: null
+Right Node: null
+11 
+Updated stack: []
+Left Node: null
+Right Node: null
+12 
+
+
 
 ```
 
