@@ -52,6 +52,7 @@ So when all the rows are done being iterated, the `row` variable will be equal t
 
 
 
+## Code 
 
 ``` java
 class Solution {
@@ -119,6 +120,274 @@ class Solution {
     }
 	    // add your logic here
 	}
+
+
+```
+
+```
+Placing queen at row 0, col 0
+Q...
+....
+....
+....
+
+Exploring further...
+Invalid move: Queen in the same column at row 0, col 0
+Invalid move: Queen in the same diagonal (upper left to lower right) at row 0, col 0
+Placing queen at row 1, col 2
+Q...
+..Q.
+....
+....
+
+Exploring further...
+Invalid move: Queen in the same column at row 0, col 0
+Invalid move: Queen in the same diagonal (upper right to lower left) at row 1, col 2
+Invalid move: Queen in the same column at row 1, col 2
+Invalid move: Queen in the same diagonal (upper left to lower right) at row 1, col 2
+Backtracking...
+Q...
+....
+....
+....
+
+Placing queen at row 1, col 3
+Q...
+...Q
+....
+....
+
+Exploring further...
+Invalid move: Queen in the same column at row 0, col 0
+Placing queen at row 2, col 1
+Q...
+...Q
+.Q..
+....
+
+Exploring further...
+Invalid move: Queen in the same column at row 0, col 0
+Invalid move: Queen in the same column at row 2, col 1
+Invalid move: Queen in the same diagonal (upper left to lower right) at row 2, col 1
+Invalid move: Queen in the same column at row 1, col 3
+Backtracking...
+Q...
+...Q
+....
+....
+
+Invalid move: Queen in the same diagonal (upper left to lower right) at row 0, col 0
+Invalid move: Queen in the same column at row 1, col 3
+Backtracking...
+Q...
+....
+....
+....
+
+Backtracking...
+....
+....
+....
+....
+
+Placing queen at row 0, col 1
+.Q..
+....
+....
+....
+
+Exploring further...
+Invalid move: Queen in the same diagonal (upper right to lower left) at row 0, col 1
+Invalid move: Queen in the same column at row 0, col 1
+Invalid move: Queen in the same diagonal (upper left to lower right) at row 0, col 1
+Placing queen at row 1, col 3
+.Q..
+...Q
+....
+....
+
+Exploring further...
+Placing queen at row 2, col 0
+.Q..
+...Q
+Q...
+....
+
+Exploring further...
+Invalid move: Queen in the same column at row 2, col 0
+Invalid move: Queen in the same column at row 0, col 1
+Placing queen at row 3, col 2
+.Q..
+...Q
+Q...
+..Q.
+
+Exploring further...
+Constructed Row: .Q..
+Constructed Row: ...Q
+Constructed Row: Q...
+Constructed Row: ..Q.
+Found Solution:
+.Q..
+...Q
+Q...
+..Q.
+
+(See the entire output with the code)
+
+Invalid move: Queen in the same column at row 0, col 3
+Backtracking...
+...Q
+....
+....
+....
+
+Placing queen at row 1, col 1
+...Q
+.Q..
+....
+....
+
+Exploring further...
+Invalid move: Queen in the same diagonal (upper right to lower left) at row 1, col 1
+Invalid move: Queen in the same column at row 1, col 1
+Invalid move: Queen in the same diagonal (upper left to lower right) at row 1, col 1
+Invalid move: Queen in the same column at row 0, col 3
+Backtracking...
+...Q
+....
+....
+....
+
+Invalid move: Queen in the same diagonal (upper right to lower left) at row 0, col 3
+Invalid move: Queen in the same column at row 0, col 3
+Backtracking...
+....
+....
+....
+....
+
+
+
+// constructSolution functioning 
+
+[[.Q.., ...Q, Q..., ..Q.], [..Q., Q..., ...Q, .Q..]]
+
+
+```
+
+
+## Code to print 
+
+
+``` java
+	import java.util.*;
+
+public class MyClass {
+
+    public static void main(String[] args) {
+        // Call the method on an instance of the class
+        MyClass myClass = new MyClass();
+        System.out.println(myClass.getNQueensSolutions(4));
+    }
+
+    List<List<String>> getNQueensSolutions(int n) {
+        List<List<String>> result = new ArrayList<>();
+        char[][] board = new char[n][n];
+
+        // Initialize the chessboard
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
+
+        // Start finding solutions
+        solveNQueensHelper(board, 0, result);
+        return result;
+    }
+
+    private void solveNQueensHelper(char[][] board, int row, List<List<String>> result) {
+        // If we reached the end of the board, add the solution
+        if (row == board.length) {
+            result.add(constructSolution(board));
+            // Print the current solution
+            System.out.println("Found Solution:");
+            printBoard(board);
+            System.out.println();
+            return;
+        }
+
+        // Try placing a queen in each column of the current row
+        for (int col = 0; col < board.length; col++) {
+            if (isValid(board, row, col)) {
+                board[row][col] = 'Q';
+                // Print the current state of the board after placing a queen
+                System.out.println("Placing queen at row " + row + ", col " + col);
+                printBoard(board);
+
+                // Continue exploring with the queen placed
+                System.out.println("Exploring further...");
+                solveNQueensHelper(board, row + 1, result);
+
+                // Backtrack: remove the queen to explore other possibilities
+                System.out.println("Backtracking...");
+                board[row][col] = '.';
+                printBoard(board);
+            }
+        }
+    }
+
+    private boolean isValid(char[][] board, int row, int col) {
+        // Check if there is a queen in the same column
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') {
+                System.out.println("Invalid move: Queen in the same column at row " + i + ", col " + col);
+                return false;
+            }
+        }
+
+        // Check if there is a queen in the same diagonal (upper left to lower right)
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                System.out.println("Invalid move: Queen in the same diagonal (upper left to lower right) at row " + i + ", col " + j);
+                return false;
+            }
+        }
+
+        // Check if there is a queen in the same diagonal (upper right to lower left)
+        for (int i = row - 1, j = col + 1; i >= 0 && j < board.length; i--, j++) {
+            if (board[i][j] == 'Q') {
+                System.out.println("Invalid move: Queen in the same diagonal (upper right to lower left) at row " + i + ", col " + j);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+private List<String> constructSolution(char[][] board) {
+    List<String> solution = new ArrayList<>();
+    for (char[] row : board) {
+        // Convert the char array of a row to a string and add it to the solution list
+        String rowString = new String(row);
+        solution.add(rowString);
+
+        // Print the current row
+        System.out.println("Constructed Row: " + rowString);
+    }
+    return solution;
+}
+
+
+    // Utility method to print the current state of the chessboard
+    private void printBoard(char[][] board) {
+        for (char[] row : board) {
+            System.out.println(new String(row));
+        }
+        System.out.println();
+    }
+}
 
 
 ```
