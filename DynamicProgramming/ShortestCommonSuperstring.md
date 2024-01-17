@@ -120,3 +120,136 @@ public class Solution {
 
 
 ```
+
+``` java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Main {
+    public static int solve(ArrayList<String> A) {
+        final int n = A.size();
+        int[][] cost = new int[n][n];
+        int[][] dp = new int[1 << n][n];
+        for (int i = 0; i < dp.length; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE / 2);
+        }
+        int[][] parent = new int[1 << n][n];
+        for (int i = 0; i < parent.length; i++) {
+            Arrays.fill(parent[i], -1);
+        }
+
+        // Calculate costs
+        for (int i = 0; i < n; ++i)
+            for (int j = i + 1; j < n; ++j) {
+                cost[i][j] = getCost(A.get(i), A.get(j));
+                cost[j][i] = getCost(A.get(j), A.get(i));
+            }
+
+        // Initialize dp array with base cases
+        for (int i = 0; i < n; ++i)
+            dp[1 << i][i] = A.get(i).length();
+
+        // Dynamic Programming
+        for (int s = 1; s < (1 << n); ++s) {
+            System.out.println("\nSubset " + Integer.toBinaryString(s) + ":");
+            for (int i = 0; i < n; ++i) {
+                if ((s & (1 << i)) == 0)
+                    continue;
+                System.out.println("  Ending at Node " + i + ":");
+                for (int j = 0; j < n; ++j) {
+                    if (dp[s - (1 << i)][j] == Integer.MAX_VALUE / 2) {
+                        System.out.print("    Cost to Node " + j + ": ∞");
+                    } else {
+                        System.out.print("    Cost to Node " + j + ": " + dp[s - (1 << i)][j]);
+                    }
+
+                    if (j < n - 1) {
+                        System.out.print(", ");
+                    } else {
+                        System.out.println();
+                    }
+                }
+                System.out.print("    Corresponding String: ");
+                for (int j = 0; j < n; j++) {
+                    if ((s & (1 << j)) != 0) {
+                        System.out.print(A.get(j) + " ");
+                    }
+                }
+                System.out.println();
+            }
+
+            for (int i = 0; i < n; ++i) {
+                if ((s & (1 << i)) == 0)
+                    continue;
+                for (int j = 0; j < n; ++j)
+                    if (dp[s - (1 << i)][j] + cost[j][i] < dp[s][i]) {
+                        dp[s][i] = dp[s - (1 << i)][j] + cost[j][i];
+                        parent[s][i] = j;
+                    }
+            }
+        }
+
+        // Print dp array with actual strings
+        System.out.println("DP Array:");
+        for (int i = 0; i < (1 << n); i++) {
+            System.out.print("Subset " + Integer.toBinaryString(i) + ": ");
+            for (int j = 0; j < n; j++) {
+                if (dp[i][j] == Integer.MAX_VALUE / 2) {
+                    System.out.print("∞ ");
+                } else {
+                    System.out.print(A.get(j) + " ");
+                }
+            }
+            System.out.println();
+        }
+
+        // Backtrack and build the string
+        String ans = "";
+        int j = getLastNode(dp[(1 << n) - 1]);
+        int s = (1 << n) - 1;
+
+        // Traverse back to build the string.
+        System.out.println("\nOptimal Order of Concatenation:");
+        while (s > 0) {
+            final int i = parent[s][j];
+            if (i == -1)
+                ans = A.get(j) + ans;
+            else
+                ans = A.get(j).substring(A.get(j).length() - cost[i][j]) + ans;
+            s -= 1 << j;
+            j = i;
+            System.out.println(ans);
+        }
+
+        // Print the final result
+        System.out.println("\nMinimum cost: " + ans.length());
+
+        return ans.length();
+    }
+
+    private static int getCost(final String a, final String b) {
+        int cost = b.length();
+        final int minLength = Math.min(a.length(), b.length());
+        for (int k = 1; k <= minLength; ++k)
+            if (a.substring(a.length() - k).equals(b.substring(0, k)))
+                cost = b.length() - k;
+        return cost;
+    }
+
+    private static int getLastNode(int[] row) {
+        int minIndex = 0;
+        for (int i = 1; i < row.length; ++i)
+            if (row[i] < row[minIndex])
+                minIndex = i;
+        return minIndex;
+    }
+
+    public static void main(String[] args) {
+
+        ArrayList<String> inputStrings = new ArrayList<>(Arrays.asList("abcd", "cdef", "fgh", "de"));
+        int result = solve(inputStrings);
+        System.out.println("\nFinal Minimum cost: " + result);
+    }
+}
+
+```
