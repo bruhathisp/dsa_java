@@ -5,55 +5,69 @@
 You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substrings that can be formed are [‘abbbbbb’, ‘bbbbbbc’]. Hence the answer is 7.
 
 
-In this code:
+   - Our goal is to find the length of the longest substring in `str` that contains at most `k` different characters.
+   - If the number of distinct characters in the substring exceeds `k`, we'll shrink the window from the left until it's valid again.
 
-- We maintain a sliding window `[left, right]` to iterate over the string.
-- We use an array `charCount` to keep track of the count of each character in the current window.
-- The variable `distinctCount` keeps track of the number of distinct characters in the current window.
-- We increment `distinctCount` only when encountering a new character.
-- If `distinctCount` exceeds `K`, we shrink the window from the left until `distinctCount` becomes less than or equal to `K`.
-- We update `maxLength` whenever we encounter a window with at most `K` distinct characters.
-- Finally, we return `maxLength` as the result.
+2. **Code Explanation**:
+   - We initialize variables to keep track of the count of unique characters (`uniqueCount`), the left pointer of the window (`left`), and the maximum length of the valid substring (`maxLen`).
+   - We traverse the substring using a sliding window approach, updating the character count array (`charCount`) as we go.
+   - If the count of distinct characters exceeds `k`, we shrink the window from the left until it's valid again.
+   - We update `maxLen` with the maximum length found during traversal.
+   - Finally, we return `maxLen` as the length of the longest valid substring.
 
 
 ``` java
 
 public class Solution {
 
-	public static int kDistinctChars(int k, String str) {
-		
-		int[] charCount = new int[26]; // Assuming lowercase alphabets
-        int distinctCount = 0;
-        int maxLength = 0;
-        int left = 0;
-
-        // Iterate over the string using a sliding window
-        for (int right = 0; right < str.length(); right++) {
-            // Process the character at the right pointer
+   
+    public static int kDistinctChars(int k, String str) {
+        
+        return kDistinctCharsHelper(k, str, 0, str.length());
+    }
+    
+    
+    private static int kDistinctCharsHelper(int k, String str, int start, int end) {
+        // Base case: If the substring length is 0, return 0
+        if (end - start == 0) {
+            return 0;
+        }
+        
+        
+        int[] charCount = new int[26]; // Assuming lowercase English letters
+        int maxLen = 0; // Initialize the maximum length of the substring
+        int uniqueCount = 0; // Initialize the count of unique characters in the substring
+        int left = start; // Initialize the left pointer of the sliding window
+        
+        for (int right = start; right < end; right++) {
             char currentChar = str.charAt(right);
+            // If the count of the current character is 0, it's a new distinct character
             if (charCount[currentChar - 'a'] == 0) {
-                distinctCount++; // Increment distinct character count
+                uniqueCount++;
             }
-            charCount[currentChar - 'a']++; // Update character count
-
-            // Shrink the window if the number of distinct characters exceeds K
-            while (distinctCount > k) {
+            charCount[currentChar - 'a']++; // Increment the count of the current character
+            
+            // Shrink the window if the number of distinct characters exceeds k
+            while (uniqueCount > k) {
                 char leftChar = str.charAt(left);
-                charCount[leftChar - 'a']--; // Decrement count of left character
+                charCount[leftChar - 'a']--; // Decrement the count of the left character
+                // If the count becomes 0, decrement the unique count
                 if (charCount[leftChar - 'a'] == 0) {
-                    distinctCount--; // Decrement distinct character count
+                    uniqueCount--;
                 }
                 left++; // Move the left pointer to shrink the window
             }
-
-            // Update the maximum length of the substring
-            maxLength = Math.max(maxLength, right - left + 1);
+            
+            // Update the maximum length of the valid substring if applicable
+            maxLen = Math.max(maxLen, right - left + 1);
         }
-
-        return maxLength;
-	}
-
+        
+        // Return the maximum length of the valid substring
+        return maxLen;
+    }
 }
+
+
 
 ```
 
