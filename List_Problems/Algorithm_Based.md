@@ -1,10 +1,10 @@
 ## A list of concepts and problems with varying approaches and data structures
 
 1. **Sliding Window**
-   - Maximum sum subarray of size ‘K’
+   - [Maximum sum subarray of size ‘K’](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MaximumK-SubarraySum.md)
+   - [Maximum sum subarray of size Distinct ‘K’]([https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MaximumK-SubarraySum.md](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MaximumK-SubarraySumDistinct.md)
    - Longest substring with ‘K’ distinct characters
    - String anagrams
-   - Longest Substring with 'K' Distinct Characters
    - Fruits into Baskets
 
 2. **Two Pointers or Iterators**
