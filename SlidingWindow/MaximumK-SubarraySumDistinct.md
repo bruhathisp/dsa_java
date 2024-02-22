@@ -7,7 +7,8 @@
 
 | HashSet Example | HashMap Example |
 |---|---|
-| ```java
+|
+```java
 import java.util.HashSet;
 
 // Creating a HashSet
@@ -34,7 +35,9 @@ int size = set.size();
 
 // Clearing the HashSet
 set.clear();
-``` | ```java
+```
+|
+```java
 import java.util.HashMap;
 
 // Creating a HashMap
@@ -65,7 +68,8 @@ int size = map.size();
 
 // Clearing the HashMap
 map.clear();
-``` |
+```
+ |
 
 
 
