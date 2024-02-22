@@ -1,7 +1,8 @@
 ## Solution
 
+[Question](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/description/)
 
-1. **Problem Statement**: The problem asks us to find the length of the longest substring in the given string 's' such that each character in that substring appears at least 'k' times.
+**Problem Statement**: The problem asks us to find the length of the longest substring in the given string 's' such that each character in that substring appears at least 'k' times.
 
 
 Explanation:
