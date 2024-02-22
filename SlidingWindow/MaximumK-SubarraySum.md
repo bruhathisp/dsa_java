@@ -1,5 +1,7 @@
 ## Solution
 
+[Question](https://workat.tech/problem-solving/practice/maximum-k-subarray-sum)
+
 **Problem Statement**: You are given an array and a number `k`, and you need to find the sum of the subarray of size `k` that has the maximum sum among all possible subarrays of size `k`.
 
 **Thought Process**:
@@ -50,3 +52,5 @@ class Solution {
 }
 
 ```
+
+Check out the [problem](https://github.com/bruhathisp/dsa_java/edit/main/SlidingWindow/MaximumK-SubarraySumDistinct.md) handles duplicates explicitly by using a HashSet to ensure that all elements within the sliding window are distinct.
