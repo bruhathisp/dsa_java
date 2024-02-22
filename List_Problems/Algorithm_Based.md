@@ -8,6 +8,13 @@
    - [ Longest Substring Without Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithoutRepeat.md)
    - String anagrams
    - Fruits into Baskets
+   - Smallest Subarray With a Greater Sum (easy)
+   - Problem Challenge 3: Smallest Window containing Substring (hard)
+   - Problem Challenge 4: Words Concatenation (hard)
+   - Longest Substring with Same Letters after Replacement (hard)
+   - Longest Subarray with Ones after Replacement (hard)
+   - Problem Challenge 1: Permutation in a String (hard)
+
 
 2. **Two Pointers or Iterators**
    - Squaring a sorted array
