@@ -5,7 +5,7 @@
    - [Maximum sum subarray of size Distinct ‘K’](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MaximumK-SubarraySumDistinct.md)
    - [Longest Substring with At Least K Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithKChar.md) 
    - [Longest substring with At Most ‘K’ distinct characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringATMOSTKChar.md)
-   - [ Longest Substring Without Repeating Characters]((https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithoutRepeat.md))
+   - [ Longest Substring Without Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithoutRepeat.md)
    - String anagrams
    - Fruits into Baskets
 
