@@ -6,7 +6,7 @@ You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substrings th
 
 
    - Our goal is to find the length of the longest substring in `str` that contains at most `k` different characters.
-   - If the number of distinct characters in the substring exceeds `k`, we'll shrink the window from the left until it's valid again.
+   - If the number of distinct characters in the substring exceeds `k`, we'll shrink  window from the left until it's valid again.
 
 2. **Code Explanation**:
    - We initialize variables to keep track of the count of unique characters (`uniqueCount`), the left pointer of the window (`left`), and the maximum length of the valid substring (`maxLen`).
