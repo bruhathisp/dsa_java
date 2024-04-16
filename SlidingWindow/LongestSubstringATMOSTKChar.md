@@ -5,7 +5,7 @@
 You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substrings can be formed are [‘abbbbbb’, ‘bbbbbbc’]. Hence the answer is 7.
 
 
-   - Our goal is to find the length of the longest substring in `str` that contains at most `k` different characters.
+   - Our goal is to find the length of the longest substritng in `str` that contains at most `k` different characters.
    - If the number of distinct characters in the substring exceeds `k`, we'll shrink  window from the left until it's valid again.
 
 2. **Code Explanation**:
