@@ -2,7 +2,7 @@
 
 [Question](https://www.codingninjas.com/studio/problems/longest-substring-with-at-most-k-distinct-characters_2221410?leftPanelTabValue=PROBLEM)
 
-You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substringst can be formed are [‘abbbbbb’, ‘bbbbbbc’]. Hence the answer is 7.
+You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substrings can be formed are [‘abbbbbb’, ‘bbbbbbc’]. Hence the answer is 7.
 
 
    - Our goal is to find the length of the longest substring in `str` that contains at most `k` different characters.
