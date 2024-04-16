@@ -2,11 +2,11 @@
 
 [Question](https://www.codingninjas.com/studio/problems/longest-substring-with-at-most-k-distinct-characters_2221410?leftPanelTabValue=PROBLEM)
 
-You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substrings that can be formed are [‘abbbbbb’, ‘bbbbbbc’]. Hence the answer is 7.
+You are given ‘str’ = ‘abbbbbbc’ and ‘K’ = 2, then the substrings can be formed are [‘abbbbbb’, ‘bbbbbbc’]. Hence the answer is 7.
 
 
-   - Our goal is to find the length of the longest substring in `str` that contains at most `k` different characters.
-   - If the number of distinct characters in the substring exceeds `k`, we'll shrink the window from the left until it's valid again.
+   - Our goal is to find the length of the longest substritng in `str` that contains at most `k` different characters.
+   - If the number of distinct characters in the substring exceeds `k`, we'll shrink  window from the left until it's valid again.
 
 2. **Code Explanation**:
    - We initialize variables to keep track of the count of unique characters (`uniqueCount`), the left pointer of the window (`left`), and the maximum length of the valid substring (`maxLen`).
