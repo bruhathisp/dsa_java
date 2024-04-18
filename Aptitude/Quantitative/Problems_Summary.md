@@ -19,7 +19,7 @@ The given formula can be simplified as follows:
    \[ \text{Time taken by the faster train to cross the slower train} = \frac{a + b}{u - v} \text{ sec} \]
 
 6. **If two trains (or bodies) start at the same time from points A and B towards each other and after crossing they take \( a \) and \( b \) sec in reaching B and A respectively**:
-   \[ \text{(A's speed)} : \text{(B's speed)} = \frac{b}{a} \]
+   \[ \frac{\text{(A's speed)}}{\text{(B's speed)}} = \frac{b}{a} \]
 
 
 The conversion formulas between kilometers per hour (km/hr) and meters per second (m/s):
