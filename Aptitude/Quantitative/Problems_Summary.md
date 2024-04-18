@@ -2,24 +2,25 @@
 
 The given formula can be simplified as follows:
 
-1. **Time taken by a train of length \( l \) meters to pass a pole or standing man or a signal post**:
-   \[ \text{Time} = \frac{l}{\text{speed of the train}} \]
+1. **Time taken by a train of length _l_ meters to pass a pole or standing man or a signal post**:
+   - Time = _l_ / (speed of the train)
 
-2. **Time taken by a train of length \( l \) meters to pass a stationary object of length \( b \) meters**:
-   \[ \text{Time} = \frac{l + b}{\text{relative speed}} \]
+2. **Time taken by a train of length _l_ meters to pass a stationary object of length _b_ meters**:
+   - Time = (_l_ + _b_) / (relative speed)
 
 3. **Relative speed**:
-   - When moving in the same direction: \( u - v \) m/s
-   - When moving in opposite directions: \( u + v \) m/s
+   - When moving in the same direction: _u_ - _v_ m/s
+   - When moving in opposite directions: _u_ + _v_ m/s
 
-4. **If two trains of length \( a \) meters and \( b \) meters are moving in opposite directions at speeds \( u \) m/s and \( v \) m/s**:
-   \[ \text{Time taken by the trains to cross each other} = \frac{a + b}{u + v} \text{ sec} \]
+4. **If two trains of length _a_ meters and _b_ meters are moving in opposite directions at speeds _u_ m/s and _v_ m/s**:
+   - Time taken by the trains to cross each other = (_a_ + _b_) / (_u_ + _v_) sec
 
-5. **If two trains of length \( a \) meters and \( b \) meters are moving in the same direction at speeds \( u \) m/s and \( v \) m/s**:
-   \[ \text{Time taken by the faster train to cross the slower train} = \frac{a + b}{u - v} \text{ sec} \]
+5. **If two trains of length _a_ meters and _b_ meters are moving in the same direction at speeds _u_ m/s and _v_ m/s**:
+   - Time taken by the faster train to cross the slower train = (_a_ + _b_) / (_u_ - _v_) sec
 
-6. **If two trains (or bodies) start at the same time from points A and B towards each other and after crossing they take \( a \) and \( b \) sec in reaching B and A respectively**:
-   \[ \frac{\text{(A's speed)}}{\text{(B's speed)}} = \frac{b}{a} \]
+6. **If two trains (or bodies) start at the same time from points A and B towards each other and after crossing they take _a_ and _b_ sec in reaching B and A respectively**:
+   - (A's speed) : (B's speed) = _b_ : _a_
+
 
 
 The conversion formulas between kilometers per hour (km/hr) and meters per second (m/s):
