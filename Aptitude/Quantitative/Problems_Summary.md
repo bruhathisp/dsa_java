@@ -25,8 +25,8 @@ The given formula can be simplified as follows:
 
 The conversion formulas between kilometers per hour (km/hr) and meters per second (m/s):
 
-1. To convert from km/hr to m/s:
-\[ \text{Speed in m/s} = \frac{\text{Speed in km/hr} \times 5}{18} \]
+To convert from kilometers per hour (km/hr) to meters per second (m/s):
+Speed in m/s = (Speed in km/hr * 5) / 18
 
-2. To convert from m/s to km/hr:
-\[ \text{Speed in km/hr} = \frac{\text{Speed in m/s} \times 18}{5} \]
+To convert from meters per second (m/s) to kilometers per hour (km/hr):
+Speed in km/hr = (Speed in m/s * 18) / 5
