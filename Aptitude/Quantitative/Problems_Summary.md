@@ -1,5 +1,7 @@
 # Problems on Train
 
+
+
 1. **Time taken by a train of length \( l \) meters to pass a pole or standing man or a signal post**:
 \[ \text{Time} = \frac{l}{\text{speed of the train}} \]
 
