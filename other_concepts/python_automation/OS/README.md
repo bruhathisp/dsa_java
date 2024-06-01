@@ -40,8 +40,6 @@
    - Save and exit the editor.
    - Run the script to verify it returns "Everything ok."
 
-6. **End the Lab**:
-   - Click "End Lab" to complete and submit feedback.
 
 ### Key Points:
 
@@ -89,57 +87,75 @@ Modules in Python are libraries of code that you can include in your scripts to 
 
    - This function makes a GET request to `http://www.google.com` using the `requests` module. If the status code of the response is `200` (which means the request was successful), it returns `True`.
 
-### Complete Example of `network.py`
+Certainly! Let's break down the `health_checks.py` script line by line:
 
-Here’s the complete code for the `network.py` module:
+### Script Breakdown
 
 ```python
 #!/usr/bin/env python3
-
-import requests
-import socket
-
-def check_localhost():
-    localhost = socket.gethostbyname('localhost')
-    return localhost == '127.0.0.1'
-
-def check_connectivity():
-    request = requests.get("http://www.google.com")
-    return request.status_code == 200
 ```
+- **Shebang Line**: This tells the operating system to use the Python 3 interpreter to run this script. The `env` command ensures that the correct interpreter is found in the user's `PATH`.
 
-### Using the `network` Module in Another Script
+```python
+import shutil
+import psutil
+from network import *
+```
+- **Import Statements**:
+  - `import shutil`: Imports the `shutil` module, which provides high-level file operations such as copying and removal.
+  - `import psutil` Python system and process utilities: Imports the `psutil` module, which provides an interface for retrieving information on system utilization (CPU, memory, disks, network, etc.).
+  - `from network import *`: Imports all functions from the `network` module, which should include `check_localhost` and `check_connectivity`.
 
-1. **Open `health_checks.py`**:
+```python
+def check_disk_usage(disk):
+    """Verifies that there's enough free space on disk"""
+    du = shutil.disk_usage(disk)
+    free = du.free / du.total * 100
+    return free > 20
+```
+- **Function `check_disk_usage(disk)`**:
+  - `du = shutil.disk_usage(disk)`: Uses the `disk_usage` function from the `shutil` module to get the total, used, and free disk space.
+  - `free = du.free / du.total * 100`: Calculates the percentage of free disk space.
+  - `return free > 20`: Returns `True` if the free disk space is greater than 20%, otherwise returns `False`.
 
-   ```bash
-   nano health_checks.py
-   ```
+```python
+def check_cpu_usage():
+    """Verifies that there's enough unused CPU"""
+    usage = psutil.cpu_percent(1)
+    return usage < 75
+```
+- **Function `check_cpu_usage()`**:
+  - `usage = psutil.cpu_percent(1)`: Uses the `cpu_percent` function from the `psutil` module to get the CPU usage percentage over a 1-second interval.
+  - `return usage < 75`: Returns `True` if the CPU usage is less than 75%, otherwise returns `False`.
 
-2. **Import the Network Module**:
+```python
+# If there's not enough disk, or not enough CPU, print an error
+if not check_disk_usage('/') or not check_cpu_usage():
+    print("ERROR!")
+```
+- **Main Logic**:
+  - `if not check_disk_usage('/') or not check_cpu_usage()`: Checks if either the disk usage is too high or the CPU usage is too high.
+  - `print("ERROR!")`: If either check fails (i.e., returns `False`), it prints "ERROR!".
 
-   At the beginning of the `health_checks.py` file, import the network module:
+```python
+elif check_localhost() and check_connectivity():
+    print("Everything ok")
+```
+- **Secondary Check**:
+  - `elif check_localhost() and check_connectivity()`: If the disk and CPU checks pass, it checks network connectivity.
+    - `check_localhost()`: Checks if the local host is correctly configured (should return `True` if the localhost address is 127.0.0.1).
+    - `check_connectivity()`: Checks if the computer can successfully connect to the internet (should return `True` if it can reach http://www.google.com and gets a 200 status code).
+  - `print("Everything ok")`: If both network checks pass, it prints "Everything ok".
 
-   ```python
-   from network import *
-   ```
+```python
+else:
+    print("Network checks failed")
+```
+- **Fallback**:
+  - `else`: If the network checks fail (i.e., one of them returns `False`).
+  - `print("Network checks failed")`: It prints "Network checks failed".
 
-3. **Modify the Script to Use Network Checks**:
-
-   Update the script to call the functions from the `network` module. For example:
-
-   ```python
-   if check_disk_usage('/') and check_cpu_usage():
-       print("Everything ok")
-   elif check_localhost() and check_connectivity():
-       print("Everything ok")
-   else:
-       print("Network checks failed")
-   ```
-
-### Complete Example of Modified `health_checks.py`
-
-Here’s the complete code for the modified `health_checks.py`:
+### Full Script for Reference
 
 ```python
 #!/usr/bin/env python3
@@ -149,34 +165,71 @@ import psutil
 from network import *
 
 def check_disk_usage(disk):
+    """Verifies that there's enough free space on disk"""
     du = shutil.disk_usage(disk)
     free = du.free / du.total * 100
     return free > 20
 
 def check_cpu_usage():
+    """Verifies that there's enough unused CPU"""
     usage = psutil.cpu_percent(1)
     return usage < 75
 
-if check_disk_usage('/') and check_cpu_usage():
-    print("Everything ok")
+# If there's not enough disk, or not enough CPU, print an error
+if not check_disk_usage('/') or not check_cpu_usage():
+    print("ERROR!")
 elif check_localhost() and check_connectivity():
     print("Everything ok")
 else:
     print("Network checks failed")
 ```
 
-### Running the Script
+Here’s a detailed line-by-line explanation of the `network.py` script:
 
-1. **Ensure `health_checks.py` Has Execute Permissions**:
 
-   ```bash
-   sudo chmod +x health_checks.py
-   ```
+- **Import Statements**:
+  - `import requests`: Imports the `requests` module, which allows you to send HTTP requests (e.g., GET, POST) in a simple and user-friendly way.
+  - `import socket`: Imports the `socket` module, which provides low-level networking interfaces. It can be used to create and manage network connections.
 
-2. **Run the Script**:
+```python
+def check_localhost():
+    localhost = socket.gethostbyname('localhost')
+    return localhost == '127.0.0.1'
+```
+- **Function `check_localhost()`**:
+  - **Function Definition**: Defines a function named `check_localhost`.
+  - `localhost = socket.gethostbyname('localhost')`:
+    - `socket.gethostbyname('localhost')`: Calls the `gethostbyname` function from the `socket` module to resolve the hostname 'localhost' to its corresponding IP address.
+    - The result is assigned to the variable `localhost`.
+  - `return localhost == '127.0.0.1'`:
+    - Compares the resolved IP address stored in `localhost` to the string `'127.0.0.1'`.  (Resolving the hostname 'localhost' to its corresponding IP address means converting the hostname (a human-readable name) to an IP address (a numerical label).)
+    - `127.0.0.1` is the standard loopback address for IPv4, commonly used to refer to the local machine.
+    - If the resolved IP address is `127.0.0.1`, the function returns `True`, indicating that the local host is correctly configured. Otherwise, it returns `False`.
 
-   ```bash
-   ./health_checks.py
-   ```
+```python
+def check_connectivity():
+    request = requests.get("http://www.google.com")
+    return request.status_code == 200
+```
+- **Function `check_connectivity()`**:
+  - **Function Definition**: Defines a function named `check_connectivity`.
+  - `request = requests.get("http://www.google.com")`:
+    - `requests.get("http://www.google.com")`: Uses the `requests` module to send an HTTP GET request to `http://www.google.com`.
+    - The result of the GET request is assigned to the variable `request`. This result is an HTTP response object.
+  - `return request.status_code == 200`:
+    - `request.status_code`: Accesses the `status_code` attribute of the response object. This attribute contains the HTTP status code returned by the server.
+    - `200` is the standard HTTP status code for a successful request (OK).
+    - If the status code is `200`, the function returns `True`, indicating successful connectivity to the internet. Otherwise, it returns `False`.
 
-If everything is set up correctly, the script should output "Everything ok" if the checks pass.
+### Summary
+
+
+- **`check_localhost()` Function**:
+  - Resolves 'localhost' to its IP address.
+  - Returns `True` if the IP address is `127.0.0.1`, otherwise `False`.
+- **`check_connectivity()` Function**:
+  - Sends an HTTP GET request to `http://www.google.com`.
+  - Returns `True` if the HTTP status code is `200`, otherwise `False`.
+
+These functions help verify the local host configuration and internet connectivity.
+
