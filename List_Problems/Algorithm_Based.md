@@ -6,7 +6,7 @@
    - [Longest Substring with At Least K Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithKChar.md) 
    - [Longest substring with At Most ‘K’ distinct characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringATMOSTKChar.md)
    - [ Longest Substring Without Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithoutRepeat.md)
-   - String anagrams
+   - [String anagrams](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FindAllAnagrams.md)
    - Fruits into Baskets
    - Smallest Subarray With a Greater Sum (easy)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
@@ -275,6 +275,7 @@
 10. Remove All Adjacent Duplicates In String
 11. Remove All Adjacent Duplicates in String II
 12. Remove K Digits
+13. [Sum of Subarray of Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/description/)
 
 ### Hashing:
 13. First Non-repeating Character
