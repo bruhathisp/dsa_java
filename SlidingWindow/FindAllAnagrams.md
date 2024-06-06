@@ -71,7 +71,7 @@
     *   Always verify that character counts match before adding the index to the result.
     *   Consider the impact of large input sizes on performance.
 
-```plain
+```java
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<>();
