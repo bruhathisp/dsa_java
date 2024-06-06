@@ -6,7 +6,7 @@
    - [Longest Substring with At Least K Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithKChar.md) 
    - [Longest substring with At Most ‘K’ distinct characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringATMOSTKChar.md)
    - [ Longest Substring Without Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithoutRepeat.md)
-   - [String anagrams](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FindAllAnagrams.md)
+   - [find all anagrams](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FindAllAnagrams.md)
    - Fruits into Baskets
    - Smallest Subarray With a Greater Sum (easy)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
