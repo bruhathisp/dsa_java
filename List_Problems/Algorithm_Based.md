@@ -8,13 +8,16 @@
    - [ Longest Substring Without Repeating Characters](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubstringWithoutRepeat.md)
    - [find all anagrams](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FindAllAnagrams.md)
    - [Valid Anagram](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/ValidAnagram.md)
-   - Fruits into Baskets
+   - [Fruits into Baskets](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FruitsintoBaskets.md)
    - Smallest Subarray With a Greater Sum (easy)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
    - Problem Challenge 4: Words Concatenation (hard)
    - Longest Substring with Same Letters after Replacement (hard)
    - Longest Subarray with Ones after Replacement (hard)
    - Problem Challenge 1: Permutation in a String (hard)
+   - Problem Challenge 2: String Anagrams (hard)
+   - Problem Challenge 3: Smallest Window containing Substring (hard)
+   - Problem Challenge 4: Words Concatenation (hard)
 
 
 2. **Two Pointers or Iterators**
@@ -67,57 +70,57 @@
    - Find the Median of a Number Stream
    - Next Interval
 
-10. **Subsets**
+11. **Subsets**
     - Subsets With Duplicates
     - String Permutations by changing case
     - Unique Generalized Abbreviations
 
-11. **Modified binary search**
+12. **Modified binary search**
     - Order-agnostic Binary Search
     - Search in a Sorted Infinite Array
     - Ceiling of a Number
     - Maximum Bitonic Array
 
-12. **Top K elements**
+13. **Top K elements**
     - Top ‘K’ Numbers
     - Top ‘K’ Frequent Numbers
     - 'K' Closest Points to the Origin
     - Maximum Distinct Elements
 
-13. **K-way Merge**
+14. **K-way Merge**
     - Merge K Sorted Lists
     - K Pairs with Largest Sums
     - Kth Smallest Number in M Sorted Lists
     - Kth Smallest Number in a Sorted Matrix
 
-14. **Topological sort**
+15. **Topological sort**
     - Task scheduling
     - Minimum height of a tree
     - Tasks Scheduling
     - Alien Dictionary
 
-15. **Islands (Matrix Traversal)**
+16. **Islands (Matrix Traversal)**
     - Number of Islands
     - Flood Fill
     - Cycle in a Matrix
 
-16. **0/1 Knapsack**
+17. **0/1 Knapsack**
     - Equal Subset Sum Partition
     - Minimum Subset Sum Difference
 
-17. **Fibonacci Numbers**
+18. **Fibonacci Numbers**
     - Staircase
     - House Thief
 
-18. **Palindromic Subsequence**
+19. **Palindromic Subsequence**
     - Longest Palindromic Subsequence
     - Minimum Deletions in a String to make it a Palindrome
 
-19. **Longest Common Substring**
+20. **Longest Common Substring**
     - Maximum Sum Increasing Subsequence
     - Edit Distance
 
-20. **Bitwise XOR**
+21. **Bitwise XOR**
     - Flip and Invert an Image
     - Two Single Numbers
 
