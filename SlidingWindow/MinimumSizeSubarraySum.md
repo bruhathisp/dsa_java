@@ -24,7 +24,7 @@ class Solution {
             sum += nums[end];
 
             while (sum >= target) {
-                minLength = Math.max(minLength, end - start + 1);
+                minLength = Math.min(minLength, end - start + 1);
                 sum -= nums[start];
                 start++;
             }
