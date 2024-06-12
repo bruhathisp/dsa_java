@@ -1,4 +1,7 @@
 # Approach 1 O(n)- sliding window
+
+
+[Question](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
 ### Java Implementation and Explanation
 
 To solve the problem of finding the minimal length of a subarray whose sum is greater than or equal to the given target, we can use the sliding window approach. Here's the step-by-step solution:
