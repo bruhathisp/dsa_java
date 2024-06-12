@@ -12,7 +12,7 @@
    - [Minimum Size Subarray Sum](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumSizeSubarraySum.md)
    - [Longest Repeating Character Replacement (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestRepeatingCharReplace.md)
    - [Longest Subarray with Ones after Replacement (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubarrayof1sAfterReplacement.md)
-   - Problem Challenge 1: Permutation in a String (hard)
+   - [Problem Challenge 1: Permutation in a String (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/PermutationInAString.md)
    - Problem Challenge 2: String Anagrams (hard)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
    - Problem Challenge 4: Words Concatenation (hard)
