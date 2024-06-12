@@ -11,7 +11,7 @@
    - [Fruits into Baskets](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FruitsintoBaskets.md)
    - [Minimum Size Subarray Sum](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumSizeSubarraySum.md)
    - [Longest Repeating Character Replacement (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestRepeatingCharReplace.md)
-   - Longest Subarray with Ones after Replacement (hard)
+   - [Longest Subarray with Ones after Replacement (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubarrayof1sAfterReplacement.md)
    - Problem Challenge 1: Permutation in a String (hard)
    - Problem Challenge 2: String Anagrams (hard)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
