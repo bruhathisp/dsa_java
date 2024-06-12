@@ -2,11 +2,11 @@
 
 To solve the problem using the sliding window approach, follow these steps:
 
-1. **Initialization**: Start with two pointers (`start` and `end`) both at the beginning of the array and an empty hashmap to store the count of each type of fruit in the current window.
+1. **Initialization**: Start with two pointers (`start` and `end`) both at the beginning of the array and an empty hashmap to store the count of each type of fruit in the current window. `int end = 0; end < fruits.length; end++`
 
-2. **Expand the Window**: Move the `end` pointer to the right, adding the current fruit to the hashmap. Ensure the hashmap always contains at most two distinct types of fruits.
+2. **Expand the Window**: Move the `end` pointer to the right, adding the current fruit to the hashmap. Ensure the hashmap always contains at most two distinct types of fruits.  `basket.put(fruits[end], basket.getOrDefault(fruits[end], 0) + 1);`
 
-3. **Shrink the Window**: If the hashmap contains more than two types of fruits, increment the `start` pointer to reduce the window size until there are at most two distinct types of fruits in the hashmap.
+3. **Shrink the Window**: If the hashmap contains more than two types of fruits, increment the `start` pointer to reduce the window size until there are at most two distinct types of fruits in the hashmap.  `basket.put(fruits[start], basket.get(fruits[start]) - 1);  **If key value is 0 then remove key from window **  basket.remove(fruits[start]);  then start++`
 
 4. **Track Maximum**: Throughout the process, track the maximum size of the window.
 
