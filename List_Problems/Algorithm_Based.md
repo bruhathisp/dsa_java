@@ -9,14 +9,14 @@
    - [find all anagrams](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FindAllAnagrams.md)
    - [Valid Anagram](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/ValidAnagram.md)
    - [Fruits into Baskets](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FruitsintoBaskets.md)
-   - [Minimum Size Subarray Sum] (https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumSizeSubarraySum.md)
+   - [Minimum Size Subarray Sum](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumSizeSubarraySum.md)
    - Longest Substring with Same Letters after Replacement (hard)
    - Longest Subarray with Ones after Replacement (hard)
    - Problem Challenge 1: Permutation in a String (hard)
    - Problem Challenge 2: String Anagrams (hard)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
    - Problem Challenge 4: Words Concatenation (hard)
-   - First Unique Character in a String(easy)
+   - [First Unique Character in a String(easy)](https://leetcode.com/problems/first-unique-character-in-a-string/)
 
 
 2. **Two Pointers or Iterators**
