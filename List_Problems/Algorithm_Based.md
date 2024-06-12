@@ -9,7 +9,7 @@
    - [find all anagrams](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FindAllAnagrams.md)
    - [Valid Anagram](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/ValidAnagram.md)
    - [Fruits into Baskets](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/FruitsintoBaskets.md)
-   - Smallest Subarray With a Greater Sum (easy)
+   - Minimum Size Subarray Sum [https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumSizeSubarraySum.md]
    - Problem Challenge 3: Smallest Window containing Substring (hard)
    - Problem Challenge 4: Words Concatenation (hard)
    - Longest Substring with Same Letters after Replacement (hard)
@@ -18,6 +18,7 @@
    - Problem Challenge 2: String Anagrams (hard)
    - Problem Challenge 3: Smallest Window containing Substring (hard)
    - Problem Challenge 4: Words Concatenation (hard)
+   - First Unique Character in a String(easy)
 
 
 2. **Two Pointers or Iterators**
