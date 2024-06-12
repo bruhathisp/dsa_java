@@ -92,7 +92,7 @@ class Solution {
 This approach ensures that we find the minimal length subarray with a sum greater than or equal to the target in linear time, making it efficient for large input sizes.
 
 
-
+# not yet clear about it not required
 # Another approach with O(nlogn)
 
 Sure, let's simplify the provided solution while maintaining the functionality. Here's a cleaner version of the code:
