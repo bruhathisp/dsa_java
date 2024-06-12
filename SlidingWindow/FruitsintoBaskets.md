@@ -1,5 +1,7 @@
 ### Sliding Window Approach: Fruit Into Baskets
 
+[Question](https://leetcode.com/problems/fruit-into-baskets/)
+
 To solve the problem using the sliding window approach, follow these steps:
 
 1. **Initialization**: Start with two pointers (`start` and `end`) both at the beginning of the array and an empty hashmap to store the count of each type of fruit in the current window. `int end = 0; end < fruits.length; end++`
