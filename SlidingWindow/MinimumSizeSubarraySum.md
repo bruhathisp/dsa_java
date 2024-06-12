@@ -90,115 +90,79 @@ This approach ensures that we find the minimal length subarray with a sum greate
 
 
 
-# Another approach with prefix suffix and binary search O(nlogn)
+# Another approach with O(nlogn)
 
-For the O(n log n) solution, we can use a combination of prefix sums and binary search. Here's the detailed approach:
+Sure, let's simplify the provided solution while maintaining the functionality. Here's a cleaner version of the code:
 
-### Approach:
-
-1. **Prefix Sums:** Create an array `prefixSums` where `prefixSums[i]` represents the sum of the first `i` elements in the array.
-2. **Binary Search:** For each element in the `prefixSums` array, use binary search to find the smallest subarray that has a sum greater than or equal to the target.
-3. **Minimize Length:** Keep track of the minimum length of such subarrays found during the binary search.
-
-### Steps:
-
-1. **Compute Prefix Sums:**
-   - Initialize `prefixSums[0]` to 0 (no elements).
-   - For each element in the input array, update the `prefixSums` array.
-
-2. **Iterate and Binary Search:**
-   - For each element in `prefixSums`, calculate the required sum for a valid subarray.
-   - Use binary search to find the smallest index where the subarray sum is greater than or equal to the target.
-   - Update the minimum length of the subarray if a valid one is found.
-
-### Java Implementation
+### Simplified Java Code
 
 ```java
-import java.util.Arrays;
-
 class Solution {
     public int minSubArrayLen(int target, int[] nums) {
-        int n = nums.length;
-        int[] prefixSums = new int[n + 1];
+        int low = 1, high = nums.length + 1;
+        boolean found = false;
         
-        // Compute prefix sums
-        for (int i = 1; i <= n; i++) {
-            prefixSums[i] = prefixSums[i - 1] + nums[i - 1];
-        }
-        
-        int minLength = Integer.MAX_VALUE;
-        
-        // Iterate through prefixSums and perform binary search
-        for (int i = 1; i <= n; i++) {
-            int requiredSum = prefixSums[i] - target;
-            int left = 0;
-            int right = i;
-            
-            // Binary search for the smallest index where the subarray sum is >= target
-            while (left < right) {
-                int mid = left + (right - left) / 2;
-                if (prefixSums[mid] <= requiredSum) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
-                }
-            }
-            
-            // Update minLength if a valid subarray is found
-            if (prefixSums[i] - prefixSums[left] >= target) {
-                minLength = Math.min(minLength, i - left);
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (isValidSubarray(mid, nums, target)) {
+                found = true;
+                high = mid;
+            } else {
+                low = mid + 1;
             }
         }
         
-        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+        return found ? low : 0;
+    }
+
+    private boolean isValidSubarray(int size, int[] nums, int target) {
+        int sum = 0, maxSum = Integer.MIN_VALUE;
+        
+        for (int i = 0; i < size; i++) {
+            sum += nums[i];
+        }
+        
+        maxSum = sum;
+        
+        for (int i = size; i < nums.length; i++) {
+            sum += nums[i] - nums[i - size];
+            maxSum = Math.max(maxSum, sum);
+        }
+        
+        return maxSum >= target;
     }
 }
 ```
 
-### Cornell Notes
+### Explanation
 
-**Title:** Minimal Length Subarray Sum (O(n log n) Solution)
+**Overall Approach:**
+- Use binary search on the size of the subarray to find the minimal length of the subarray whose sum is greater than or equal to the target.
+- For each candidate subarray size, use a sliding window approach to check if there exists a subarray of that size with a sum greater than or equal to the target.
 
-**Concept:**
-- Given an array of positive integers and a target, find the minimal length of a subarray whose sum is greater than or equal to the target.
-- Use prefix sums and binary search to achieve an O(n log n) solution.
+**Detailed Steps:**
 
-**Steps:**
+1. **Binary Search on Subarray Size:**
+   - Initialize `low` to 1 and `high` to `nums.length + 1`.
+   - Use binary search to find the smallest subarray size that meets the condition.
 
-1. **Compute Prefix Sums:**
-   - Initialize `prefixSums[0]` to 0.
-   - For each element in the array, update `prefixSums` to represent the sum of the first `i` elements.
+2. **Check Validity of Subarray Size:**
+   - Use a helper function `isValidSubarray` to check if there is a subarray of the given size with a sum greater than or equal to the target.
+   - Implement a sliding window within `isValidSubarray` to efficiently calculate subarray sums.
 
-2. **Iterate and Binary Search:**
-   - For each element in `prefixSums`, calculate the required sum for a valid subarray.
-   - Use binary search to find the smallest index where the subarray sum is greater than or equal to the target.
-   - Update the minimum length if a valid subarray is found.
+**Simplification Details:**
 
-3. **Return the Result:**
-   - If `minLength` was updated, return it.
-   - Otherwise, return 0.
+1. **Binary Search Loop:**
+   - Adjusted the loop and conditionals for clarity.
+   - Use `found` flag to determine if any valid subarray was found.
 
-**Example:**
+2. **Sliding Window for Sum Calculation:**
+   - Initially sum the first `size` elements.
+   - Slide the window across the array, updating the sum and max sum accordingly.
 
-- **Input:** `target = 7, nums = [2,3,1,2,4,3]`
-  - **Output:** `2`
-  - **Explanation:** The subarray `[4,3]` has the minimal length (2).
+### Key Points:
 
-- **Input:** `target = 4, nums = [1,4,4]`
-  - **Output:** `1`
-  - **Explanation:** The subarray `[4]` has the minimal length (1).
+- The binary search ensures we efficiently narrow down the minimal length.
+- The sliding window technique ensures we efficiently compute subarray sums within each candidate size.
 
-- **Input:** `target = 11, nums = [1,1,1,1,1,1,1,1]`
-  - **Output:** `0`
-  - **Explanation:** No subarray has a sum greater than or equal to 11.
-
-**Key Points:**
-
-- Use prefix sums to simplify the problem of finding subarray sums.
-- Use binary search to efficiently find the smallest valid subarray.
-- Time complexity: O(n log n), where n is the length of the array.
-- Space complexity: O(n), due to the additional storage for prefix sums.
-
-**Conclusion:**
-
-This approach leverages the efficiency of binary search combined with prefix sums to solve the problem in O(n log n) time, making it suitable for larger input sizes where the sliding window approach might be suboptimal.
+This solution maintains an O(n log n) time complexity due to the binary search combined with the sliding window approach.
