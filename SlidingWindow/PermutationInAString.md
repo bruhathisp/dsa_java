@@ -47,21 +47,15 @@ class Solution {
             s2Count[s2.charAt(i) - 'a']++;
             // Remove the old character from the window
             s2Count[s2.charAt(i - s1.length()) - 'a']--;
+         }
             
             // Compare the current window with s1Count
-            if (matches(s1Count, s2Count)) return true;
+         if (Arrays.equals(s1Count, s2Count)) return true;
         }
         
         return false;
     }
     
-    // Helper function to compare two frequency arrays
-    private boolean matches(int[] s1Count, int[] s2Count) {
-        for (int i = 0; i < 26; i++) {
-            if (s1Count[i] != s2Count[i]) return false;
-        }
-        return true;
-    }
 }
 ```
 
@@ -84,8 +78,8 @@ class Solution {
    - Update the `s2Count` array by adding the new character and removing the old character that goes out of the window.
    - Compare the updated `s2Count` array with `s1Count`.
 
-6. **Helper Function:**
-   - `matches(int[] s1Count, int[] s2Count)`: Checks if two frequency arrays are identical.
+6. **Arrays.equals() function:**
+   - Checks if two frequency arrays are identical.
 
 ### Examples:
 
