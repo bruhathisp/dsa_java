@@ -9,7 +9,7 @@ To solve the problem of finding the minimal length of a subarray whose sum is gr
 
 3. **Shrink the Window**: If the `sum` is greater than or equal to the `target`, update the `minLength` and then move the `start` pointer to the right to see if we can find a smaller subarray that still meets the condition.
 
-4. **Return the Result**: After iterating through the array, if `minLength` was updated from its initial value, return it. Otherwise, return 0, indicating no valid subarray was found.
+4. **Return the Result**: After iterating through the array, if `minLength` was updated from its initial value, return it. Otherwise, return 0, indicating no valid subarray was found.  ` return minLength == Integer.MAX_VALUE ? 0 : minLength`
 
 ### Java Code
 
