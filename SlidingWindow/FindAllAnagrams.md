@@ -25,7 +25,7 @@
   
 
 *   **Sliding Window Technique:** Utilize a fixed-size sliding window to traverse the longer string `s` to find substrings that are anagrams of `p`.
-*   **Character Count Comparison:** Use arrays to count occurrences of each character in `p` and compare with windows in `s`.
+*   **Character Count Comparison:** Use arrays to count occurrences of each character in `p` and compare with windows in `s`.  **Note: Use `Arrays.equals` to compare arrays, not `==` because it checks references. PS  `Arrays.deepEquals` in case of arrays of objects**
 
 * * *
 
