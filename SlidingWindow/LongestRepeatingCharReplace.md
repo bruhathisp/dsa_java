@@ -13,7 +13,8 @@
    - Update `maxCount` with the maximum frequency of any character in the current window.
 
 3. **Condition Check:** For the current window to be valid, the number of replacements needed should be less than or equal to `k`. This can be checked by the formula:
-   `number of replacements}= window size - count of the most frequent character`
+   `number of replacements= window size - count of the most frequent character`
+   **That is**
    `number of replacements = right-left + 1 - maxCount`
 
 5. **Shrink the Window:** If the number of replacements exceeds `k`, it means the current window is invalid. To make the window valid again, you need to shrink the window from the left by moving the `left` pointer to the right. This involves:
