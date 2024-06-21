@@ -10,7 +10,7 @@
 
 2. **Expand the Window:**
    - Move the `right` pointer to the right, expanding the window and updating the frequency count of the current character.
-   - Update `maxCount` with the maximum frequency of any character in the current window.
+   - Update `maxCount` with the maximum frequency of any character in the current window.  `maxCount = Math.max(maxCount, count[s.charAt(right) - 'A']);`
 
 3. **Condition Check:** For the current window to be valid, the number of replacements needed should be less than or equal to `k`. This can be checked by the formula:
    `number of replacements= window size - count of the most frequent character`
