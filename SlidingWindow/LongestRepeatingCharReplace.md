@@ -5,7 +5,7 @@
 1. **Initialization:**
    - Use two pointers, `left` and `right`, to represent the current window.
    - Use an array `count` to store the frequency of each character in the current window.
-   - Use `maxCount` to store the count of the most frequent character in the current window.
+   - Use `maxCount` to store the count of the most frequent character in the current window. (right)
    - Initialize `maxLength` to keep track of the maximum length of the valid window found so far.
 
 2. **Expand the Window:**
