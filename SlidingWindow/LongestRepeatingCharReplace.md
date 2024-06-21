@@ -13,22 +13,17 @@
    - Update `maxCount` with the maximum frequency of any character in the current window.
 
 3. **Condition Check:** For the current window to be valid, the number of replacements needed should be less than or equal to `k`. This can be checked by the formula:
-   \[
-   \text{number of replacements} = (\text{window size}) - (\text{count of the most frequent character})
-   \]
-   In other words:
-   \[
-   \text{number of replacements} = (\text{right} - \text{left} + 1) - \text{maxCount}
-   \]
+   `number of replacements}= window size - count of the most frequent character`
+   `number of replacements = right-left + 1 - maxCount`
 
-4. **Shrink the Window:** If the number of replacements exceeds `k`, it means the current window is invalid. To make the window valid again, you need to shrink the window from the left by moving the `left` pointer to the right. This involves:
+5. **Shrink the Window:** If the number of replacements exceeds `k`, it means the current window is invalid. To make the window valid again, you need to shrink the window from the left by moving the `left` pointer to the right. This involves:
    - Decrementing the frequency count of the character at the `left` pointer.
    - Moving the `left` pointer one step to the right.
    - Rechecking the condition with the new window size.
 
    - If the number of characters to be replaced (i.e., the total length of the window minus the count of the most frequent character) exceeds `k`, move the `left` pointer to the right to shrink the window until the condition is satisfied.
 
-5. **Update the Result:**
+6. **Update the Result:**
    - Keep track of the maximum length of the valid window found during the process.
 
 ### Java Implementation:
