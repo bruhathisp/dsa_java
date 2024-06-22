@@ -32,6 +32,7 @@ class Solution {
         }
 
         // Dictionary to keep a count of all the unique characters in t
+         // because the string consists of both small case and upper case using arrays is complicated
         Map<Character, Integer> dictT = new HashMap<>();
         for (char c : t.toCharArray()) {
             dictT.put(c, dictT.getOrDefault(c, 0) + 1);
