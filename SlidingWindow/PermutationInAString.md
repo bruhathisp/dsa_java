@@ -2,6 +2,8 @@
 
 To determine if one string is a permutation of another within a substring, you can use the sliding window technique combined with character counting. The approach is to use two frequency arrays (or hashmaps) to keep track of character counts in `s1` and the current window in `s2`. 
 
+**Note: ensure that we check for equality every time we update the s2count array.  so the Array.equals(s1count,s2count) must be inside the initialisation loop too**
+
 ### Approach
 
 1. **Character Count Arrays:**
