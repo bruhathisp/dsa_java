@@ -4,6 +4,8 @@ You are given a binary array nums, meaning the array consists only of 0s and 1s.
 
 ### Approach:
 
+**Note here that we eliminate the zero count only when ` if (nums[left] == 0) {zeroCount--;}`**
+
 1. **Initialization**:
    - Use two pointers `left` and `right` to represent the sliding window.
    - Use a variable `zeroCount` to keep track of the number of 0s in the current window.
