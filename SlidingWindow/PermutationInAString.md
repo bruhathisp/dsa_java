@@ -23,42 +23,47 @@ To determine if one string is a permutation of another within a substring, you c
 Here's the implementation in Java:
 
 ```java
+
+  
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
-        if (s1.length() > s2.length()) return false;
-        
-        int[] s1Count = new int[26];
-        int[] s2Count = new int[26];
-        
-        // Populate the s1Count with the frequency of each character in s1
-        for (int i = 0; i < s1.length(); i++) {
-            s1Count[s1.charAt(i) - 'a']++;
+
+        if(s1.length()>s2.length()){
+            return false;
         }
-        
-        // Initialize the window in s2
-        for (int i = 0; i < s1.length(); i++) {
-            s2Count[s2.charAt(i) - 'a']++;
+
+        int[] s1count= new int[26];
+        int[] s2count= new int[26];
+
+        for(int i=0; i<s1.length(); i++){
+
+            s1count[s1.charAt(i) - 'a']++;
+            s2count[s2.charAt(i) - 'a']++;
+
         }
-        
-        // Compare the initial window with s1Count
-        if (matches(s1Count, s2Count)) return true;
-        
-        // Slide the window across s2
-        for (int i = s1.length(); i < s2.length(); i++) {
-            // Add the new character to the window
-            s2Count[s2.charAt(i) - 'a']++;
-            // Remove the old character from the window
-            s2Count[s2.charAt(i - s1.length()) - 'a']--;
-         }
-            
-            // Compare the current window with s1Count
-         if (Arrays.equals(s1Count, s2Count)) return true;
+
+        if (Arrays.equals(s1count,s2count)){
+            return true;
         }
+
+        for (int j=s1.length(); j< s2.length();j++){
+            s2count[s2.charAt(j) - 'a']++;
+            // s2.charAt(i) - 'a'
+            s2count[s2.charAt(j-s1.length()) - 'a']--;
+
+            if (Arrays.equals(s1count,s2count)){
+            return true;
+        }
+
+        }
+
         
+
         return false;
+        
     }
-    
 }
+
 ```
 
 ### Explanation
