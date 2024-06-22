@@ -2,6 +2,8 @@
 
 ### Approach:
 
+**expand window and update the maxcount, then check if number of replacement needed is less than k, if not then shrink the window to left. atlast update the maxLength** 
+
 1. **Initialization:**
    - Use two pointers, `left` and `right`, to represent the current window.
    - Use an array `count` to store the frequency of each character in the current window.
