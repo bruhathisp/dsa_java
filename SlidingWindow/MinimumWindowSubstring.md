@@ -3,7 +3,9 @@
 
 To solve the "Minimum Window Substring" problem efficiently, we can use the sliding window technique combined with a frequency count. The idea is to expand and shrink the window dynamically while keeping track of the characters needed to form the required substring.
 
-**Notes HashMap<key, value>    map.get(key)     map.put(key,value)     map.getOrDefault(key,0)**
+**Notes HashMap<key, value>    map.get(key)     map.put(key,value)     map.getOrDefault(key,0)     map.get(key).intValue()**
+
+map.get(c) retrieves the value associated with key c from the map. Since map is a Map<Character, Integer>, map.get(c) returns an Integer object. Now, .intValue() is a method of the Integer class in Java. It returns the integer value represented by this Integer instance. Essentially, it extracts the primitive int value from the Integer object.
 
 ### Approach
 
