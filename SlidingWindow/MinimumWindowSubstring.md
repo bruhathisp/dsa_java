@@ -18,9 +18,13 @@ map.get(c) retrieves the value associated with key c from the map. Since map is 
 
 2. **Sliding Window**:
    - Expand the window by moving the `right` pointer to the right, adding characters to the window.
-   - **Shink the Window:**The condition checks if either:
+   - till now the formed variable(no of char in window) is lesser than the required(unique) - as we expand the window the formed is equal to the required - then we shirk the left window
+   - **Shink the Window from the left:**The condition checks if either:
    - 1. No valid window (ans[0] == -1), meaning this is the first valid window found.
      2. The current window length is smaller than the previously recorded smallest window (right - left + 1 < ans[0]).
+     3. if condition is met, update the current window details
+     4. then decrement the character from the window
+     5. then `dict.containsKey(c) && windowCounts.get(c).intValue() < dict.get(c).intValue()` is true then decrement the formed variable. That is the no of charcter in the current window is lessened. 
 
 3. **Track the Minimum Window**:
    - Keep track of the minimum window size and its starting index.
