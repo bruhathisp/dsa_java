@@ -3,11 +3,14 @@
 
 To solve the "Minimum Window Substring" problem efficiently, we can use the sliding window technique combined with a frequency count. The idea is to expand and shrink the window dynamically while keeping track of the characters needed to form the required substring.
 
+**Notes HashMap<key, value>    map.get(key)     map.put(key,value)     map.getOrDefault(key,0)**
+
 ### Approach
 
-1. **Character Count Arrays**:
-   - Use an array to count the frequency of each character in `t`.
-   - Use another array to count the characters in the current window of `s`.
+1. **Character Count Hashmap**:
+   - Characters are unique in the context of the alphabet (both lowercase and uppercase), making them suitable identifiers.
+   - Use a hashmap `dictT` to store the frequency of characters in `t`. `dicT<Charcter,Interger>` 
+   - Use toCharString() function `char[] carray= t.toCharString()` 
 
 2. **Sliding Window**:
    - Expand the window by moving the `right` pointer to the right, adding characters to the window.
@@ -98,7 +101,7 @@ class Solution {
 ### Explanation
 
 1. **Initialization**:
-   - Use a hashmap `dictT` to store the frequency of characters in `t`.
+   - 
    - Use variables `l` and `r` to represent the left and right pointers of the sliding window.
    - Use `formed` to keep track of how many unique characters in `t` are present in the current window in their required frequency.
    - Use `windowCounts` to keep track of character counts in the current window.
