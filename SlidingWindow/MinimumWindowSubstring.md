@@ -7,6 +7,8 @@ To solve the "Minimum Window Substring" problem efficiently, we can use the slid
 
 map.get(c) retrieves the value associated with key c from the map. Since map is a Map<Character, Integer>, map.get(c) returns an Integer object. Now, .intValue() is a method of the Integer class in Java. It returns the integer value represented by this Integer instance. Essentially, it extracts the primitive int value from the Integer object.
 
+**ans[0] -length of the smallest window;  ans[1]-start of window;  ans[2]-end of window**
+
 ### Approach
 
 1. **Character Count Hashmap**:
@@ -16,7 +18,9 @@ map.get(c) retrieves the value associated with key c from the map. Since map is 
 
 2. **Sliding Window**:
    - Expand the window by moving the `right` pointer to the right, adding characters to the window.
-   - When the window contains all characters of `t`, try to shrink the window from the left by moving the `left` pointer to the right.
+   - **Shink the Window:**The condition checks if either:
+   - 1. No valid window (ans[0] == -1), meaning this is the first valid window found.
+     2. The current window length is smaller than the previously recorded smallest window (right - left + 1 < ans[0]).
 
 3. **Track the Minimum Window**:
    - Keep track of the minimum window size and its starting index.
