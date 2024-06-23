@@ -13,7 +13,7 @@
    - [Longest Repeating Character Replacement (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestRepeatingCharReplace.md)
    - [Longest Subarray with Ones after Replacement (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/LongestSubarrayof1sAfterReplacement.md)
    - [Problem Challenge 1: Permutation in a String (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/PermutationInAString.md)
-   - [Problem Challenge 2: Smallest Window containing Substring (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumWindowSubstring.md)
+   - [Problem Challenge 2: Minimum Window Substring (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumWindowSubstring.md)
    - Problem Challenge 3: Words Concatenation (hard)
    - [First Unique Character in a String(easy)](https://leetcode.com/problems/first-unique-character-in-a-string/)
 
