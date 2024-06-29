@@ -22,17 +22,27 @@
    - [Squaring a sorted array](https://github.com/bruhathisp/dsa_java/blob/f6fdfa78e9891432ba3e038e5cb69202e6bfa567/array/SquaresOfASortedArray.md#L4)
    - [3sum](https://github.com/bruhathisp/dsa_java/blob/main/array/3Sum.md)
    - [Comparing strings containing backspaces](https://github.com/bruhathisp/dsa_java/blob/main/array/BackspaceStrCmp.md)
-   - Squaring a Sorted Array
+   - Pair with Target Sum (easy)
+   - Find Non-Duplicate Number Instances (easy)
    - Dutch National Flag Problem
-   - Minimum Window Sort
+   - Triplet Sum to Zero (medium)
+   - Triplet Sum Close to Target (medium)
+   - Triplets with Smaller Sum (medium)
+   - Subarrays with Product Less than a Target (medium)
+   - Problem Challenge 1: Quadruple Sum to Target (medium)
+   - Problem Challenge 2: Comparing Strings containing Backspaces (medium)
+   - Problem Challenge 3: Minimum Window Sort (medium)
+   - 
+   
 
 3. **Fast and Slow pointers**
-   - Linked List Cycle
-   - Palindrome Linked List
-   - Cycle in a Circular Array
-   - Middle of the LinkedList
-   - Happy Number
-   - Cycle in a Circular Array
+   - LinkedList Cycle (easy)
+   - Middle of the LinkedList (easy)
+   - Start of LinkedList Cycle (medium)
+   - Happy Number (medium)
+   - Problem Challenge 1: Palindrome LinkedList (medium)
+   - Problem Challenge 2: Rearrange a LinkedList (medium)
+   - Problem Challenge 3: Cycle in a Circular Array (hard)
 
 4. **Merge Intervals**
    - Intervals Intersection
