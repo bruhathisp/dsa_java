@@ -1,3 +1,5 @@
+[Question](https://leetcode.com/problems/backspace-string-compare/description/)
+
 To solve this problem efficiently in O(n) time and O(1) space, we can use two pointers to traverse the strings from the end to the beginning. We simulate the backspace operation by skipping characters that should be removed.
 
 Here's the implementation:
