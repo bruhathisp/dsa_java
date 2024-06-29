@@ -1,6 +1,8 @@
 # Solution
 
 
+[Question](https://leetcode.com/problems/3sum/description/)
+
 Overview 
 
 Input: nums = [-1,0,1,2,-1,-4]
