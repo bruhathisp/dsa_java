@@ -20,7 +20,7 @@
 
 2. **Two Pointers or Iterators**
    - [Squaring a sorted array](https://github.com/bruhathisp/dsa_java/blob/f6fdfa78e9891432ba3e038e5cb69202e6bfa567/array/SquaresOfASortedArray.md#L4)
-   - Triplets that sum to zero
+   - [3sum](https://github.com/bruhathisp/dsa_java/blob/main/array/3Sum.md)
    - Comparing strings containing backspaces
    - Squaring a Sorted Array
    - Dutch National Flag Problem
