@@ -29,6 +29,36 @@ map.get(c) retrieves the value associated with key c from the map. Since map is 
 3. **Track the Minimum Window**:
    - Keep track of the minimum window size and its starting index.
    - Update the result when a valid window (containing all characters of `t`) is found.
+  
+4. Let's consider an example to understand this block of code: String s: "ADOBECODEBANC"  String t: "ABC"
+
+   * A  formed=1
+   * AD formed=1
+   * ADO  formed=1
+   * ADOB formed=2
+   * ADOBE formed=2  
+   * ADOBEC  formed=3     **FORMED==REQUIRED** LEFT WINDOW SHRINK  DOBEC  **FORMED < REQUIRED** FORMED--
+   * DOBECO formed=2
+   * DOBECOD formed=2
+   * DOBECODE formed=2
+   * DOBECODEB formed=2
+   * DOBECODEBA    formed=3   **FORMED==REQUIRED** LEFT WINDOW SHRINK  OBECODEBA  **FORMED == REQUIRED** FORMED==SAME
+   * * DOBECODEBA    formed=3   **FORMED==REQUIRED** LEFT WINDOW SHRINK  BECODEBA  **FORMED == REQUIRED** FORMED==SAME
+     * * DOBECODEBA    formed=3   **FORMED==REQUIRED** LEFT WINDOW SHRINK  ECODEBA  **FORMED == REQUIRED** FORMED==SAME
+       * * DOBECODEBA    formed=3   **FORMED==REQUIRED** LEFT WINDOW SHRINK  CODEBA  **FORMED == REQUIRED** FORMED==SAME
+         * * DOBECODEBA    formed=3   **FORMED==REQUIRED** LEFT WINDOW SHRINK  ODEBA  **FORMED < REQUIRED** FORMED--
+           
+   * ODEBAN  formed=2
+   * ODEBANC  formed=3  **FORMED==REQUIRED** LEFT WINDOW SHRINK  DEBANC **FORMED == REQUIRED** FORMED==SAME
+   * * DEBANC  formed=3  **FORMED==REQUIRED** LEFT WINDOW SHRINK  EBANC **FORMED == REQUIRED** FORMED==SAME
+     * * EBANC  formed=3  **FORMED==REQUIRED** LEFT WINDOW SHRINK  BANC **FORMED == REQUIRED** FORMED==SAME
+       * * BANC  formed=3  **FORMED==REQUIRED** LEFT WINDOW SHRINK  ANC **FORMED < REQUIRED** FORMED--
+        
+           THIS IS THE LAST VALID WINDOW SO IT GETS UPDATED IN ans[] ARRAY
+     
+
+
+6. 
 
 ### Implementation
 
@@ -36,24 +66,6 @@ Here is the Java implementation:
 
 ```java
 import java.util.HashMap;
-import java.util.Map;
-
-class Solution {
-    public String minWindow(String s, String t) {
-        if (s == null || s.length() == 0 || t == null || t.length() == 0) {
-            return "";
-        }
-
-        // Dictionary to keep a count of all the unique characters in t
-         // because the string consists of both small case and upper case using arrays is complicated
-        Map<Character, Integer> dictT = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            dictT.put(c, dictT.getOrDefault(c, 0) + 1);
-        }
-
-        // Number of unique characters in t that need to be present in the desired window
-        int required = dictT.size();
-
         // Left and right pointer
         int l = 0, r = 0;
 
