@@ -13,6 +13,9 @@ The distinct triplets are [-1,0,1] and [-1,-1,2].
 
 Notice that the order of the output and the order of the triplets does not matter.
 
+To skip duplicates, you need to check if the current element is the same as the previous element (not the next one) to ensure you're not processing the same element twice.
+
+
 Notes:
 
 There is this interesting way to skip the duplicates during the calculation which increases the efficiency.
