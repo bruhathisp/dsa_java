@@ -34,7 +34,7 @@
    - Problem Challenge 2: Comparing Strings containing Backspaces (medium)
    - Problem Challenge 3: Minimum Window Sort (medium)
    - [String Transformation](https://leetcode.com/problems/string-transformation/)
-   - [Backspace String Compare]()
+   - [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/description/?submissionId=1304007364)
    - [Intersection of two arrays] (https://leetcode.com/problems/intersection-of-two-arrays-ii/description/?envType=daily-question&envId=2024-07-02) 
    
 
