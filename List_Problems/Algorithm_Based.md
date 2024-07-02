@@ -16,6 +16,7 @@
    - [Problem Challenge 2: Minimum Window Substring (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/MinimumWindowSubstring.md)
    - [Problem Challenge 3: Words Concatenation (hard)](https://github.com/bruhathisp/dsa_java/blob/main/SlidingWindow/ConcatenatedWords.md)
    - [First Unique Character in a String(easy)](https://leetcode.com/problems/first-unique-character-in-a-string/)
+   
 
 
 2. **Two Pointers or Iterators**
@@ -33,7 +34,8 @@
    - Problem Challenge 2: Comparing Strings containing Backspaces (medium)
    - Problem Challenge 3: Minimum Window Sort (medium)
    - [String Transformation](https://leetcode.com/problems/string-transformation/)
-   - 
+   - [Backspace String Compare]()
+   - [Intersection of two arrays] (https://leetcode.com/problems/intersection-of-two-arrays-ii/description/?envType=daily-question&envId=2024-07-02) 
    
 
 3. **Fast and Slow pointers**
