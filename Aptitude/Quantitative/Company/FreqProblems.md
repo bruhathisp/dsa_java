@@ -5,7 +5,7 @@ Here are some frequently asked aptitude questions from Zoho campus placements al
    - Given \( 2S - C = 3(S - C) \).
    - Solving, \( 2S - C = 3S - 3C \).
    - \( S = 2C \).
-   - Profit percent \( = \frac{S - C}{C} \times 100 = \frac{2C - C}{C} \times 100 = 100\% \).
+   - Profit percent \( = {S - C}{C} \times 100 = {2C - C}{C} \times 100 = 100\% \).
    - **Answer: 100**
 
 2. **A certain amount earns a simple interest of Rs. 1750 after 7 years. Had the interest been 2% more, how much more interest would it have earned?**
