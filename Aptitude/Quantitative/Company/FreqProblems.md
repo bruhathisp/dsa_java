@@ -1,4 +1,4 @@
-# Creating a markdown file with the provided solutions
+``` python # Creating a markdown file with the provided solutions
 
 content = """
 # Frequently Asked Aptitude Questions from Zoho Campus Placements
@@ -117,3 +117,4 @@ Here are some frequently asked aptitude questions from Zoho campus placements al
    - Selling price to gain 20% = \( \frac{1}{6} \times 1.20 = \frac{1.20}{6} = \frac{1}{5} \) rupee.
    - So, he must sell
 """
+```
