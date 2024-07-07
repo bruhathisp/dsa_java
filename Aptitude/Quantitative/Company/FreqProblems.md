@@ -116,3 +116,4 @@ Here are some frequently asked aptitude questions from Zoho campus placements al
    - Cost price of one toffee = \( \frac{1}{6} \) rupee.
    - Selling price to gain 20% = \( \frac{1}{6} \times 1.20 = \frac{1.20}{6} = \frac{1}{5} \) rupee.
    - So, he must sell
+"""
