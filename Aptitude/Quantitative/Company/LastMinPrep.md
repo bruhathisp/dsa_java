@@ -260,3 +260,7 @@ public class PrimeFactors {
         return nums[left];
     }
 ```
+Yes, you are correct! The expression result |= (1 << i) effectively adds 2^i to the result if the i-th bit in bitCount is not a multiple of 3. Let's break down how this works:  https://leetcode.com/problems/single-number-ii/description/
+``` java
+
+```
