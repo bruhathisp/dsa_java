@@ -146,4 +146,90 @@ public class SubsequenceCheck {
 }
 ```
 
+# The Sieve of Eratosthenes 
+``` java
+public class SieveOfEratosthenes {
+
+    // Function to find all prime numbers up to a given limit
+    static void sieveOfEratosthenes(int n) {
+        // Create a boolean array "prime[0..n]" and initialize all entries it as true.
+        // A value in prime[i] will finally be false if i is Not a prime, else true.
+        boolean[] prime = new boolean[n + 1];
+        for (int i = 0; i <= n; i++) {
+            prime[i] = true;
+        }
+
+        for (int p = 2; p * p <= n; p++) {
+            // If prime[p] is not changed, then it is a prime
+            if (prime[p]) {
+                // Update all multiples of p to not prime
+                for (int i = p * p; i <= n; i += p) {
+                    prime[i] = false;
+                }
+            }
+        }
+
+        // Print all prime numbers
+        for (int p = 2; p <= n; p++) {
+            if (prime[p]) {
+                System.out.print(p + " ");
+            }
+        }
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        int n = 30; // Change this value to find primes up to n
+        System.out.println("Prime numbers up to " + n + ":");
+        sieveOfEratosthenes(n);
+    }
+}
+```
+
+## find the prime factor
+``` java
+import java.util.ArrayList;
+import java.util.List;
+
+public class PrimeFactors {
+
+    // Function to find and return the prime factors of a given number
+    public static List<Integer> findPrimeFactors(int n) {
+        List<Integer> primeFactors = new ArrayList<>();
+
+        // Divide n by 2 until it is odd
+        while (n % 2 == 0) {
+            primeFactors.add(2);
+            n /= 2;
+        }
+
+        // n must be odd at this point
+        // So we start from 3 and check only odd numbers
+        for (int i = 3; i <= Math.sqrt(n); i += 2) {
+            // While i divides n, add i and divide n
+            while (n % i == 0) {
+                primeFactors.add(i);
+                n /= i;
+            }
+        }
+
+        // This condition is to handle the case when n is a prime number
+        // greater than 2
+        if (n > 2) {
+            primeFactors.add(n);
+        }
+
+        return primeFactors;
+    }
+
+    // Main method for testing
+    public static void main(String[] args) {
+        int n = 315; // Example number
+        List<Integer> primeFactors = findPrimeFactors(n);
+        System.out.println("Prime factors of " + n + " are: " + primeFactors);
+    }
+}
+
+```
+
 
