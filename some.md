@@ -1,21 +1,10 @@
-To create a mesh network of two XIAO ESP32C3 devices (X1 and X2) and one TTGO T-Display, we'll implement a system where the XIAO devices communicate with each other over BLE (Bluetooth Low Energy), and the TTGO T-Display connects to the mesh network, displays the relevant data (like battery status), and publishes this data to the Blynk IoT platform.
+Here is the implementation that combines all your requirements: 
 
-Here is the outline of the setup:
+- **X1**: Equipped with an ultrasonic sensor (HC-SR04) to measure distance. If the distance is less than a threshold, it sends a signal to X2 to blink its LED. Both X1 and X2 will report battery voltage and sensor readings to the TTGO module.
+- **X2**: Receives commands from X1 and blinks its LED if commanded. Reports its battery voltage to the TTGO module.
+- **TTGO**: Collects data from X1 and X2 and forwards it to Blynk.
 
-### Components:
-- **X1 (XIAO ESP32C3)**: BLE Server, collects data like battery status and LED status, and sends it over BLE.
-- **X2 (XIAO ESP32C3)**: BLE Client, connects to X1 to receive data and send the status back.
-- **TTGO T-Display**: Connects to both X1 and X2, receives data from them, displays it on its screen, and publishes the data to Blynk.
-
-### Key Features:
-1. **Mesh Network Configuration**: X1 and X2 form a BLE mesh network. TTGO connects to the BLE mesh and acts as a gateway to the internet for sending data to Blynk.
-2. **Battery Monitoring**: Both X1 and X2 monitor their battery status and share it with TTGO.
-3. **Automatic Reconnection**: All devices periodically scan for each other to maintain a reliable connection.
-4. **Data Transfer**: Data is transferred through BLE characteristics, and TTGO displays it and sends it to Blynk.
-
----
-
-### X1 (BLE Server) Code
+### X1 Code (BLE Server with Ultrasonic Sensor)
 
 ```cpp
 #include <BLEDevice.h>
@@ -23,23 +12,124 @@ Here is the outline of the setup:
 #include <BLEServer.h>
 #include "esp_adc_cal.h"
 
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define TRIG_PIN 5
+#define ECHO_PIN 18
 #define LED_PIN 2
 #define BATTERY_PIN 35
 
+#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristic = NULL;
-bool deviceConnected = false;
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
-      deviceConnected = true;
       Serial.println("Client connected");
     };
 
     void onDisconnect(BLEServer* pServer) {
-      deviceConnected = false;
+      Serial.println("Client disconnected");
+    }
+};
+
+void initADC() {
+  analogReadResolution(12);
+  analogSetAttenuation(ADC_11db);
+}
+
+float getBatteryVoltage() {
+  int raw = analogRead(BATTERY_PIN);
+  return ((float)raw / 4096.0) * 7.4; // Adjust the multiplier based on your voltage divider
+}
+
+float readDistance() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  long duration = pulseIn(ECHO_PIN, HIGH);
+  float distance = duration * 0.034 / 2;
+  return distance;
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Starting BLE work!");
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+
+  BLEDevice::init("X1");
+  pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+  pCharacteristic = pService->createCharacteristic(
+                      CHARACTERISTIC_UUID,
+                      BLECharacteristic::PROPERTY_READ |
+                      BLECharacteristic::PROPERTY_NOTIFY
+                    );
+
+  pService->start();
+  BLEAdvertising *pAdvertising = pServer->getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->start();
+  Serial.println("BLE setup done.");
+
+  initADC();
+}
+
+void loop() {
+  float distance = readDistance();
+  float batteryVoltage = getBatteryVoltage();
+
+  char dataString[32];
+  sprintf(dataString, "D:%.2f,V:%.2f", distance, batteryVoltage);
+  pCharacteristic->setValue(dataString);
+  pCharacteristic->notify();
+
+  if (distance < 20) { // Threshold distance is 20 cm
+    digitalWrite(LED_PIN, HIGH);
+    pCharacteristic->setValue("BLINK");
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.print(" cm, Battery Voltage: ");
+  Serial.println(batteryVoltage);
+  delay(1000);
+}
+```
+
+### X2 Code (BLE Server with LED Control)
+
+```cpp
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
+#include "esp_adc_cal.h"
+
+#define LED_PIN 2
+#define BATTERY_PIN 35
+
+#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+
+BLEServer *pServer = NULL;
+BLECharacteristic *pCharacteristic = NULL;
+
+class MyServerCallbacks: public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      Serial.println("Client connected");
+    };
+
+    void onDisconnect(BLEServer* pServer) {
       Serial.println("Client disconnected");
     }
 };
@@ -60,7 +150,7 @@ void setup() {
 
   pinMode(LED_PIN, OUTPUT);
 
-  BLEDevice::init("X1");
+  BLEDevice::init("X2");
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
@@ -68,8 +158,8 @@ void setup() {
   pCharacteristic = pService->createCharacteristic(
                       CHARACTERISTIC_UUID,
                       BLECharacteristic::PROPERTY_READ |
-                      BLECharacteristic::PROPERTY_WRITE |
-                      BLECharacteristic::PROPERTY_NOTIFY
+                      BLECharacteristic::PROPERTY_NOTIFY |
+                      BLECharacteristic::PROPERTY_WRITE
                     );
 
   pService->start();
@@ -82,303 +172,101 @@ void setup() {
 }
 
 void loop() {
-  // Monitor and update LED status
-  int batteryVoltage = getBatteryVoltage();
-  String data = String("LED:") + String(digitalRead(LED_PIN)) + ",Battery:" + String(batteryVoltage);
-  pCharacteristic->setValue(data.c_str());
-  if (deviceConnected) {
-    pCharacteristic->notify();
-  }
+  float batteryVoltage = getBatteryVoltage();
+  char voltageString[8];
+  dtostrf(batteryVoltage, 4, 2, voltageString);
+  pCharacteristic->setValue(voltageString);
+  pCharacteristic->notify();
 
-  delay(1000);
-}
-```
-
-### X2 (BLE Client) Code
-
-```cpp
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEClient.h>
-
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-#define LED_PIN 2
-
-BLEClient* pClient;
-BLERemoteCharacteristic* pRemoteCharacteristic;
-BLEAdvertisedDevice* myDevice;
-bool doConnect = false;
-bool connected = false;
-bool doScan = false;
-
-class MyClientCallback : public BLEClientCallbacks {
-  void onConnect(BLEClient* pclient) {
-    Serial.println("Connected to server");
-  }
-
-  void onDisconnect(BLEClient* pclient) {
-    connected = false;
-    Serial.println("Disconnected from server");
-  }
-};
-
-void read_task(void* data) {
-  BLERemoteCharacteristic* pBLERemoteCharacteristic = (BLERemoteCharacteristic*)data;
-  String value = pBLERemoteCharacteristic->readValue().c_str();
-  if (value.indexOf("LED:1") > -1) {
+  String receivedValue = pCharacteristic->getValue().c_str();
+  if (receivedValue == "BLINK") {
     digitalWrite(LED_PIN, HIGH);
   } else {
     digitalWrite(LED_PIN, LOW);
   }
-  vTaskDelete(NULL);
-}
 
-static void notifyCallback(
-  BLERemoteCharacteristic* pBLERemoteCharacteristic,
-  uint8_t* pData,
-  size_t length,
-  bool isNotify) {
-    xTaskCreate(read_task, "read", 2048, (void*)pBLERemoteCharacteristic, 5, nullptr);
-}
+  Serial.print("Battery Voltage: ");
+  Serial.println(voltageString);
 
-bool connectToServer() {
-  Serial.print("Forming a connection to ");
-  Serial.println(myDevice->getAddress().toString().c_str());
-
-  pClient = BLEDevice::createClient();
-  pClient->setClientCallbacks(new MyClientCallback());
-
-  pClient->connect(myDevice);
-
-  BLERemoteService* pRemoteService = pClient->getService(BLEUUID(SERVICE_UUID));
-  if (pRemoteService == nullptr) {
-    Serial.print("Failed to find our service UUID: ");
-    Serial.println(SERVICE_UUID);
-    pClient->disconnect();
-    return false;
-  }
-  pRemoteCharacteristic = pRemoteService->getCharacteristic(BLEUUID(CHARACTERISTIC_UUID));
-  if (pRemoteCharacteristic == nullptr) {
-    Serial.print("Failed to find our characteristic UUID: ");
-    Serial.println(CHARACTERISTIC_UUID);
-    pClient->disconnect();
-    return false;
-  }
-  if (pRemoteCharacteristic->canNotify()) {
-    pRemoteCharacteristic->registerForNotify(notifyCallback);
-  }
-  connected = true;
-  return true;
-}
-
-class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
-  void onResult(BLEAdvertisedDevice advertisedDevice) {
-    Serial.print("BLE Advertised Device found: ");
-    Serial.println(advertisedDevice.toString().c_str());
-
-    if (advertisedDevice.haveServiceUUID() && advertisedDevice.getServiceUUID().equals(BLEUUID(SERVICE_UUID))) {
-      Serial.print("Found our device!  address: ");
-      Serial.println(advertisedDevice.getAddress().toString().c_str());
-      BLEDevice::getScan()->stop();
-      myDevice = new BLEAdvertisedDevice(advertisedDevice);
-      doConnect = true;
-      doScan = false;
-    }
-  }
-};
-
-void setup() {
-  Serial.begin(115200);
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
-
-  BLEDevice::init("");
-  BLEScan* pBLEScan = BLEDevice::getScan();
-  pBLEScan->setAdvertisedDeviceCallbacks(new MyAdvertisedDeviceCallbacks());
-  pBLEScan->setInterval(1349);
-  pBLEScan->setWindow(449);
-  pBLEScan->setActiveScan(true);
-  pBLEScan->start(5, false);
-}
-
-void loop() {
-  if (doConnect) {
-    if (connectToServer()) {
-      Serial.println("We are now connected to the BLE Server.");
-    } else {
-      Serial.println("We have failed to connect to the server; there is nothing more we will do.");
-    }
-    doConnect = false;
-  }
-
-  if (connected) {
-    delay(1000);
-  } else if (doScan) {
-    BLEDevice::getScan()->start(0);
-  }
+  delay(5000); // Send updates every 5 seconds
 }
 ```
 
-### TTGO T-Display Code (as a BLE Central and Blynk Gateway)
+### TTGO T-Display Code (BLE Client and Wi-Fi to Blynk)
 
 ```cpp
-#include <TFT_eSPI.h>
-#include <Wire.h>
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEClient.h>
 #include <WiFi.h>
 #include <BlynkSimpleEsp32.h>
 
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
-char auth[] = "YourBlynkAuthToken";
-char ssid[] = "YourSSID";
-char pass[] = "YourPassword";
-
-BLEClient* pClient;
-BLERemoteCharacteristic* pRemoteCharacteristicX1;
-BLERemoteCharacteristic* pRemoteCharacteristicX2;
-BLEAdvertisedDevice* myDeviceX1;
-BLEAdvertisedDevice* myDeviceX2;
-bool doConnectX1 = false;
-bool doConnectX2 = false;
-bool connectedX1 = false;
-bool connectedX2 = false;
-
-TFT_eSPI tft = TFT_eSPI();  // Initialize TFT
-
-class MyClientCallback : public BLEClientCallbacks {
-  void onConnect(BLEClient* pclient) {
-    Serial.println("Connected to server");
-  }
-
-
-
-Here's a detailed code implementation for the TTGO T-Display, X1 (ESP32-C3), and X2 (ESP32-C3) to create a BLE mesh network. The TTGO acts as the central hub, connecting to both X1 and X2, reading their data, displaying it on the TFT screen, and sending it to Blynk.
-
-### TTGO T-Display Code
-
-This code connects to both X1 and X2, receives data over BLE, displays the information on the TFT screen, and publishes it to Blynk.
-
-```cpp
-#include <TFT_eSPI.h>
-#include <Wire.h>
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEClient.h>
-#include <WiFi.h>
-#include <BlynkSimpleEsp32.h>
-
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-
-char auth[] = "YourBlynkAuthToken";
-char ssid[] = "YourSSID";
-char pass[] = "YourPassword";
+char auth[] = "Your_Blynk_Auth_Token";
+char ssid[] = "Your_SSID";
+char pass[] = "Your_PASSWORD";
 
 BLEClient* pClientX1;
 BLEClient* pClientX2;
 BLERemoteCharacteristic* pRemoteCharacteristicX1;
 BLERemoteCharacteristic* pRemoteCharacteristicX2;
 
-TFT_eSPI tft = TFT_eSPI();  // Initialize TFT
-
-class MyClientCallback : public BLEClientCallbacks {
-  void onConnect(BLEClient* pclient) {
-    Serial.println("Connected to server");
-  }
-
-  void onDisconnect(BLEClient* pclient) {
-    Serial.println("Disconnected from server");
-  }
-};
-
-void connectToServer(BLEClient* pClient, BLERemoteCharacteristic** pRemoteCharacteristic, String serverName) {
-  BLERemoteService* pRemoteService = pClient->getService(BLEUUID(SERVICE_UUID));
-  if (pRemoteService == nullptr) {
-    Serial.println("Failed to find service UUID");
-    pClient->disconnect();
-    return;
-  }
-
-  *pRemoteCharacteristic = pRemoteService->getCharacteristic(BLEUUID(CHARACTERISTIC_UUID));
-  if (*pRemoteCharacteristic == nullptr) {
-    Serial.println("Failed to find characteristic UUID");
-    pClient->disconnect();
-    return;
-  }
-}
-
-void displayData(String name, String data) {
-  tft.fillScreen(TFT_BLACK);
-  tft.setCursor(0, 0);
-  tft.setTextColor(TFT_WHITE);
-  tft.setTextSize(2);
-  tft.print(name);
-  tft.println(": ");
-  tft.println(data);
-
-  Blynk.virtualWrite(V1, data);  // Send data to Blynk
-}
-
 void setup() {
   Serial.begin(115200);
-  tft.init();
-  tft.setRotation(1);
-
   WiFi.begin(ssid, pass);
   Blynk.begin(auth, ssid, pass);
 
-  BLEDevice::init("");
-  pClientX1 = BLEDevice::createClient();
-  pClientX1->setClientCallbacks(new MyClientCallback());
+  BLEDevice::init("TTGO_T_Display");
 
-  pClientX2 = BLEDevice::createClient();
-  pClientX2->setClientCallbacks(new MyClientCallback());
+  connectToServer("X1_Address", pClientX1, pRemoteCharacteristicX1);
+  connectToServer("X2_Address", pClientX2, pRemoteCharacteristicX2);
 }
 
 void loop() {
-  if (pClientX1->isConnected()) {
-    if (pRemoteCharacteristicX1->canRead()) {
-      String data = pRemoteCharacteristicX1->readValue().c_str();
-      displayData("X1", data);
-    }
-  } else {
-    BLEScan* pBLEScan = BLEDevice::getScan();
-    pBLEScan->start(5, false);
-    pClientX1->connect(BLEAddress("X1_Address"));
-    connectToServer(pClientX1, &pRemoteCharacteristicX1, "X1");
-  }
+  if (pClientX1->isConnected() && pClientX2->isConnected()) {
+    std::string dataX1 = pRemoteCharacteristicX1->readValue();
+    std::string dataX2 = pRemoteCharacteristicX2->readValue();
 
-  if (pClientX2->isConnected()) {
-    if (pRemoteCharacteristicX2->canRead()) {
-      String data = pRemoteCharacteristicX2->readValue().c_str();
-      displayData("X2", data);
-    }
-  } else {
-    BLEScan* pBLEScan = BLEDevice::getScan();
-    pBLEScan->start(5, false);
-    pClientX2->connect(BLEAddress("X2_Address"));
-    connectToServer(pClientX2, &pRemoteCharacteristicX2, "X2");
+    Serial.print("X1 Data: ");
+    Serial.println(dataX1.c_str());
+    Serial.print("X2 Data: ");
+    Serial.println(dataX2.c_str());
+
+    Blynk.virtualWrite(V1, dataX1.c_str()); // X1 data to Blynk
+    Blynk.virtualWrite(V2, dataX2.c_str()); // X2 data to Blynk
   }
 
   Blynk.run();
-  delay(1000);
+  delay(5000); // Adjust delay as necessary
+}
+
+void connectToServer(const char* address, BLEClient*& pClient, BLERemoteCharacteristic*& pRemoteCharacteristic) {
+  pClient = BLEDevice::createClient();
+  pClient->connect(BLEAddress(address));
+
+  BLERemoteService* pRemoteService = pClient->getService(BLEUUID(SERVICE_UUID));
+  if (pRemoteService == nullptr) {
+    Serial.print("Failed to find service UUID: ");
+    Serial.println(SERVICE_UUID);
+    return;
+  }
+
+  pRemoteCharacteristic = pRemoteService->getCharacteristic(BLEUUID(CHARACTERISTIC_UUID));
+  if (pRemoteCharacteristic == nullptr) {
+    Serial.print("Failed to find characteristic UUID: ");
+    Serial.println(CHARACTERISTIC_UUID);
+    return;
+  }
 }
 ```
 
-### Explanation
+### Summary
 
-1. **X1 and X2 Code**: Already provided in the earlier responses, where X1 acts as a BLE Server and X2 acts as a BLE Client.
-2. **BLE Connections**: The TTGO connects to both X1 and X2 via BLE, retrieves the battery status and LED status, and displays the information on the TFT screen.
-3. **Blynk Integration**: The data received from X1 and X2 is also sent to the Blynk IoT platform.
+- **X1**: Uses the HC-SR04 ultrasonic sensor to measure distance and reports the distance and battery voltage to TTGO. If the distance is less than a threshold, it triggers X2 to blink its LED.
+- **X2**: Receives commands from X1 to blink its LED and reports its battery voltage to TTGO.
+- **TTGO**: Acts as the central node, collecting data from X1 and X2 and sending it to Blynk via Wi-Fi.
 
-### Important Notes
-
-1. **BLE Address**: Replace `"X1_Address"` and `"X2_Address"` with the actual BLE addresses of your X1 and X2 devices.
-2. **Blynk Configuration**: Replace the Blynk auth token, SSID, and password with your actual network credentials.
-
-This code provides the framework to establish a BLE mesh network with the TTGO as the central hub, displaying and transmitting data to Blynk. Ensure all devices are powered and in range for successful communication.
+### Notes
+- Replace `"X1_Address"` and `"X2_Address"`
