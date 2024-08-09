@@ -1,23 +1,26 @@
-Certainly! Here's the code for X1 and X2, each with an LED connected, to blink if the simulated radar distance is below a threshold, along with sending battery voltage and radar reading data to the TTGO module via BLE.
+To create a detailed BLE mesh network where X1 and X2 measure distance, blink an LED if the distance is below a threshold, and report the battery voltage to TTGO, here’s how you can structure the code for each device. The TTGO module will collect the data from X1 and X2 and then send it to Blynk or any other cloud service.
 
-### X1 Code
-
+### X1 Code (With Radar and LED)
 ```cpp
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include "esp_adc_cal.h"
 
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
 #define RADAR_PIN 34
 #define LED_PIN D10
 #define BATTERY_PIN 35
-#define RADAR_THRESHOLD 2000  // Threshold for radar distance in mm
+#define THRESHOLD 2000  // Example threshold for radar distance
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristic = NULL;
+
+bool batteryStatus = false;
+float voltage = 0.0;
+float distance = 0.0;
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -36,7 +39,7 @@ void initADC() {
 
 float getBatteryVoltage() {
   int raw = analogRead(BATTERY_PIN);
-  return ((float)raw / 4096.0) * 7.4;  // Adjust based on your voltage divider
+  return ((float)raw / 4096.0) * 7.4; // Adjust based on voltage divider
 }
 
 void setup() {
@@ -67,53 +70,59 @@ void setup() {
 }
 
 void loop() {
-  // Simulated radar reading
-  int radarValue = analogRead(RADAR_PIN);
-  
-  // Blink LED based on radar distance
-  if (radarValue < RADAR_THRESHOLD) {
+  // Radar simulation
+  distance = analogRead(RADAR_PIN);  // Simulated radar distance reading
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" mm");
+
+  if (distance < THRESHOLD) {
     digitalWrite(LED_PIN, HIGH);
-    pCharacteristic->setValue("1");
+    pCharacteristic->setValue("1");  // Indicating LED is ON
   } else {
     digitalWrite(LED_PIN, LOW);
-    pCharacteristic->setValue("0");
+    pCharacteristic->setValue("0");  // Indicating LED is OFF
   }
   pCharacteristic->notify();
 
   // Read and print battery voltage
-  float batteryVoltage = getBatteryVoltage();
-  Serial.print("X1 Battery Voltage: ");
-  Serial.println(batteryVoltage);
+  voltage = getBatteryVoltage();
+  Serial.print("Battery Voltage: ");
+  Serial.println(voltage);
 
-  delay(500);  // Adjust delay as necessary
+  delay(1000); // Adjust delay as per requirement
 }
 ```
 
-### X2 Code
-
+### X2 Code (LED and BLE Only)
 ```cpp
 #include <BLEDevice.h>
 #include <BLEUtils.h>
-#include <BLEServer.h>
-#include "esp_adc_cal.h"
+#include <BLEClient.h>
 
-#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
 #define LED_PIN D10
 #define BATTERY_PIN 35
 
-BLEServer *pServer = NULL;
-BLECharacteristic *pCharacteristic = NULL;
+bool batteryStatus = false;
+float voltage = 0.0;
+bool connected = false;
 
-class MyServerCallbacks: public BLEServerCallbacks {
-    void onConnect(BLEServer* pServer) {
-      Serial.println("Client connected");
-    };
+BLEClient *pClient;
+BLERemoteCharacteristic *pRemoteCharacteristic;
 
-    void onDisconnect(BLEServer* pServer) {
-      Serial.println("Client disconnected");
-    }
+class MyClientCallback: public BLEClientCallbacks {
+  void onConnect(BLEClient* pclient) {
+    Serial.println("Connected to server");
+    connected = true;
+  }
+
+  void onDisconnect(BLEClient* pclient) {
+    Serial.println("Disconnected from server");
+    connected = false;
+  }
 };
 
 void initADC() {
@@ -123,67 +132,121 @@ void initADC() {
 
 float getBatteryVoltage() {
   int raw = analogRead(BATTERY_PIN);
-  return ((float)raw / 4096.0) * 7.4;  // Adjust based on your voltage divider
+  return ((float)raw / 4096.0) * 7.4; // Adjust based on voltage divider
 }
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Starting BLE work!");
+  Serial.println("Starting BLE client...");
 
   pinMode(LED_PIN, OUTPUT);
 
-  BLEDevice::init("X2");
-  pServer = BLEDevice::createServer();
-  pServer->setCallbacks(new MyServerCallbacks());
+  BLEDevice::init("");
+  pClient = BLEDevice::createClient();
+  pClient->setClientCallbacks(new MyClientCallback());
 
-  BLEService *pService = pServer->createService(SERVICE_UUID);
-  pCharacteristic = pService->createCharacteristic(
-                      CHARACTERISTIC_UUID,
-                      BLECharacteristic::PROPERTY_READ |
-                      BLECharacteristic::PROPERTY_WRITE |
-                      BLECharacteristic::PROPERTY_NOTIFY
-                    );
-
-  pService->start();
-  BLEAdvertising *pAdvertising = pServer->getAdvertising();
-  pAdvertising->addServiceUUID(SERVICE_UUID);
-  pAdvertising->start();
-  Serial.println("BLE setup done.");
+  BLEScan* pBLEScan = BLEDevice::getScan();
+  pBLEScan->setAdvertisedDeviceCallbacks(new MyAdvertisedDeviceCallbacks());
+  pBLEScan->setInterval(1349);
+  pBLEScan->setWindow(449);
+  pBLEScan->setActiveScan(true);
+  pBLEScan->start(5, false);
 
   initADC();
 }
 
 void loop() {
-  // Simulate distance received from X1 or other means
-  int simulatedDistance = 1500;  // This would be replaced by actual data
+  if (connected && pRemoteCharacteristic) {
+    std::string value = pRemoteCharacteristic->readValue();
+    Serial.print("Received value: ");
+    Serial.println(value.c_str());
 
-  // Blink LED if distance is below threshold
-  if (simulatedDistance < 2000) {
-    digitalWrite(LED_PIN, HIGH);
-    pCharacteristic->setValue("1");
-  } else {
-    digitalWrite(LED_PIN, LOW);
-    pCharacteristic->setValue("0");
+    if (value == "1") {
+      digitalWrite(LED_PIN, HIGH);
+    } else {
+      digitalWrite(LED_PIN, LOW);
+    }
+
+    // Read and print battery voltage
+    voltage = getBatteryVoltage();
+    Serial.print("Battery Voltage: ");
+    Serial.println(voltage);
   }
-  pCharacteristic->notify();
 
-  // Read and print battery voltage
-  float batteryVoltage = getBatteryVoltage();
-  Serial.print("X2 Battery Voltage: ");
-  Serial.println(batteryVoltage);
-
-  delay(500);  // Adjust delay as necessary
+  delay(1000); // Adjust delay as per requirement
 }
 ```
 
-### Code Explanation:
+### TTGO Code (Receives Data from X1 and X2)
+```cpp
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEClient.h>
+#include <TFT_eSPI.h>
+#include <BlynkSimpleEsp32.h>
 
-- **X1 and X2**:
-  - Both devices initialize BLE with a specific service UUID and characteristic UUID.
-  - The radar simulation is represented by the radarValue variable on X1, which triggers the LED on both X1 and X2 if below the threshold.
-  - The battery voltage is read and printed to the serial monitor, and the radar data and LED status are sent to the TTGO module via BLE.
+#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
-### Note:
-This code assumes that the TTGO module you previously implemented will read the characteristic values from both X1 and X2. The TTGO code will need to connect to both X1 and X2, read their characteristics, and send the data to Blynk or display it on its screen.
+TFT_eSPI tft = TFT_eSPI();
 
-This code can be modified for specific pin configurations or other requirements as needed.
+BLEClient *pClientX1, *pClientX2;
+BLERemoteCharacteristic *pRemoteCharacteristicX1, *pRemoteCharacteristicX2;
+
+class MyClientCallback: public BLEClientCallbacks {
+  void onConnect(BLEClient* pclient) {
+    Serial.println("Connected to server");
+  }
+
+  void onDisconnect(BLEClient* pclient) {
+    Serial.println("Disconnected from server");
+  }
+};
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Starting TTGO...");
+
+  tft.init();
+  tft.setRotation(1);
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  BLEDevice::init("");
+
+  pClientX1 = BLEDevice::createClient();
+  pClientX1->setClientCallbacks(new MyClientCallback());
+
+  pClientX2 = BLEDevice::createClient();
+  pClientX2->setClientCallbacks(new MyClientCallback());
+
+  Blynk.begin("YourAuthToken", "YourSSID", "YourPassword");
+}
+
+void loop() {
+  // Connect to X1 and X2, read their data
+  if (pClientX1->isConnected() && pClientX2->isConnected()) {
+    std::string valueX1 = pRemoteCharacteristicX1->readValue();
+    std::string valueX2 = pRemoteCharacteristicX2->readValue();
+
+    // Display data on TTGO screen
+    tft.fillScreen(TFT_BLACK);
+    tft.setCursor(0, 0);
+    tft.printf("X1: %s\n", valueX1.c_str());
+    tft.printf("X2: %s\n", valueX2.c_str());
+
+    // Send data to Blynk
+    Blynk.virtualWrite(V1, valueX1.c_str());
+    Blynk.virtualWrite(V2, valueX2.c_str());
+  } else {
+    tft.fillScreen(TFT_RED);
+    tft.setCursor(0, 0);
+    tft.printf("Disconnected...");
+  }
+
+  delay(2000); // Adjust delay as per requirement
+}
+```
+
+### Explanation:
+1. **X1**: Simulates radar data, checks distance, blinks LED if below the
