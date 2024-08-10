@@ -7,11 +7,13 @@ Here’s how you can incorporate these keys into your code.
 
 ### X1 Code (Sender):
 ```c
+
+
 #include <stdio.h>
 #include <string.h>
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include "esp_random.h" 
+#include "esp_random.h"
 #include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
 #include "esp_ble_mesh_networking_api.h"
@@ -75,11 +77,11 @@ static esp_ble_mesh_prov_t provision = {
 
 void send_onoff_value(uint8_t onoff_value) {
     esp_ble_mesh_msg_ctx_t ctx = {
-        .net_idx = 0x0001,  // Using the provided NetKey index
-        .app_idx = 0x0002,  // Using the provided AppKey index
-        .addr = GROUP_ADDR,            // Group Address (Living Room)
-        .send_rel = false,             // Reliable message
-        .send_ttl = 7,                 // Time To Live
+        .net_idx = 0x0000,  // Default NetKey index
+        .app_idx = 0x0000,  // Default AppKey index
+        .addr = GROUP_ADDR, // Group Address (Living Room)
+        .send_rel = false,  // Reliable message
+        .send_ttl = 7,      // Time To Live
     };
     
     esp_ble_mesh_gen_onoff_set_t set = {
@@ -89,7 +91,7 @@ void send_onoff_value(uint8_t onoff_value) {
     
     esp_err_t err = esp_ble_mesh_model_publish(onoff_server_0.model, ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK, sizeof(set), (uint8_t *)&set, ROLE_NODE);
     if (err != ESP_OK) {
-        ESP_LOGE(TAG, "Failed to send onoff value, error code: %d", err);
+        ESP_LOGE(TAG, "Failed to send OnOff value, error code: %d", err);
     } else {
         ESP_LOGI(TAG, "OnOff value %d sent to group address 0x%04X", onoff_value, GROUP_ADDR);
     }
@@ -180,6 +182,7 @@ void app_main(void) {
         ESP_LOGE(TAG, "Bluetooth mesh init failed (err %d)", err);
     }
 }
+
 ```
 
 ### X2 Code (Receiver):
