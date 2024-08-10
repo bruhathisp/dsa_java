@@ -1,6 +1,6 @@
-The error you're encountering indicates that the function `example_ble_mesh_provisioning_cb` has not been declared or defined in the code, but it's being used in the `esp_ble_mesh_register_prov_callback()` function call. Here's how you can correct it:
+Below is the detailed code for X1 and X2 using the ESP32 with BLE Mesh. X1 will send a message containing a value (e.g., a multiple of 5), and X2 will receive it, print it, and blink an LED if the value is divisible by 10.
 
-### Corrected Code for X1 (including the missing `example_ble_mesh_provisioning_cb`):
+### Code for X1 (Sender)
 
 ```c
 #include <stdio.h>
@@ -22,7 +22,6 @@ The error you're encountering indicates that the function `example_ble_mesh_prov
 #define CID_ESP 0x02E5
 
 static uint8_t dev_uuid[16] = { 0xdd, 0xdd };
-
 static esp_ble_mesh_cfg_srv_t config_server = {
     .net_transmit = ESP_BLE_MESH_TRANSMIT(2, 20),
     .relay = ESP_BLE_MESH_RELAY_DISABLED,
@@ -68,6 +67,31 @@ static esp_ble_mesh_prov_t provision = {
     .uuid = dev_uuid,
 };
 
+static void send_onoff_value(uint8_t value) {
+    esp_ble_mesh_model_t *model = &root_models[1];
+    esp_ble_mesh_msg_ctx_t ctx = {
+        .net_idx = onoff_server_0.model->pub->msg->net_idx,
+        .app_idx = onoff_server_0.model->pub->msg->app_idx,
+        .addr = 0x0002, // Address of X2 (replace with actual address)
+        .send_ttl = 3,
+    };
+    esp_ble_mesh_gen_onoff_set_t set = {
+        .onoff = value,
+        .tid = esp_random() % 256,
+    };
+    esp_ble_mesh_model_publish(model, ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK, sizeof(set), &set, ROLE_NODE);
+    ESP_LOGI(TAG, "Sent value: %d", value);
+}
+
+static void prov_complete(uint16_t net_idx, uint16_t addr, uint8_t flags, uint32_t iv_index) {
+    ESP_LOGI(TAG, "Provisioning complete: net_idx 0x%04x, addr 0x%04x, flags 0x%02x, iv_index 0x%08" PRIx32, net_idx, addr, flags, iv_index);
+    for (int i = 1; i <= 5; i++) {
+        uint8_t value = i * 5;
+        send_onoff_value(value);
+        vTaskDelay(2000 / portTICK_PERIOD_MS); // Delay 2 seconds
+    }
+}
+
 static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
                                              esp_ble_mesh_prov_cb_param_t *param) {
     switch (event) {
@@ -87,10 +111,8 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
         break;
     case ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT:
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT");
-        ESP_LOGI(TAG, "Provisioning complete: net_idx 0x%04x, addr 0x%04x, flags 0x%02x, iv_index 0x%08" PRIx32,
-            param->node_prov_complete.net_idx, param->node_prov_complete.addr,
+        prov_complete(param->node_prov_complete.net_idx, param->node_prov_complete.addr,
             param->node_prov_complete.flags, param->node_prov_complete.iv_index);
-        board_led_operation(LED_G, 0);
         break;
     case ESP_BLE_MESH_NODE_PROV_RESET_EVT:
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_RESET_EVT");
@@ -100,31 +122,10 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
     }
 }
 
-static void example_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
-                                               esp_ble_mesh_generic_server_cb_param_t *param) {
-    ESP_LOGI(TAG, "Event 0x%02x, Opcode 0x%04" PRIx32 ", Src 0x%04x, Dst 0x%04x",
-        event, param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
-
-    switch (event) {
-    case ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT:
-        ESP_LOGI(TAG, "ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT");
-        if (param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET ||
-            param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK) {
-            uint8_t received_value = param->value.state_change.onoff_set.onoff;
-            ESP_LOGI(TAG, "Received Value: %d", received_value);
-        }
-        break;
-    default:
-        ESP_LOGE(TAG, "Unknown Generic Server event 0x%02x", event);
-        break;
-    }
-}
-
 static esp_err_t ble_mesh_init(void) {
     esp_err_t err = ESP_OK;
 
     esp_ble_mesh_register_prov_callback(example_ble_mesh_provisioning_cb);
-    esp_ble_mesh_register_generic_server_callback(example_ble_mesh_generic_server_cb);
 
     err = esp_ble_mesh_init(&provision, &composition);
     if (err != ESP_OK) {
@@ -139,8 +140,6 @@ static esp_err_t ble_mesh_init(void) {
     }
 
     ESP_LOGI(TAG, "BLE Mesh Node initialized");
-    board_led_operation(LED_G, 1);
-
     return err;
 }
 
@@ -174,15 +173,7 @@ void app_main(void) {
 }
 ```
 
-### Explanation:
-
-- **`example_ble_mesh_provisioning_cb`**: This callback function is used to handle various provisioning events. I’ve defined it properly in the code now.
-- **`prov_complete`**: This function was originally intended to log the provisioning completion details but was not properly integrated into the callback mechanism. Now, it's integrated within the provisioning callback.
-
-The code should compile successfully now, and you'll be able to run your mesh network with X1 sending and receiving messages.
-
-
-Here's the complete code for X2, which receives data from X1 and serial prints "LED is ON" if the received value is divisible by 10:
+### Code for X2 (Receiver)
 
 ```c
 #include <stdio.h>
@@ -204,7 +195,6 @@ Here's the complete code for X2, which receives data from X1 and serial prints "
 #define CID_ESP 0x02E5
 
 static uint8_t dev_uuid[16] = { 0xdd, 0xdd };
-
 static esp_ble_mesh_cfg_srv_t config_server = {
     .net_transmit = ESP_BLE_MESH_TRANSMIT(2, 20),
     .relay = ESP_BLE_MESH_RELAY_DISABLED,
@@ -224,7 +214,9 @@ static esp_ble_mesh_cfg_srv_t config_server = {
 };
 
 ESP_BLE_MESH_MODEL_PUB_DEFINE(onoff_pub_0, 2 + 3, ROLE_NODE);
-static esp_ble_mesh_gen_onoff_srv_t onoff_server_0 = {
+static
+
+ esp_ble_mesh_gen_onoff_srv_t onoff_server_0 = {
     .rsp_ctrl = {
         .get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
         .set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
@@ -250,6 +242,40 @@ static esp_ble_mesh_prov_t provision = {
     .uuid = dev_uuid,
 };
 
+static void handle_received_value(uint8_t value) {
+    ESP_LOGI(TAG, "Received value: %d", value);
+
+    if (value % 10 == 0) {
+        // Blink LED if value is divisible by 10
+        for (int i = 0; i < 5; i++) {
+            board_led_operation(LED_B, 1);  // Turn on LED
+            vTaskDelay(500 / portTICK_PERIOD_MS); // Delay
+            board_led_operation(LED_B, 0); // Turn off LED
+            vTaskDelay(500 / portTICK_PERIOD_MS); // Delay
+        }
+    }
+}
+
+static void example_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
+                                               esp_ble_mesh_generic_server_cb_param_t *param) {
+    ESP_LOGI(TAG, "Event 0x%02x, Opcode 0x%04" PRIx32 ", Src 0x%04x, Dst 0x%04x",
+        event, param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
+
+    switch (event) {
+    case ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT:
+        ESP_LOGI(TAG, "ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT");
+        if (param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET ||
+            param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK) {
+            uint8_t received_value = param->value.state_change.onoff_set.onoff;
+            handle_received_value(received_value);
+        }
+        break;
+    default:
+        ESP_LOGE(TAG, "Unknown Generic Server event 0x%02x", event);
+        break;
+    }
+}
+
 static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
                                              esp_ble_mesh_prov_cb_param_t *param) {
     switch (event) {
@@ -269,41 +295,11 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
         break;
     case ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT:
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT");
-        ESP_LOGI(TAG, "Provisioning complete: net_idx 0x%04x, addr 0x%04x, flags 0x%02x, iv_index 0x%08" PRIx32,
-            param->node_prov_complete.net_idx, param->node_prov_complete.addr,
-            param->node_prov_complete.flags, param->node_prov_complete.iv_index);
-        board_led_operation(LED_G, 0);
         break;
     case ESP_BLE_MESH_NODE_PROV_RESET_EVT:
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_RESET_EVT");
         break;
     default:
-        break;
-    }
-}
-
-static void example_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
-                                               esp_ble_mesh_generic_server_cb_param_t *param) {
-    ESP_LOGI(TAG, "Event 0x%02x, Opcode 0x%04" PRIx32 ", Src 0x%04x, Dst 0x%04x",
-        event, param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
-
-    switch (event) {
-    case ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT:
-        ESP_LOGI(TAG, "ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT");
-        if (param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET ||
-            param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK) {
-            uint8_t received_value = param->value.state_change.onoff_set.onoff;
-            ESP_LOGI(TAG, "Received Value: %d", received_value);
-            if (received_value % 10 == 0) {
-                ESP_LOGI(TAG, "LED is ON");
-                board_led_operation(LED_B, 1);
-            } else {
-                board_led_operation(LED_B, 0);
-            }
-        }
-        break;
-    default:
-        ESP_LOGE(TAG, "Unknown Generic Server event 0x%02x", event);
         break;
     }
 }
@@ -327,8 +323,6 @@ static esp_err_t ble_mesh_init(void) {
     }
 
     ESP_LOGI(TAG, "BLE Mesh Node initialized");
-    board_led_operation(LED_G, 1);
-
     return err;
 }
 
@@ -363,8 +357,18 @@ void app_main(void) {
 ```
 
 ### Explanation:
+- **X1 (Sender)**:
+  - X1 will send a value (a multiple of 5) every 2 seconds using the `Generic OnOff Server` model.
+  - It uses a random TID (Transaction ID) and sends the value to a specific address (e.g., the address of X2).
 
-- **Handling Received Values**: The X2 node receives data from X1 and checks if the received value is divisible by 10. If it is, the LED turns on, and "LED is ON" is printed to the serial monitor.
-- **LED Control**: The `board_led_operation` function is used to turn the LED on or off based on whether the received value meets the condition.
+- **X2 (Receiver)**:
+  - X2 receives the value using the `Generic OnOff Server` model.
+  - If the value is divisible by 10, it blinks an LED 5 times.
+  - X2 prints the received value to the serial monitor.
 
-This code will allow X2 to receive multiples of 10 from X1, turn on the LED, and print the status to the serial monitor.
+### Steps to Deploy:
+1. Compile and flash the X1 code onto one ESP32 device.
+2. Compile and flash the X2 code onto another ESP32 device.
+3. Provision both devices into the same Bluetooth Mesh network.
+4. Bind the same application key to the `Generic OnOff Server` model on both X1 and X2.
+5. Test the communication by observing the serial monitor and LED behavior on X2.
