@@ -1,6 +1,11 @@
-Below is the detailed code for X1 and X2 using the ESP32 with BLE Mesh. X1 will send a message containing a value (e.g., a multiple of 5), and X2 will receive it, print it, and blink an LED if the value is divisible by 10.
+To address the issues you're encountering with the code, let's fix the errors and warnings:
 
-### Code for X1 (Sender)
+### Key Points to Address:
+1. **Use of `net_idx` and `app_idx`:** These fields are not part of the `struct net_buf_simple`. Instead, they should be part of the message context (`esp_ble_mesh_msg_ctx_t`). However, if you are publishing the message, you don't need to manually set these; instead, you should use the publish method correctly.
+2. **Random Number Generation:** The function `esp_random()` should be used correctly, and ensure you include the correct header for random number generation.
+3. **Correct Data Types:** Ensure that the data types being passed to functions match the expected types.
+
+### Updated Code for X1 (Sender)
 
 ```c
 #include <stdio.h>
@@ -15,6 +20,7 @@ Below is the detailed code for X1 and X2 using the ESP32 with BLE Mesh. X1 will 
 #include "esp_ble_mesh_config_model_api.h"
 #include "esp_ble_mesh_generic_model_api.h"
 #include "esp_ble_mesh_local_data_operation_api.h"
+#include "esp_random.h"  // Include the correct header for random number generation
 #include "board.h"
 #include "ble_mesh_example_init.h"
 
@@ -70,17 +76,22 @@ static esp_ble_mesh_prov_t provision = {
 static void send_onoff_value(uint8_t value) {
     esp_ble_mesh_model_t *model = &root_models[1];
     esp_ble_mesh_msg_ctx_t ctx = {
-        .net_idx = onoff_server_0.model->pub->msg->net_idx,
-        .app_idx = onoff_server_0.model->pub->msg->app_idx,
-        .addr = 0x0002, // Address of X2 (replace with actual address)
+        .net_idx = ESP_BLE_MESH_KEY_PRIMARY,   // Use appropriate net key
+        .app_idx = ESP_BLE_MESH_KEY_PRIMARY,   // Use appropriate app key
+        .addr = 0x0002,                        // Address of X2 (replace with actual address)
         .send_ttl = 3,
+        .send_rel = false,
     };
     esp_ble_mesh_gen_onoff_set_t set = {
         .onoff = value,
         .tid = esp_random() % 256,
     };
-    esp_ble_mesh_model_publish(model, ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK, sizeof(set), &set, ROLE_NODE);
-    ESP_LOGI(TAG, "Sent value: %d", value);
+    esp_err_t err = esp_ble_mesh_server_model_send_msg(model, &ctx, ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK, sizeof(set), (uint8_t *)&set);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to send onoff message (err %d)", err);
+    } else {
+        ESP_LOGI(TAG, "Sent value: %d", value);
+    }
 }
 
 static void prov_complete(uint16_t net_idx, uint16_t addr, uint8_t flags, uint32_t iv_index) {
@@ -173,7 +184,19 @@ void app_main(void) {
 }
 ```
 
-### Code for X2 (Receiver)
+### Explanation of Changes:
+1. **Message Context Setup (`esp_ble_mesh_msg_ctx_t`):**
+   - The `net_idx` and `app_idx` are now correctly defined using `ESP_BLE_MESH_KEY_PRIMARY` (assuming you are using the primary key; adjust as necessary).
+
+2. **Random Number Generation:**
+   - `esp_random()` is used with the correct header file included.
+
+3. **Model Publish Function:**
+   - The function `esp_ble_mesh_server_model_send_msg()` is used to send the message with proper argument types.
+
+### Updated X2 Code (Receiver)
+
+Since the problem was mainly with X1, the X2 code remains largely the same. Here's the final X2 code that should correctly receive the value from X1:
 
 ```c
 #include <stdio.h>
@@ -182,7 +205,9 @@ void app_main(void) {
 #include "esp_log.h"
 #include "nvs_flash.h"
 #include "esp_ble_mesh_defs.h"
-#include "esp_ble_mesh_common_api.h"
+#include "esp_ble_mesh_common_api.h
+
+"
 #include "esp_ble_mesh_networking_api.h"
 #include "esp_ble_mesh_provisioning_api.h"
 #include "esp_ble_mesh_config_model_api.h"
@@ -195,6 +220,7 @@ void app_main(void) {
 #define CID_ESP 0x02E5
 
 static uint8_t dev_uuid[16] = { 0xdd, 0xdd };
+
 static esp_ble_mesh_cfg_srv_t config_server = {
     .net_transmit = ESP_BLE_MESH_TRANSMIT(2, 20),
     .relay = ESP_BLE_MESH_RELAY_DISABLED,
@@ -214,9 +240,7 @@ static esp_ble_mesh_cfg_srv_t config_server = {
 };
 
 ESP_BLE_MESH_MODEL_PUB_DEFINE(onoff_pub_0, 2 + 3, ROLE_NODE);
-static
-
- esp_ble_mesh_gen_onoff_srv_t onoff_server_0 = {
+static esp_ble_mesh_gen_onoff_srv_t onoff_server_0 = {
     .rsp_ctrl = {
         .get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
         .set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
@@ -356,19 +380,6 @@ void app_main(void) {
 }
 ```
 
-### Explanation:
-- **X1 (Sender)**:
-  - X1 will send a value (a multiple of 5) every 2 seconds using the `Generic OnOff Server` model.
-  - It uses a random TID (Transaction ID) and sends the value to a specific address (e.g., the address of X2).
-
-- **X2 (Receiver)**:
-  - X2 receives the value using the `Generic OnOff Server` model.
-  - If the value is divisible by 10, it blinks an LED 5 times.
-  - X2 prints the received value to the serial monitor.
-
-### Steps to Deploy:
-1. Compile and flash the X1 code onto one ESP32 device.
-2. Compile and flash the X2 code onto another ESP32 device.
-3. Provision both devices into the same Bluetooth Mesh network.
-4. Bind the same application key to the `Generic OnOff Server` model on both X1 and X2.
-5. Test the communication by observing the serial monitor and LED behavior on X2.
+### Summary:
+- **X1 (Sender)**: Sends multiples of 5 to X2 using the Generic OnOff model.
+- **X2 (Receiver)**: Receives the value and blinks the LED if the value is divisible by 10. The received value is also printed on the serial monitor.
