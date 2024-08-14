@@ -1,6 +1,7 @@
-## client
+# zclient
 
-```C
+
+``` C
 /* main.c - Application main entry point */
 
 /*
@@ -52,8 +53,6 @@
 
 #define ESP_BLE_MESH_VND_MODEL_OP_SEND      ESP_BLE_MESH_MODEL_OP_3(0x00, CID_ESP)
 #define ESP_BLE_MESH_VND_MODEL_OP_STATUS    ESP_BLE_MESH_MODEL_OP_3(0x01, CID_ESP)
-
-
 
 static uint8_t dev_uuid[ESP_BLE_MESH_OCTET16_LEN];
 
@@ -266,9 +265,12 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
             param->provisioner_prov_link_close.bearer == ESP_BLE_MESH_PROV_ADV ? "PB-ADV" : "PB-GATT", param->provisioner_prov_link_close.reason);
         break;
     case ESP_BLE_MESH_PROVISIONER_PROV_COMPLETE_EVT:
-        prov_complete(param->provisioner_prov_complete.node_idx, param->provisioner_prov_complete.device_uuid,
-                      param->provisioner_prov_complete.unicast_addr, param->provisioner_prov_complete.element_num,
-                      param->provisioner_prov_complete.netkey_idx);
+        ESP_LOGI(TAG, "Provisioning completed for device with UUID:");
+        ESP_LOG_BUFFER_HEX("UUID", param->provisioner_prov_complete.device_uuid, 16);
+        ESP_LOGI(TAG, "Assigned unicast address: 0x%04x", param->provisioner_prov_complete.unicast_addr);
+        
+        // Save the server's unicast address to send messages later
+        store.server_addr = param->provisioner_prov_complete.unicast_addr;
         break;
     case ESP_BLE_MESH_PROVISIONER_ADD_UNPROV_DEV_COMP_EVT:
         ESP_LOGI(TAG, "ESP_BLE_MESH_PROVISIONER_ADD_UNPROV_DEV_COMP_EVT, err_code %d", param->provisioner_add_unprov_dev_comp.err_code);
@@ -344,7 +346,6 @@ static void example_ble_mesh_parse_node_comp_data(const uint8_t *data, uint16_t 
     }
     ESP_LOGI(TAG, "*********************** Composition Data End ***********************");
 }
-
 static void example_ble_mesh_config_client_cb(esp_ble_mesh_cfg_client_cb_event_t event,
                                               esp_ble_mesh_cfg_client_cb_param_t *param)
 {
@@ -382,6 +383,7 @@ static void example_ble_mesh_config_client_cb(esp_ble_mesh_cfg_client_cb_event_t
                 break;
             }
 
+            // Add AppKey after getting the composition data
             example_ble_mesh_set_msg_common(&common, node, config_client.model, ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD);
             set.app_key_add.net_idx = prov_key.net_idx;
             set.app_key_add.app_idx = prov_key.app_idx;
@@ -392,8 +394,10 @@ static void example_ble_mesh_config_client_cb(esp_ble_mesh_cfg_client_cb_event_t
             }
         }
         break;
+
     case ESP_BLE_MESH_CFG_CLIENT_SET_STATE_EVT:
         if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD) {
+            // Bind the AppKey to the server's model after adding it
             example_ble_mesh_set_msg_common(&common, node, config_client.model, ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND);
             set.model_app_bind.element_addr = node->unicast_addr;
             set.model_app_bind.model_app_idx = prov_key.app_idx;
@@ -404,16 +408,12 @@ static void example_ble_mesh_config_client_cb(esp_ble_mesh_cfg_client_cb_event_t
                 ESP_LOGE(TAG, "Failed to send Config Model App Bind");
             }
         } else if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND) {
-            ESP_LOGW(TAG, "%s, Provision and config successfully", __func__);
+            ESP_LOGI(TAG, "AppKey successfully bound to server model");
         }
         break;
-    case ESP_BLE_MESH_CFG_CLIENT_PUBLISH_EVT:
-        if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_COMPOSITION_DATA_STATUS) {
-            ESP_LOG_BUFFER_HEX("Composition data", param->status_cb.comp_data_status.composition_data->data,
-                param->status_cb.comp_data_status.composition_data->len);
-        }
-        break;
+
     case ESP_BLE_MESH_CFG_CLIENT_TIMEOUT_EVT:
+        // Retry the operation in case of timeout
         switch (param->params->opcode) {
         case ESP_BLE_MESH_MODEL_OP_COMPOSITION_DATA_GET: {
             esp_ble_mesh_cfg_client_get_state_t get = {0};
@@ -447,40 +447,54 @@ static void example_ble_mesh_config_client_cb(esp_ble_mesh_cfg_client_cb_event_t
             }
             break;
         default:
+            ESP_LOGE(TAG, "Unknown operation timeout");
             break;
         }
         break;
+
     default:
         ESP_LOGE(TAG, "Invalid config client event %u", event);
         break;
     }
 }
 
+
+
+
 void example_ble_mesh_send_vendor_message(bool resend)
 {
+    if (store.server_addr == ESP_BLE_MESH_ADDR_UNASSIGNED) {
+        ESP_LOGW(TAG, "Server address is unassigned, cannot send message");
+        return;
+    }
+
     esp_ble_mesh_msg_ctx_t ctx = {0};
     uint32_t opcode;
     esp_err_t err;
 
     ctx.net_idx = prov_key.net_idx;
     ctx.app_idx = prov_key.app_idx;
-    ctx.addr = store.server_addr;
+    ctx.addr = store.server_addr;  // Server's unicast address
     ctx.send_ttl = MSG_SEND_TTL;
     opcode = ESP_BLE_MESH_VND_MODEL_OP_SEND;
 
-    if (resend == false) {
+    if (!resend) {
         store.vnd_tid++;
     }
 
+    char *hello_message = "Hello";
+
     err = esp_ble_mesh_client_model_send_msg(vendor_client.model, &ctx, opcode,
-            sizeof(store.vnd_tid), (uint8_t *)&store.vnd_tid, MSG_TIMEOUT, true, MSG_ROLE);
+            strlen(hello_message), (uint8_t *)hello_message, MSG_TIMEOUT, true, MSG_ROLE);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to send vendor message 0x%06" PRIx32, opcode);
         return;
     }
 
-    mesh_example_info_store(); /* Store proper mesh example info */
+    mesh_example_info_store(); /* Store the updated info */
 }
+
+
 
 static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event,
                                              esp_ble_mesh_model_cb_param_t *param)
@@ -491,8 +505,8 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
     case ESP_BLE_MESH_MODEL_OPERATION_EVT:
         if (param->model_operation.opcode == ESP_BLE_MESH_VND_MODEL_OP_STATUS) {
             int64_t end_time = esp_timer_get_time();
-            ESP_LOGI(TAG, "Recv 0x06%" PRIx32 ", tid 0x%04x, time %lldus",
-                param->model_operation.opcode, store.vnd_tid, end_time - start_time);
+            ESP_LOGI(TAG, "Received message: %s, time %lldus",
+                (char *)param->model_operation.msg, end_time - start_time);
         }
         break;
     case ESP_BLE_MESH_MODEL_SEND_COMP_EVT:
@@ -501,10 +515,10 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
             break;
         }
         start_time = esp_timer_get_time();
-        ESP_LOGI(TAG, "Send 0x%06" PRIx32, param->model_send_comp.opcode);
+        ESP_LOGI(TAG, "Send complete, opcode: 0x%06" PRIx32, param->model_send_comp.opcode);
         break;
     case ESP_BLE_MESH_CLIENT_MODEL_RECV_PUBLISH_MSG_EVT:
-        ESP_LOGI(TAG, "Receive publish message 0x%06" PRIx32, param->client_recv_publish_msg.opcode);
+        ESP_LOGI(TAG, "Received publish message 0x%06" PRIx32, param->client_recv_publish_msg.opcode);
         break;
     case ESP_BLE_MESH_CLIENT_MODEL_SEND_TIMEOUT_EVT:
         ESP_LOGW(TAG, "Client message 0x%06" PRIx32 " timeout", param->client_send_timeout.opcode);
@@ -562,7 +576,6 @@ static esp_err_t ble_mesh_init(void)
 
     return ESP_OK;
 }
-
 void app_main(void)
 {
     esp_err_t err;
@@ -584,7 +597,7 @@ void app_main(void)
         return;
     }
 
-    /* Open nvs namespace for storing/restoring mesh example info */
+    /* Open NVS namespace for storing/restoring mesh example info */
     err = ble_mesh_nvs_open(&NVS_HANDLE);
     if (err) {
         return;
@@ -597,12 +610,28 @@ void app_main(void)
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Bluetooth mesh init failed (err %d)", err);
     }
+
+    // Wait until the server address is assigned before sending messages
+    while (store.server_addr == ESP_BLE_MESH_ADDR_UNASSIGNED) {
+        ESP_LOGI(TAG, "Waiting for server address to be assigned...");
+        vTaskDelay(pdMS_TO_TICKS(1000));  // Wait for 1 second before checking again
+    }
+
+    ESP_LOGI(TAG, "Server address assigned: 0x%04x. Ready to send messages.", store.server_addr);
+
+    // Send "Hello" messages in a loop
+    while (true) {
+        example_ble_mesh_send_vendor_message(false);
+        vTaskDelay(pdMS_TO_TICKS(1000));  // Send message every 1 second
+    }
 }
 
+
 ```
+# Server
 
 
-```C
+``` C
 /* main.c - Application main entry point */
 
 /*
@@ -715,9 +744,10 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
             param->node_prov_link_close.bearer == ESP_BLE_MESH_PROV_ADV ? "PB-ADV" : "PB-GATT");
         break;
     case ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT:
-        ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT");
-        prov_complete(param->node_prov_complete.net_idx, param->node_prov_complete.addr,
-            param->node_prov_complete.flags, param->node_prov_complete.iv_index);
+        ESP_LOGI(TAG, "Server provisioned with net_idx 0x%04x, addr 0x%04x",
+                 param->node_prov_complete.net_idx, param->node_prov_complete.addr);
+        // Store or use the server's unicast address
+        uint16_t server_unicast_addr = param->node_prov_complete.addr;
         break;
     case ESP_BLE_MESH_NODE_PROV_RESET_EVT:
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_RESET_EVT");
@@ -762,27 +792,25 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
     switch (event) {
     case ESP_BLE_MESH_MODEL_OPERATION_EVT:
         if (param->model_operation.opcode == ESP_BLE_MESH_VND_MODEL_OP_SEND) {
-            uint16_t tid = *(uint16_t *)param->model_operation.msg;
-            ESP_LOGI(TAG, "Recv 0x%06" PRIx32 ", tid 0x%04x", param->model_operation.opcode, tid);
+            ESP_LOGI(TAG, "Received message: %s", (char *)param->model_operation.msg);
+
+            // Optionally, send a status response
             esp_err_t err = esp_ble_mesh_server_model_send_msg(&vnd_models[0],
-                    param->model_operation.ctx, ESP_BLE_MESH_VND_MODEL_OP_STATUS,
-                    sizeof(tid), (uint8_t *)&tid);
-            if (err) {
-                ESP_LOGE(TAG, "Failed to send message 0x%06x", ESP_BLE_MESH_VND_MODEL_OP_STATUS);
+                param->model_operation.ctx, ESP_BLE_MESH_VND_MODEL_OP_STATUS,
+                param->model_operation.length, param->model_operation.msg);
+            if (err != ESP_OK) {
+                ESP_LOGE(TAG, "Failed to send status message");
             }
         }
         break;
-    case ESP_BLE_MESH_MODEL_SEND_COMP_EVT:
-        if (param->model_send_comp.err_code) {
-            ESP_LOGE(TAG, "Failed to send message 0x%06" PRIx32, param->model_send_comp.opcode);
-            break;
-        }
-        ESP_LOGI(TAG, "Send 0x%06" PRIx32, param->model_send_comp.opcode);
-        break;
+
+    // Handle other events if necessary...
     default:
         break;
     }
 }
+
+
 
 static esp_err_t ble_mesh_init(void)
 {
@@ -811,6 +839,8 @@ static esp_err_t ble_mesh_init(void)
     return ESP_OK;
 }
 
+
+
 void app_main(void)
 {
     esp_err_t err;
@@ -836,8 +866,37 @@ void app_main(void)
 
     /* Initialize the Bluetooth Mesh Subsystem */
     err = ble_mesh_init();
-    if (err) {
+    if (err != ESP_OK) {
         ESP_LOGE(TAG, "Bluetooth mesh init failed (err %d)", err);
+        return;
+    }
+
+    esp_ble_mesh_msg_ctx_t ctx = {
+        .net_idx = 0x0000,               // Update with your network index
+        .app_idx = 0x0000,               // Update with your application index
+        .addr = 0xFFFF,                  // Broadcast address, replace with a specific address if needed
+        .send_ttl = ESP_BLE_MESH_TTL_DEFAULT,
+        .send_rel = false,               // Set to true if you want reliable transmission
+        .send_tag = 0                    // Use default message tag
+    };
+
+    uint16_t tid = 0;
+    while (true) {
+        char *hello_message = "Hello";
+        tid++;
+
+        /* Send the Hello message */
+        esp_err_t send_err = esp_ble_mesh_server_model_send_msg(&vnd_models[0],
+                &ctx, ESP_BLE_MESH_VND_MODEL_OP_SEND,
+                strlen(hello_message), (uint8_t *)hello_message);
+        
+        if (send_err) {
+            ESP_LOGE(TAG, "Failed to send Hello message (err %d)", send_err);
+        } else {
+            ESP_LOGI(TAG, "Hello message sent, tid: %d", tid);
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(1000)); // Send message every 1 second
     }
 }
 
