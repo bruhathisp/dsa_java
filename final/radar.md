@@ -1,3 +1,4 @@
+``` C
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
@@ -108,3 +109,4 @@ void app_main(void)
     xTaskCreate(tx_task, "uart_tx_task", 1024 * 4, NULL, configMAX_PRIORITIES - 2, NULL);
     ESP_LOGI(TAG, "Tasks created, main application setup complete.");
 }
+```
