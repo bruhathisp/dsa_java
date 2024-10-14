@@ -438,6 +438,193 @@ Here are the relevant LeetCode problems and their solutions for **Day 3: Strings
 
 ---
 
+# Day 4 
+
+
+
+---
+
+### 1. **Minimum Window Substring**
+   - **LeetCode Problem**: [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+   - **Problem Breakdown**: Given two strings `s` and `t`, return the minimum window in `s` that contains all the characters in `t`. If no such window exists, return an empty string.
+   - **Time Complexity**: O(n) (where n is the length of `s`)
+   - **Space Complexity**: O(t) (where t is the length of string `t` for storing its character counts)
+   - **Java Solution**:
+     ```java
+     import java.util.HashMap;
+
+     class Solution {
+         public String minWindow(String s, String t) {
+             if (s == null || t == null || s.length() < t.length()) return "";
+             
+             HashMap<Character, Integer> mapT = new HashMap<>();
+             for (char c : t.toCharArray()) {
+                 mapT.put(c, mapT.getOrDefault(c, 0) + 1);
+             }
+             
+             int left = 0, right = 0, minStart = 0, minLen = Integer.MAX_VALUE, count = 0;
+             HashMap<Character, Integer> window = new HashMap<>();
+             
+             while (right < s.length()) {
+                 char rightChar = s.charAt(right);
+                 if (mapT.containsKey(rightChar)) {
+                     window.put(rightChar, window.getOrDefault(rightChar, 0) + 1);
+                     if (window.get(rightChar).equals(mapT.get(rightChar))) {
+                         count++;
+                     }
+                 }
+                 right++;
+                 
+                 while (count == mapT.size()) {
+                     if (right - left < minLen) {
+                         minLen = right - left;
+                         minStart = left;
+                     }
+                     
+                     char leftChar = s.charAt(left);
+                     if (mapT.containsKey(leftChar)) {
+                         window.put(leftChar, window.get(leftChar) - 1);
+                         if (window.get(leftChar) < mapT.get(leftChar)) {
+                             count--;
+                         }
+                     }
+                     left++;
+                 }
+             }
+             
+             return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+         }
+     }
+     ```
+   - **Explanation**: This solution uses the sliding window technique to expand the right pointer until a valid window is found, then contracts the left pointer to minimize the window size while still containing all the characters from `t`.
+
+---
+
+### 2. **Longest Substring with At Most Two Distinct Characters**
+   - **LeetCode Problem**: [Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/)
+   - **Problem Breakdown**: Given a string `s`, find the length of the longest substring that contains at most two distinct characters.
+   - **Time Complexity**: O(n)
+   - **Space Complexity**: O(1) (since we're dealing with a fixed number of distinct characters)
+   - **Java Solution**:
+     ```java
+     import java.util.HashMap;
+
+     class Solution {
+         public int lengthOfLongestSubstringTwoDistinct(String s) {
+             if (s.length() < 3) return s.length();
+             
+             HashMap<Character, Integer> map = new HashMap<>();
+             int left = 0, right = 0, maxLen = 0;
+             
+             while (right < s.length()) {
+                 map.put(s.charAt(right), right);
+                 right++;
+                 
+                 if (map.size() == 3) {
+                     int deleteIndex = Integer.MAX_VALUE;
+                     for (int index : map.values()) {
+                         deleteIndex = Math.min(deleteIndex, index);
+                     }
+                     map.remove(s.charAt(deleteIndex));
+                     left = deleteIndex + 1;
+                 }
+                 
+                 maxLen = Math.max(maxLen, right - left);
+             }
+             
+             return maxLen;
+         }
+     }
+     ```
+   - **Explanation**: This solution uses the sliding window to keep track of the last occurrence of each character. When the window contains more than two distinct characters, it removes the leftmost one and adjusts the window size.
+
+---
+
+### 3. **Permutation in String**
+   - **LeetCode Problem**: [Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+   - **Problem Breakdown**: Given two strings `s1` and `s2`, return `true` if `s2` contains a permutation of `s1`.
+   - **Time Complexity**: O(n) (where n is the length of `s2`)
+   - **Space Complexity**: O(1) (since the character set size is fixed at 26 letters)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         public boolean checkInclusion(String s1, String s2) {
+             if (s1.length() > s2.length()) return false;
+
+             int[] s1Count = new int[26];
+             int[] s2Count = new int[26];
+
+             for (int i = 0; i < s1.length(); i++) {
+                 s1Count[s1.charAt(i) - 'a']++;
+                 s2Count[s2.charAt(i) - 'a']++;
+             }
+
+             for (int i = 0; i < s2.length() - s1.length(); i++) {
+                 if (matches(s1Count, s2Count)) return true;
+                 s2Count[s2.charAt(i + s1.length()) - 'a']++;
+                 s2Count[s2.charAt(i) - 'a']--;
+             }
+
+             return matches(s1Count, s2Count);
+         }
+
+         private boolean matches(int[] s1Count, int[] s2Count) {
+             for (int i = 0; i < 26; i++) {
+                 if (s1Count[i] != s2Count[i]) return false;
+             }
+             return true;
+         }
+     }
+     ```
+   - **Explanation**: This solution maintains a sliding window of the size of `s1` in `s2`, checking if the character frequencies in the window match the character frequencies in `s1`.
+
+---
+
+### 4. **Find All Anagrams in a String**
+   - **LeetCode Problem**: [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+   - **Problem Breakdown**: Given a string `s` and a string `p`, return the start indices of all anagrams of `p` in `s`.
+   - **Time Complexity**: O(n) (where n is the length of `s`)
+   - **Space Complexity**: O(1) (because the character set is fixed)
+   - **Java Solution**:
+     ```java
+     import java.util.ArrayList;
+     import java.util.List;
+
+     class Solution {
+         public List<Integer> findAnagrams(String s, String p) {
+             List<Integer> result = new ArrayList<>();
+             if (s.length() < p.length()) return result;
+
+             int[] pCount = new int[26];
+             int[] sCount = new int[26];
+
+             for (int i = 0; i < p.length(); i++) {
+                 pCount[p.charAt(i) - 'a']++;
+                 sCount[s.charAt(i) - 'a']++;
+             }
+
+             for (int i = 0; i < s.length() - p.length(); i++) {
+                 if (matches(pCount, sCount)) result.add(i);
+                 sCount[s.charAt(i + p.length()) - 'a']++;
+                 sCount[s.charAt(i) - 'a']--;
+             }
+
+             if (matches(pCount, sCount)) result.add(s.length() - p.length());
+
+             return result;
+         }
+
+         private boolean matches(int[] pCount, int[] sCount) {
+             for (int i = 0; i < 26; i++) {
+                 if (pCount[i] != sCount[i]) return false;
+             }
+             return true;
+         }
+     }
+     ```
+   - **Explanation**: This solution uses a sliding window of size `p.length()` and checks if the character frequencies in the current window match those in `p`. If they match, the start index of the window is added to the result list.
+
+---
 
 
 # Day 5
