@@ -299,3 +299,141 @@ This binary search solution is efficient because it doesn’t rely on modifying 
      ```
    - **Explanation**: The matrix is treated as a 1D array for the purposes of binary search. Index `mid` is mapped to a 2D position using `mid / cols` (row index) and `mid % cols` (column index).
 
+# Day 3
+
+Here are the relevant LeetCode problems and their solutions for **Day 3: Strings - Basic Operations**:
+
+---
+
+### 1. **Valid Palindrome**
+   - **LeetCode Problem**: [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+   - **Problem Breakdown**: Given a string `s`, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+   - **Time Complexity**: O(n) (where n is the length of the string)
+   - **Space Complexity**: O(1)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         public boolean isPalindrome(String s) {
+             int left = 0, right = s.length() - 1;
+             
+             while (left < right) {
+                 // Move left pointer to the next alphanumeric character
+                 while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                     left++;
+                 }
+                 // Move right pointer to the next alphanumeric character
+                 while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                     right--;
+                 }
+                 
+                 if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+                     return false;
+                 }
+                 left++;
+                 right--;
+             }
+             
+             return true;
+         }
+     }
+     ```
+   - **Explanation**: This solution uses two pointers to compare characters from both ends of the string, ignoring non-alphanumeric characters and ignoring case. It continues until the pointers meet in the middle or a mismatch is found.
+
+---
+
+### 2. **Longest Common Prefix**
+   - **LeetCode Problem**: [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+   - **Problem Breakdown**: Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.
+   - **Time Complexity**: O(n * m) (where n is the number of strings and m is the length of the shortest string)
+   - **Space Complexity**: O(1)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         public String longestCommonPrefix(String[] strs) {
+             if (strs == null || strs.length == 0) return "";
+             
+             String prefix = strs[0];  // Assume the first string is the prefix
+             
+             for (int i = 1; i < strs.length; i++) {
+                 while (strs[i].indexOf(prefix) != 0) {
+                     prefix = prefix.substring(0, prefix.length() - 1);
+                     if (prefix.isEmpty()) return "";
+                 }
+             }
+             
+             return prefix;
+         }
+     }
+     ```
+   - **Explanation**: This solution starts by assuming the first string is the longest common prefix. It then checks subsequent strings, progressively shortening the prefix until it matches the beginning of each string. If no common prefix is found, it returns an empty string.
+
+---
+
+### 3. **Longest Substring Without Repeating Characters**
+   - **LeetCode Problem**: [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+   - **Problem Breakdown**: Given a string `s`, find the length of the longest substring without repeating characters.
+   - **Time Complexity**: O(n)
+   - **Space Complexity**: O(min(n, m)) (where n is the length of the string and m is the character set size, typically 128 for ASCII)
+   - **Java Solution**:
+     ```java
+     import java.util.HashSet;
+
+     class Solution {
+         public int lengthOfLongestSubstring(String s) {
+             HashSet<Character> set = new HashSet<>();
+             int left = 0, maxLength = 0;
+             
+             for (int right = 0; right < s.length(); right++) {
+                 while (set.contains(s.charAt(right))) {
+                     set.remove(s.charAt(left));
+                     left++;
+                 }
+                 set.add(s.charAt(right));
+                 maxLength = Math.max(maxLength, right - left + 1);
+             }
+             
+             return maxLength;
+         }
+     }
+     ```
+   - **Explanation**: This solution uses the sliding window technique. A hash set keeps track of the characters in the current window. If a duplicate character is found, the window is shrunk from the left until the duplicate is removed. The length of the longest valid substring is tracked during the process.
+
+---
+
+### 4. **Longest Palindromic Substring**
+   - **LeetCode Problem**: [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+   - **Problem Breakdown**: Given a string `s`, return the longest palindromic substring in `s`.
+   - **Time Complexity**: O(n^2)
+   - **Space Complexity**: O(1)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         private int expandAroundCenter(String s, int left, int right) {
+             while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                 left--;
+                 right++;
+             }
+             return right - left - 1;
+         }
+
+         public String longestPalindrome(String s) {
+             if (s == null || s.length() < 1) return "";
+             
+             int start = 0, end = 0;
+             for (int i = 0; i < s.length(); i++) {
+                 int len1 = expandAroundCenter(s, i, i);  // Odd-length palindrome
+                 int len2 = expandAroundCenter(s, i, i + 1);  // Even-length palindrome
+                 int len = Math.max(len1, len2);
+                 if (len > end - start) {
+                     start = i - (len - 1) / 2;
+                     end = i + len / 2;
+                 }
+             }
+             
+             return s.substring(start, end + 1);
+         }
+     }
+     ```
+   - **Explanation**: This solution expands around every possible center in the string (both single character centers and two-character centers) to check for palindromes. It tracks the start and end indices of the longest palindrome found during this expansion process.
+
+---
