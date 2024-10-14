@@ -437,3 +437,144 @@ Here are the relevant LeetCode problems and their solutions for **Day 3: Strings
    - **Explanation**: This solution expands around every possible center in the string (both single character centers and two-character centers) to check for palindromes. It tracks the start and end indices of the longest palindrome found during this expansion process.
 
 ---
+
+
+
+# Day 5
+Here are the solutions for **Day 5: Two Pointers Technique**:
+
+---
+
+### 1. **3Sum**
+   - **LeetCode Problem**: [3Sum](https://leetcode.com/problems/3sum/)
+   - **Problem Breakdown**: Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`. The solution set must not contain duplicate triplets.
+   - **Time Complexity**: O(n^2) (due to sorting and two-pointer traversal for each element)
+   - **Space Complexity**: O(n) (space for the result list)
+   - **Java Solution**:
+     ```java
+     import java.util.*;
+
+     class Solution {
+         public List<List<Integer>> threeSum(int[] nums) {
+             List<List<Integer>> result = new ArrayList<>();
+             Arrays.sort(nums);  // Sort the array to use two pointers
+             
+             for (int i = 0; i < nums.length - 2; i++) {
+                 if (i > 0 && nums[i] == nums[i - 1]) continue;  // Skip duplicates
+                 
+                 int left = i + 1, right = nums.length - 1;
+                 while (left < right) {
+                     int sum = nums[i] + nums[left] + nums[right];
+                     if (sum == 0) {
+                         result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                         while (left < right && nums[left] == nums[left + 1]) left++;  // Skip duplicates
+                         while (left < right && nums[right] == nums[right - 1]) right--;  // Skip duplicates
+                         left++;
+                         right--;
+                     } else if (sum < 0) {
+                         left++;
+                     } else {
+                         right--;
+                     }
+                 }
+             }
+             
+             return result;
+         }
+     }
+     ```
+   - **Explanation**: The solution sorts the array and uses a fixed pointer (`i`) and two other pointers (`left` and `right`). It skips duplicates to avoid repeated triplets and moves the pointers based on the sum of the three numbers.
+
+---
+
+### 2. **Container With Most Water**
+   - **LeetCode Problem**: [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+   - **Problem Breakdown**: You are given an integer array `height` representing the height of lines. Find two lines that, together with the x-axis, form a container that can hold the most water.
+   - **Time Complexity**: O(n) (single traversal of the array using two pointers)
+   - **Space Complexity**: O(1)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         public int maxArea(int[] height) {
+             int left = 0, right = height.length - 1;
+             int maxArea = 0;
+             
+             while (left < right) {
+                 int width = right - left;
+                 int area = Math.min(height[left], height[right]) * width;
+                 maxArea = Math.max(maxArea, area);
+                 
+                 if (height[left] < height[right]) {
+                     left++;
+                 } else {
+                     right--;
+                 }
+             }
+             
+             return maxArea;
+         }
+     }
+     ```
+   - **Explanation**: This two-pointer solution starts at both ends of the array. The idea is to maximize the area by gradually narrowing the window from both sides. The shorter line between the two pointers is moved inward because it limits the area.
+
+---
+
+### 3. **Two Sum II**
+   - **LeetCode Problem**: [Two Sum II](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+   - **Problem Breakdown**: Given a 1-indexed array of integers `numbers` that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number.
+   - **Time Complexity**: O(n)
+   - **Space Complexity**: O(1)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         public int[] twoSum(int[] numbers, int target) {
+             int left = 0, right = numbers.length - 1;
+             
+             while (left < right) {
+                 int sum = numbers[left] + numbers[right];
+                 if (sum == target) {
+                     return new int[]{left + 1, right + 1};  // Return 1-indexed positions
+                 } else if (sum < target) {
+                     left++;
+                 } else {
+                     right--;
+                 }
+             }
+             
+             return new int[]{-1, -1};  // In case no solution is found
+         }
+     }
+     ```
+   - **Explanation**: The solution leverages the sorted nature of the array to use two pointers. It moves the left pointer if the sum is less than the target, or the right pointer if the sum is greater.
+
+---
+
+### 4. **Remove Duplicates from Sorted Array II**
+   - **LeetCode Problem**: [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
+   - **Problem Breakdown**: Given a sorted array `nums`, remove duplicates in-place such that duplicates appear at most twice, and return the new length.
+   - **Time Complexity**: O(n)
+   - **Space Complexity**: O(1)
+   - **Java Solution**:
+     ```java
+     class Solution {
+         public int removeDuplicates(int[] nums) {
+             if (nums.length <= 2) return nums.length;
+             
+             int i = 2;  // Start from index 2 since the first two elements are allowed
+             
+             for (int j = 2; j < nums.length; j++) {
+                 if (nums[j] != nums[i - 2]) {
+                     nums[i] = nums[j];
+                     i++;
+                 }
+             }
+             
+             return i;
+         }
+     }
+     ```
+   - **Explanation**: This solution ensures that each element appears at most twice by maintaining two pointers: one for writing (`i`) and the other for reading (`j`). It checks if the current element can be written by comparing it to the element two positions before.
+
+---
+
+These problems effectively demonstrate the **two pointers technique**, a powerful approach for solving problems involving arrays and strings with linear complexity. This method optimizes performance by reducing unnecessary comparisons or recalculations.
