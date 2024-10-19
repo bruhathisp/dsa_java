@@ -459,6 +459,31 @@ Here are the relevant LeetCode problems and their solutions for **Day 3: Strings
    - **Problem Breakdown**: Given two strings `s` and `t`, return the minimum window in `s` that contains all the characters in `t`. If no such window exists, return an empty string.
    - **Time Complexity**: O(n) (where n is the length of `s`)
    - **Space Complexity**: O(t) (where t is the length of string `t` for storing its character counts)
+Sure! Here's a simple explanation of that `while` loop:
+
+### What's happening:
+
+1. **Condition**: `while (count == mapT.size())`
+   - This checks if the current window has all the characters from `t` with the right frequencies. When this condition is true, it means we found a valid window.
+
+2. **Minimize the window**:
+   - We check if the current window size (`right - left`) is smaller than the smallest window we've seen so far (`minLen`).
+   - If it is, we update `minLen` to this smaller window size and store the starting index (`minStart`).
+
+3. **Shrink the window**:
+   - Now we try to move the `left` pointer to shrink the window while still keeping it valid (i.e., containing all characters from `t`).
+   - We look at the character at the `left` pointer (`leftChar`).
+
+4. **Update the window**:
+   - If `leftChar` is part of `t` (i.e., exists in `mapT`), we reduce its frequency in the `window` map.
+   - If the frequency of `leftChar` in the window goes below the required frequency in `mapT`, we decrease `count` because the window is no longer valid.
+
+5. **Move the `left` pointer**:
+   - We increment `left` to shrink the window and continue the process until the window is no longer valid (i.e., `count < mapT.size()`).
+
+### In short:
+While the window is valid (has all characters of `t`), we check if it's the smallest one, then shrink the window from the left. If we remove a necessary character, we make the window invalid and stop shrinking.
+
    - **Java Solution**:
      ```java
      import java.util.HashMap;
