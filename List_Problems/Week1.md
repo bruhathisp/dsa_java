@@ -499,8 +499,8 @@ While the window is valid (has all characters of `t`), we check if it's the smal
              
              int left = 0, right = 0, minStart = 0, minLen = Integer.MAX_VALUE, count = 0;
              HashMap<Character, Integer> window = new HashMap<>();
-             
-             while (right < s.length()) {
+             // increment right start
+             while (right < s.length()) {  
                  char rightChar = s.charAt(right);
                  if (mapT.containsKey(rightChar)) {
                      window.put(rightChar, window.getOrDefault(rightChar, 0) + 1);
@@ -509,14 +509,16 @@ While the window is valid (has all characters of `t`), we check if it's the smal
                      }
                  }
                  right++;
-                 
+     // increment left start
                  while (count == mapT.size()) {
                      if (right - left < minLen) {
                          minLen = right - left;
                          minStart = left;
                      }
+     
                      
                      char leftChar = s.charAt(left);
+     // when you remove the left character if the character in mapT, decrease the count and decrement the leftchar value from window
                      if (mapT.containsKey(leftChar)) {
                          window.put(leftChar, window.get(leftChar) - 1);
                          if (window.get(leftChar) < mapT.get(leftChar)) {
@@ -525,7 +527,9 @@ While the window is valid (has all characters of `t`), we check if it's the smal
                      }
                      left++;
                  }
+     // increment left end
              }
+     // increment right end
              
              return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
          }
