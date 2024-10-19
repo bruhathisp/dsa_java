@@ -558,7 +558,8 @@ While the window is valid (has all characters of `t`), we check if it's the smal
              while (right < s.length()) {
                  map.put(s.charAt(right), right);
                  right++;
-                 
+     // When map size exceeds 2: Remove the character with the smallest index (oldest), and adjust left to shrink the window.
+     //Update maxLen: After each iteration, update maxLen with the length of the current valid substring.
                  if (map.size() == 3) {
                      int deleteIndex = Integer.MAX_VALUE;
                      for (int index : map.values()) {
