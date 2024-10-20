@@ -5,6 +5,7 @@
 - [Day3](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-3)
 - [Day4](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-4)
 - [Day5](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-5)
+- - [Day6](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-6)
 
 
 
@@ -806,3 +807,158 @@ The strategy is to first sort the array `nums` and then use a for-loop with inde
 ---
 
 These problems effectively demonstrate the **two pointers technique**, a powerful approach for solving problems involving arrays and strings with linear complexity. This method optimizes performance by reducing unnecessary comparisons or recalculations.
+
+
+# Day 6
+
+
+### 1. Subarray Sum Equals K
+
+**Problem Statement:** Given an array of integers `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k` citeturn0search2.
+
+**Approach:**
+
+Utilize the prefix sum technique with a hash map to store the frequency of each prefix sum. As you iterate through the array, calculate the current prefix sum and check if `(prefix_sum - k)` exists in the hash map. If it does, it indicates that there's a subarray ending at the current index with a sum of `k`.
+
+**Time Complexity:** O(n), where n is the length of `nums`.
+
+**Space Complexity:** O(n), due to the storage of the hash map.
+
+**Java Code:**
+
+```java
+import java.util.HashMap;
+
+public class SubarraySumEqualsK {
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        int prefixSum = 0;
+        HashMap<Integer, Integer> prefixSumMap = new HashMap<>();
+        prefixSumMap.put(0, 1); // Initialize with prefix sum 0
+
+        for (int num : nums) {
+            prefixSum += num;
+            if (prefixSumMap.containsKey(prefixSum - k)) {
+                count += prefixSumMap.get(prefixSum - k);
+            }
+            prefixSumMap.put(prefixSum, prefixSumMap.getOrDefault(prefixSum, 0) + 1);
+        }
+
+        return count;
+    }
+}
+```
+
+### 2. Product of Array Except Self
+
+**Problem Statement:** Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`. You must write an algorithm that runs in O(n) time and without using the division operation citeturn0search1.
+
+**Approach:**
+
+Compute the product of all elements to the left and right of each index. Traverse the array twice: once from left to right to compute the left products, and once from right to left to compute the right products. Multiply the left and right products to get the final result.
+
+**Time Complexity:** O(n), where n is the length of `nums`.
+
+**Space Complexity:** O(1), as the output array does not count as extra space.
+
+**Java Code:**
+
+```java
+public class ProductOfArrayExceptSelf {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] answer = new int[n];
+        
+        // Compute left products
+        int left = 1;
+        for (int i = 0; i < n; i++) {
+            answer[i] = left;
+            left *= nums[i];
+        }
+        
+        // Compute right products and final result
+        int right = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            answer[i] *= right;
+            right *= nums[i];
+        }
+        
+        return answer;
+    }
+}
+```
+
+### 3. Maximum Subarray
+
+**Problem Statement:** Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum citeturn0search3.
+
+**Approach:**
+
+Implement Kadane's Algorithm, which involves iterating through the array and maintaining the current subarray sum and the maximum sum found so far. If the current sum becomes negative, reset it to zero, as negative sums do not contribute to the maximum sum.
+
+**Time Complexity:** O(n), where n is the length of `nums`.
+
+**Space Complexity:** O(1), as it uses a constant amount of extra space.
+
+**Java Code:**
+
+```java
+public class MaximumSubarray {
+    public int maxSubArray(int[] nums) {
+        int maxSum = Integer.MIN_VALUE;
+        int currentSum = 0;
+
+        for (int num : nums) {
+            currentSum += num;
+            if (currentSum > maxSum) {
+                maxSum = currentSum;
+            }
+            if (currentSum < 0) {
+                currentSum = 0;
+            }
+        }
+
+        return maxSum;
+    }
+}
+```
+
+### 4. Continuous Subarray Sum
+
+**Problem Statement:** Given an integer array `nums` and an integer `k`, return true if `nums` has a continuous subarray of size at least two whose elements sum up to a multiple of `k`, or false otherwise citeturn0search0.
+
+**Approach:**
+
+Use modular arithmetic to determine if the sum of any subarray is a multiple of `k`. Maintain a hash map to store the index of the first occurrence of each prefix sum modulo `k`. As you iterate through the array, calculate the current prefix sum modulo `k` and check if it has been seen before. If it has, and the subarray length is at least two, return true.
+
+**Time Complexity:** O(n), where n is the length of `nums`.
+
+**Space Complexity:** O(n), due to the storage of the hash map.
+
+**Java Code:**
+
+```java
+import java.util.HashMap;
+
+public class ContinuousSubarraySum {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int prefixSum = 0;
+        HashMap<Integer, Integer> modIndexMap = new HashMap<>();
+        modIndexMap.put(0, -1); // Initialize with modulus 0 at index -1
+
+        for (int i = 0; i < nums.length; i++) {
+            prefixSum += nums[i];
+            int modulus = prefixSum % k;
+            if (modIndexMap.containsKey(modulus)) {
+                if (i - modIndexMap.get(modulus) >= 2) {
+                    return true;
+                }
+            } else {
+                modIndexMap.put(modulus, i);
+            }
+        }
+
+        return false;
+    }
+}
+```
