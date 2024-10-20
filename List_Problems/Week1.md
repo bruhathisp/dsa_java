@@ -817,7 +817,7 @@ These problems effectively demonstrate the **two pointers technique**, a powerfu
 
 ### 1. [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
 
-**Problem Statement:** Given an array of integers `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k` citeturn0search2.
+**Problem Statement:** Given an array of integers `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k` .
 
 **Approach:**
 **The key insight is: If the difference between the current prefix sum and some earlier prefix sum equals k, then the subarray between those two points sums to k.**
@@ -895,7 +895,7 @@ public class ProductOfArrayExceptSelf {
 
 ### 3. [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 
-**Problem Statement:** Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum citeturn0search3.
+**Problem Statement:** Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum .
 
 **Approach:**
 
@@ -930,7 +930,7 @@ public class MaximumSubarray {
 
 ### 4. [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/)
 
-**Problem Statement:** Given an integer array `nums` and an integer `k`, return true if `nums` has a continuous subarray of size at least two whose elements sum up to a multiple of `k`, or false otherwise citeturn0search0.
+**Problem Statement:** Given an integer array `nums` and an integer `k`, return true if `nums` has a continuous subarray of size at least two whose elements sum up to a multiple of `k`, or false otherwise.
 
 **Approach:**
 
