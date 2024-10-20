@@ -1004,10 +1004,16 @@ public class Solution {
 ```
 ### **Trapping Rain Water** ([LeetCode Link](https://leetcode.com/problems/trapping-rain-water/))
    - **Problem Summary**: Given `n` non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
-   - **Approach**:
+   
+     
+### Key Actions:
+- Move the `left` or `right` pointer based on which height is smaller, updating `leftMax` or `rightMax` accordingly.
+- When the current height is less than the respective max (`leftMax` or `rightMax`), trap water by calculating the difference between the max and the current height.
+  
      - Use two pointers (`left` and `right`) to traverse the elevation array from both ends.
      - Keep track of the maximum height seen so far from both directions (`leftMax` and `rightMax`).
      - At each step, calculate how much water can be trapped by comparing the current height with the minimum of the two max heights.
+       
    - **Time Complexity**: O(n), where n is the length of the height array.
    - **Space Complexity**: O(1), as only a few variables are used.
    - **Java Solution**:
