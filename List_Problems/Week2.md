@@ -1,6 +1,6 @@
 # Problems
 
-- [Day1](https://github.com/bruhathisp/dsa_java/edit/main/List_Problems/Week2.md/#day-1)
+- [Day1](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week2.md#day-1)
 
 
 # Day 1
