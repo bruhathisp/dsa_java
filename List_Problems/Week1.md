@@ -820,6 +820,8 @@ These problems effectively demonstrate the **two pointers technique**, a powerfu
 **Problem Statement:** Given an array of integers `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k` citeturn0search2.
 
 **Approach:**
+**The key insight is: If the difference between the current prefix sum and some earlier prefix sum equals k, then the subarray between those two points sums to k.**
+Every time we find a match (prefixSum - k in the map), we add the frequency of that prefix sum to our count. This frequency tells us how many subarrays end at this point and sum to k.
 
 Utilize the prefix sum technique with a hash map to store the frequency of each prefix sum. As you iterate through the array, calculate the current prefix sum and check if `(prefix_sum - k)` exists in the hash map. If it does, it indicates that there's a subarray ending at the current index with a sum of `k`.
 
