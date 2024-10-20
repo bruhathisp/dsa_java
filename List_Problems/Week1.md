@@ -5,8 +5,8 @@
 - [Day3](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-3)
 - [Day4](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-4)
 - [Day5](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-5)
-- - [Day6](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-6)
-
+- [Day6](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-6)
+- [Day7](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-7)
 
 
 # Day 1
@@ -966,6 +966,73 @@ public class ContinuousSubarraySum {
         }
 
         return false;
+    }
+}
+```
+
+# Day 7
+
+
+
+
+## 1. Find Minimum in Rotated Sorted Array
+Link to problem: [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+
+### Approach
+1. We use a modified binary search algorithm.
+2. At each step, we compare the mid-element with the rightmost element to decide whether the minimum element lies in the left half or the right half of the array.
+3. The time complexity is O(log n).
+
+```java
+public class Solution {
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        return nums[left];
+    }
+}
+```
+
+## 2. Longest Palindromic Substring
+Link to problem: [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+
+### Approach
+1. Use dynamic programming to track palindromes of increasing lengths, or alternatively, expand around the center of each potential palindrome.
+2. The time complexity of the dynamic programming solution is O(n^2), and space complexity is O(n^2).
+
+```java
+public class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() < 1) return "";
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    private int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
     }
 }
 ```
