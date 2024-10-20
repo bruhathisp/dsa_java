@@ -934,7 +934,9 @@ public class MaximumSubarray {
 
 **Approach:**
 
-Use modular arithmetic to determine if the sum of any subarray is a multiple of `k`. Maintain a hash map to store the index of the first occurrence of each prefix sum modulo `k`. As you iterate through the array, calculate the current prefix sum modulo `k` and check if it has been seen before. If it has, and the subarray length is at least two, return true.
+The strategy in this algorithm is to check whether a continuous subarray in nums has a sum that is a multiple of k. The key insight is using the prefix sum and modulus operation to track repeating remainders (moduli), which help identify subarrays whose sum is divisible by k.
+
+As you iterate through the array, calculate the current prefix sum modulo `k` and check if it has been seen before. If it has, and the subarray length is at least two, return true.
 
 **Time Complexity:** O(n), where n is the length of `nums`.
 
