@@ -856,7 +856,7 @@ public class SubarraySumEqualsK {
 
 ### 2. [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 
-**Problem Statement:** Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`. You must write an algorithm that runs in O(n) time and without using the division operation citeturn0search1.
+**Problem Statement:** The problem asks for the product of all elements in the array except the current one, but without using division. This requires calculating the left and right products separately and combining them.
 
 **Approach:**
 
