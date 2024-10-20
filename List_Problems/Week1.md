@@ -677,6 +677,7 @@ Here are the solutions for **Day 5: Two Pointers Technique**:
    - **Problem Breakdown**: Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`. The solution set must not contain duplicate triplets.
    - **Time Complexity**: O(n^2) (due to sorting and two-pointer traversal for each element)
    - **Space Complexity**: O(n) (space for the result list)
+The strategy is to first sort the array `nums` and then use a for-loop with index `i` to iterate through the array, where `nums[i]` represents the first element of the triplet. For each `i`, two pointers `left` and `right` are initialized to `i + 1` and `nums.length - 1`, respectively, to find the other two elements of the triplet. The sum of `nums[i]`, `nums[left]`, and `nums[right]` is computed, and based on the sum, the pointers are adjusted: if the sum is zero, the triplet is added to the result and both pointers are moved inward, skipping duplicates. If the sum is less than zero, `left` is incremented to increase the sum, and if the sum is greater than zero, `right` is decremented to reduce the sum. This process continues until all unique triplets are found.
    - **Java Solution**:
      ```java
      import java.util.*;
