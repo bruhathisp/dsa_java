@@ -812,7 +812,10 @@ These problems effectively demonstrate the **two pointers technique**, a powerfu
 # Day 6
 
 
-### 1. Subarray Sum Equals K
+
+
+
+### 1. [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
 
 **Problem Statement:** Given an array of integers `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k` citeturn0search2.
 
@@ -849,7 +852,7 @@ public class SubarraySumEqualsK {
 }
 ```
 
-### 2. Product of Array Except Self
+### 2. [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/)
 
 **Problem Statement:** Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`. You must write an algorithm that runs in O(n) time and without using the division operation citeturn0search1.
 
@@ -888,7 +891,7 @@ public class ProductOfArrayExceptSelf {
 }
 ```
 
-### 3. Maximum Subarray
+### 3. [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 
 **Problem Statement:** Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum citeturn0search3.
 
@@ -923,7 +926,7 @@ public class MaximumSubarray {
 }
 ```
 
-### 4. Continuous Subarray Sum
+### 4. [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/)
 
 **Problem Statement:** Given an integer array `nums` and an integer `k`, return true if `nums` has a continuous subarray of size at least two whose elements sum up to a multiple of `k`, or false otherwise citeturn0search0.
 
