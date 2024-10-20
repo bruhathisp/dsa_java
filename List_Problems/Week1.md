@@ -801,7 +801,7 @@ The strategy is to first sort the array `nums` and then use a for-loop with inde
          }
      }
      ```
-   - **Explanation**: This solution ensures that each element appears at most twice by maintaining two pointers: one for writing (`i`) and the other for reading (`j`). It checks if the current element can be written by comparing it to the element two positions before.
+   - **Explanation**: The strategy is to modify the array in place to remove duplicates such that each element appears at most twice. The variable `i` starts at 2, assuming the first two elements can always remain in the array. The loop iterates through the array with index `j` starting at 2, and for each element `nums[j]`, it checks if it is different from `nums[i - 2]`. If it's different, it means the element can remain in the array, so `nums[i]` is set to `nums[j]`, and `i` is incremented. This process ensures that no element appears more than twice, and the function returns `i`, which represents the new length of the modified array.
 
 ---
 
