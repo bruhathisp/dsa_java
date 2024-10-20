@@ -1002,37 +1002,41 @@ public class Solution {
     }
 }
 ```
+### **Trapping Rain Water** ([LeetCode Link](https://leetcode.com/problems/trapping-rain-water/))
+   - **Problem Summary**: Given `n` non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+   - **Approach**:
+     - Use two pointers (`left` and `right`) to traverse the elevation array from both ends.
+     - Keep track of the maximum height seen so far from both directions (`leftMax` and `rightMax`).
+     - At each step, calculate how much water can be trapped by comparing the current height with the minimum of the two max heights.
+   - **Time Complexity**: O(n), where n is the length of the height array.
+   - **Space Complexity**: O(1), as only a few variables are used.
+   - **Java Solution**:
+     ```java
+     public class Solution {
+         public int trap(int[] height) {
+             int left = 0, right = height.length - 1;
+             int leftMax = 0, rightMax = 0;
+             int waterTrapped = 0;
 
-## 2. Longest Palindromic Substring
-Link to problem: [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+             while (left < right) {
+                 if (height[left] < height[right]) {
+                     if (height[left] >= leftMax) {
+                         leftMax = height[left];
+                     } else {
+                         waterTrapped += leftMax - height[left];
+                     }
+                     left++;
+                 } else {
+                     if (height[right] >= rightMax) {
+                         rightMax = height[right];
+                     } else {
+                         waterTrapped += rightMax - height[right];
+                     }
+                     right--;
+                 }
+             }
 
-### Approach
-1. Use dynamic programming to track palindromes of increasing lengths, or alternatively, expand around the center of each potential palindrome.
-2. The time complexity of the dynamic programming solution is O(n^2), and space complexity is O(n^2).
-
-```java
-public class Solution {
-    public String longestPalindrome(String s) {
-        if (s == null || s.length() < 1) return "";
-        int start = 0, end = 0;
-        for (int i = 0; i < s.length(); i++) {
-            int len1 = expandAroundCenter(s, i, i);
-            int len2 = expandAroundCenter(s, i, i + 1);
-            int len = Math.max(len1, len2);
-            if (len > end - start) {
-                start = i - (len - 1) / 2;
-                end = i + len / 2;
-            }
-        }
-        return s.substring(start, end + 1);
-    }
-
-    private int expandAroundCenter(String s, int left, int right) {
-        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            left--;
-            right++;
-        }
-        return right - left - 1;
-    }
-}
-```
+             return waterTrapped;
+         }
+     }
+     ```
