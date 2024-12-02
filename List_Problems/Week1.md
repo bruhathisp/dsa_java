@@ -252,6 +252,7 @@ This binary search solution is efficient because it doesn’t rely on modifying 
 
 ### 3. **Rotate Image**
    - **LeetCode Problem**: [Rotate Image](https://leetcode.com/problems/rotate-image/)
+   - https://github.com/bruhathisp/dsa_java/blob/main/AlgoVisualiser/RotateImage.md
    - **Problem Breakdown**: Given an `n x n` 2D matrix representing an image, rotate the image by 90 degrees (clockwise) **in-place**.
    - **Time Complexity**: O(n^2)
    - **Space Complexity**: O(1)
