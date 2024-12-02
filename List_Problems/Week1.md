@@ -1,7 +1,7 @@
 # Problems 
 
 - [Day1](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-1)
-- [Day2](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-2)
+- [Day2](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-2) ⭐
 - [Day3](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-3)
 - [Day4](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-4)
 - [Day5](https://github.com/bruhathisp/dsa_java/blob/main/List_Problems/Week1.md#day-5)
