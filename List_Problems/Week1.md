@@ -79,6 +79,7 @@
      - If there are more numbers than expected (i.e., `count > mid`), this indicates the duplicate lies in the range `[left, mid]`.
      - Otherwise, the duplicate is in the range `[mid + 1, right]`.
      - The search continues until the range narrows to a single number, which is the duplicate.
+     - Note: Left is 1 and if the array size is 2, the array must contain atleast 1 duplicate,so terminate the loop and return left(i.e. 1)
 
 This binary search solution is efficient because it doesn’t rely on modifying the array or using additional space beyond simple variables.
 
