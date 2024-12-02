@@ -80,6 +80,9 @@
      - Otherwise, the duplicate is in the range `[mid + 1, right]`.
      - The search continues until the range narrows to a single number, which is the duplicate.
      - Note: Left is 1 and if the array size is 2, the array must contain atleast 1 duplicate,so terminate the loop and return left(i.e. 1)
+     - Note: Eg: mid =2 iterate whole array and update count `if num <=2 `, if count is greater than 2 (mid) then there is a duplicate present in 2 or 1. so take the lower part of the series
+     - 
+     - Note: Eg: mid =2 iterate whole array and update count `if num <=2 `, if count is lesser than 2 (mid) then there is a duplicate present in 3 or 4. so take the upper part of the series
 
 This binary search solution is efficient because it doesn’t rely on modifying the array or using additional space beyond simple variables.
 
