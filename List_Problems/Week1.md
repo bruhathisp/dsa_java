@@ -34,7 +34,7 @@
      }
      ```
    - **Explanation**: This solution uses two pointers, `i` to track the position of the last unique element and `j` to explore the array. If a new unique element is found, it is placed at the `i+1` position.
-   - Not iterate with j and start at j=1
+   - Note: iterate with j and start at j=1
 
 ### 2. **Find the Duplicate Number** (Binary Search Approach)
    - **LeetCode Problem**: [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
