@@ -268,3 +268,163 @@ public class Solution {
     }
 }
 ``` 
+
+
+# Day 3
+
+### 1. [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
+
+**Problem Statement:** Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed).
+
+**Approach:**
+1. **Dummy Node Initialization:** Create a dummy node that points to the head of the list to simplify edge cases.
+2. **Pointer Setup:** Use a pointer to traverse the list, checking pairs of nodes to swap.
+3. **Swapping Nodes:** For each pair, adjust the `next` pointers to swap the nodes.
+4. **Iteration:** Move the pointer two nodes ahead to process the next pair.
+
+**Time Complexity:** O(n), where n is the number of nodes in the linked list.
+
+**Space Complexity:** O(1), as only a few extra pointers are used.
+
+**Java Code:**
+
+```java
+public class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode current = dummy;
+        
+        while (current.next != null && current.next.next != null) {
+            ListNode first = current.next;
+            ListNode second = current.next.next;
+            
+            first.next = second.next;
+            second.next = first;
+            current.next = second;
+            
+            current = first;
+        }
+        
+        return dummy.next;
+    }
+}
+```
+
+### 2. [Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
+
+**Problem Statement:** Write a function to delete a node in a singly-linked list. You will not be given access to the head of the list; instead, you will be given access to the node to be deleted directly. It is guaranteed that the node to be deleted is not a tail node in the list.
+
+**Approach:**
+1. **Copy Value:** Copy the value of the next node into the current node.
+2. **Skip Node:** Adjust the `next` pointer of the current node to skip the next node, effectively deleting it.
+
+**Time Complexity:** O(1), as the operation involves a constant number of steps.
+
+**Space Complexity:** O(1), as no additional space is used.
+
+**Java Code:**
+
+```java
+public class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
+```
+
+### 3. [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+
+**Problem Statement:** Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list. k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then the remaining nodes, in the end, should remain as they are.
+
+**Approach:**
+1. **Count Nodes:** Traverse the list to count the total number of nodes.
+2. **Reverse in Groups:** For every group of k nodes, reverse the nodes.
+3. **Handle Remaining Nodes:** If the number of remaining nodes is less than k, leave them as is.
+
+**Time Complexity:** O(n), where n is the number of nodes in the linked list.
+
+**Space Complexity:** O(1), as the reversal is done in place.
+
+**Java Code:**
+
+```java
+public class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode current = dummy, next = dummy, prev = dummy;
+        int count = 0;
+        
+        // Count the number of nodes in the list
+        while (current.next != null) {
+            current = current.next;
+            count++;
+        }
+        
+        // Reverse in groups of k
+        while (count >= k) {
+            current = prev.next;
+            next = current.next;
+            for (int i = 1; i < k; i++) {
+                current.next = next.next;
+                next.next = prev.next;
+                prev.next = next;
+                next = current.next;
+            }
+            prev = current;
+            count -= k;
+        }
+        
+        return dummy.next;
+    }
+}
+```
+
+### 4. [Rotate List](https://leetcode.com/problems/rotate-list/)
+
+**Problem Statement:** Given the head of a linked list, rotate the list to the right by k places.
+
+**Approach:**
+1. **Compute Length:** Determine the length of the list.
+2. **Connect Tail to Head:** Form a circular list by connecting the tail to the head.
+3. **Find New Tail and Head:** Calculate the new tail position and break the circle to form the rotated list.
+
+**Time Complexity:** O(n), where n is the number of nodes in the linked list.
+
+**Space Complexity:** O(1), as the rotation is done in place.
+
+**Java Code:**
+
+```java
+public class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null || k == 0) return head;
+        
+        // Compute the length of the list
+        ListNode current = head;
+        int length = 1;
+        while (current.next != null) {
+            current = current.next;
+            length++;
+        }
+        
+        // Connect the tail to the head to form a circle
+        current.next = head;
+        
+        // Find the new tail: (length - k % length - 1)th node
+        // and the new head: (length - k % length)th node
+        k = k % length;
+        for (int i = 0; i < length - k; i++) {
+            current = current.next;
+        }
+        
+        // Break the circle
+        head = current.next;
+        current.next = null;
+        
+        return head;
+    }
+}
+``` 
