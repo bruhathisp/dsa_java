@@ -428,3 +428,196 @@ public class Solution {
     }
 }
 ``` 
+Certainly! Here are the detailed solutions in Java for the specified linked list problems:
+
+### 1. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+
+**Problem Statement:**  
+You are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.
+
+**Approach:**  
+Utilize a min-heap (priority queue) to efficiently merge the k sorted linked lists. Initialize the heap with the head of each non-empty list. Repeatedly extract the smallest node from the heap, append it to the merged list, and if the extracted node has a next node, insert it into the heap.
+
+**Time Complexity:** O(N log k), where N is the total number of nodes and k is the number of linked lists.
+
+**Space Complexity:** O(k), due to the heap storing one node from each list.
+
+**Java Code:**
+
+```java
+import java.util.PriorityQueue;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) return null;
+
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+
+        // Initialize the heap with the head of each list
+        for (ListNode node : lists) {
+            if (node != null) {
+                minHeap.offer(node);
+            }
+        }
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        // Merge the nodes
+        while (!minHeap.isEmpty()) {
+            ListNode smallestNode = minHeap.poll();
+            current.next = smallestNode;
+            current = current.next;
+
+            if (smallestNode.next != null) {
+                minHeap.offer(smallestNode.next);
+            }
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+### 2. [Sort List](https://leetcode.com/problems/sort-list/)
+
+**Problem Statement:**  
+Given the head of a linked list, return the list after sorting it in ascending order.
+
+**Approach:**  
+Implement merge sort for linked lists. Recursively split the list into halves until single-node lists are obtained, then merge the sorted halves.
+
+**Time Complexity:** O(N log N), where N is the number of nodes in the list.
+
+**Space Complexity:** O(log N), due to the recursion stack.
+
+**Java Code:**
+
+```java
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        // Split the list into two halves
+        ListNode mid = getMid(head);
+        ListNode left = sortList(head);
+        ListNode right = sortList(mid);
+
+        // Merge the sorted halves
+        return merge(left, right);
+    }
+
+    private ListNode getMid(ListNode head) {
+        ListNode prev = null;
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        if (prev != null) {
+            prev.next = null; // Split the list into two halves
+        }
+
+        return slow;
+    }
+
+    private ListNode merge(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else {
+                current.next = list2;
+                list2 = list2.next;
+            }
+            current = current.next;
+        }
+
+        if (list1 != null) {
+            current.next = list1;
+        } else {
+            current.next = list2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+### 3. [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/)
+
+**Problem Statement:**  
+You are given a doubly linked list, which contains nodes that have a next pointer, a previous pointer, and an additional child pointer. This child pointer may or may not point to a separate doubly linked list, also containing these special nodes. These child lists may have one or more children of their own, and so on, to produce a multilevel data structure. Flatten the list so that all the nodes appear in a single-level, doubly linked list. You are given the head of the first level of the list.
+
+**Approach:**  
+Use a depth-first search (DFS) approach with a stack to traverse the list. Push the next node onto the stack before traversing the child node. Adjust the previous and next pointers accordingly to flatten the list.
+
+**Time Complexity:** O(N), where N is the total number of nodes.
+
+**Space Complexity:** O(N), due to the stack used for traversal.
+
+**Java Code:**
+
+```java
+class Node {
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
+}
+
+public class Solution {
+    public Node flatten(Node head) {
+        if (head == null) return head;
+
+        Node dummy = new Node();
+        dummy.next = head;
+        Node current, prev = dummy;
+
+        Stack<Node> stack = new Stack<>();
+        stack.push(head);
+
+        while (!stack.isEmpty()) {
+            current = stack.pop();
+            prev.next = current;
+            current.prev = prev;
+
+            if (current.next != null) {
+                stack.push(current.next);
+            }
+            if (current.child != null) {
+                stack.push(current.child);
+                current.child = null; // Remove child reference after flattening
+            }
+            prev = current;
+        }
+
+        // Detach the dummy node
+        dummy.next.prev = null;
+        return dummy.next;
+    }
+}
+```
+
+### 4. [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+
+**Problem Statement:**  
+A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null. Construct a deep copy of the list. The deep copy should consist of exactly n brand new nodes, where each new node has its value set to the value of its corresponding original node. Both the next and random pointers of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. None of the pointers in the new list should point to nodes in the original list.
+
+**Approach:**  
+1. **Interweave the original list with copied nodes:** For each node in the original list, create a new 
