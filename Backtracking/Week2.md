@@ -34,14 +34,17 @@ class Solution {
 * Iterate through the array, adding each element to the current subset.
 * Recursively generate subsets starting from the next index.
 * Backtrack by removing the last added element to explore other possibilities.
-  *(Source: [redquark.org](https://redquark.org), Airtribe)*
+* The recursive call backtrack(nums, i + 1, current, result); ensures that each subset includes only elements after the current index i. This avoids duplicates and maintains the order of elements, which is essential in subset generation (e.g., to avoid [1, 2] and [2, 1] as separate subsets). By moving to i + 1, we explore the choice of including or excluding each element exactly once in the subset-building process.
+* Order be like, 1 12 123 bt_remove(32) 13 bt_remove(31) 2 23 bt_remove(32) 3
+* Also this is a power set 2pow(3) =8 elements
+  
 
 ---
 
 ## 📞 2. Letter Combinations of a Phone Number ([LeetCode #17](https://leetcode.com/problems/letter-combinations-of-a-phone-number/))
 
 **Concept**: Given a string representing digits from 2-9, return all possible letter combinations that the number could represent.
-*(Source: Program Creek)*
+
 
 ### 💻 Java Solution
 
@@ -78,14 +81,15 @@ class Solution {
 * Map each digit to its corresponding letters.
 * Use a `StringBuilder` to build combinations.
 * Recursively append each letter and backtrack to explore all combinations.
-  *(Source: [redquark.org](https://redquark.org))*
+* Each digit corresponds to a set of letters (like ‘2’ mapping to ‘abc’), and for each such digit, the algorithm appends one letter to a growing combination (current) and then moves to the next digit by incrementing the index.
+* Eg, ad ae af bd be bf...
 
 ---
 
 ## 🔄 3. Permutations ([LeetCode #46](https://leetcode.com/problems/permutations/))
 
 **Concept**: Given a collection of distinct integers, return all possible permutations.
-*(Source: Program Creek)*
+
 
 ### 💻 Java Solution
 
@@ -119,7 +123,10 @@ class Solution {
 * Maintain a boolean array to track used elements.
 * Build permutations by adding unused elements.
 * Backtrack by removing the last added element and marking it as unused.
-  *(Source: Medium)*
+
+* ![image](https://github.com/user-attachments/assets/6004f288-30d2-4371-91e8-16969b4acf23)
+
+  
 
 ---
 
@@ -159,7 +166,11 @@ class Solution {
 * Add the candidate to the current combination and reduce the target.
 * Recursively find combinations with the updated target.
 * Backtrack by removing the last added element.
-  *(Source: [redquark.org](https://redquark.org))*
+* Prune means cutting off a path early because it won’t lead to a valid answer. It's like saying:
+
+“Wait! There’s no point going further down this path—let’s stop and go back.”
+
+This saves time and avoids doing useless work. If candidates[i] > target, we skip it. Why? Because adding it would make target go below 0, which is invalid.
 
 ---
 
