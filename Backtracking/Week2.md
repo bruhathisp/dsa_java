@@ -225,4 +225,9 @@ class Solution {
    }
 }
 ```
+This checks:
+
+* Out of bounds?
+* Already visited? (we’ll mark visited with # later)
+* Does the current cell match the required character?
 
