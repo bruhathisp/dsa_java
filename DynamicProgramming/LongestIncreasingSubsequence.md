@@ -131,3 +131,129 @@ This pattern — **"for each i, look back at all j < i"** — is classic in DP p
 
 ---
 
+# O(n log n) Solution 
+
+
+
+---
+
+## ✅ Problem Statement (LIS)
+
+You're given an integer array `nums`. Return the **length** of the **longest increasing subsequence (LIS)**.
+A **subsequence** is a selection of elements that keeps **relative order** (but not necessarily contiguous).
+Each element in the subsequence must be **strictly increasing**.
+
+Example:
+Input: `[0, 1, 0, 3, 2, 3]`
+Output: `4` (LIS: `[0, 1, 2, 3]`)
+
+---
+
+## 💡 Core Internalized Idea
+
+We want to **track the smallest possible "tail"** of all increasing subsequences of different lengths.
+
+We use a list `tails` where:
+
+* `tails[i]` = the **smallest tail** of all increasing subsequences of length `i + 1` seen so far.
+* Eg: [0 1 3] vs [0 1 2] we are going to choose [0 1 2]
+
+Why the **smallest**?
+
+> Because a smaller tail gives us **more room** to build longer increasing subsequences later.
+> 💬 "A subsequence of length 3 ending in 2 gives more room than ending in 3."
+
+---
+
+### 🔍 Step-by-Step Example: `[0, 1, 0, 3, 2, 3]`
+
+We'll maintain `tails[]` as we iterate:
+
+#### `num = 0`
+
+* `tails = []` → empty → append `0`
+  ✅ `tails = [0]`
+
+#### `num = 1`
+
+* `1 > 0` → extend increasing subsequence → append
+  ✅ `tails = [0, 1]`
+
+#### `num = 0`
+
+* `0 <= 0` → can't extend, but can **replace** with something smaller
+  ✅ `tails = [0, 1]` (0 replaces 0 — no effect here)
+
+#### `num = 3`
+
+* `3 > 1` → extend LIS → append
+  ✅ `tails = [0, 1, 3]`
+
+#### `num = 2`
+
+* `2 < 3` → can't extend LIS, but can **replace 3 with 2**
+  ✅ `tails = [0, 1, 2]`
+
+**🧠 Why replace 3 with 2?**
+Because we’re saying:
+
+> “Now I know a way to build a subsequence of length 3 ending in 2 — that’s better than ending in 3 because it leaves more space to grow.”
+> → This is **greedy** but safe because we only track **lengths**, not actual sequences.
+
+#### `num = 3`
+
+* `3 > 2` → extend
+  ✅ `tails = [0, 1, 2, 3]`
+
+---
+
+## 🔁 Final Insight
+
+The **length** of `tails[]` at the end gives the **length of LIS**.
+It’s **not the actual LIS**, but it's the minimum ending values you’ve seen for subsequences of each possible length.
+
+---
+
+## ✅ Java Code
+
+```java
+import java.util.*;
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        List<Integer> tails = new ArrayList<>();
+
+        for (int num : nums) {
+            int left = 0, right = tails.size();
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (tails.get(mid) < num) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+
+            if (left == tails.size()) {
+                tails.add(num); // Extend LIS
+            } else {
+                tails.set(left, num); // Replace to allow better growth
+            }
+        }
+
+        return tails.size(); // Length of LIS
+    }
+}
+```
+
+---
+
+## ✨ TL;DR
+
+* Track **smallest possible tail** for all increasing subsequences of each length.
+* **Replace** if possible → leads to better future options.
+* `tails.length` = answer.
+
+---
+
+
