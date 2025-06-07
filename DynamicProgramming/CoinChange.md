@@ -1,67 +1,131 @@
 ## Solution
 
-Find minimum number of coins needed to make change for the target amount.
+Let’s now apply the **5-question method** to the **Coin Change** problem 
 
-[Watch this](https://www.simplilearn.com/tutorials/data-structure-tutorial/coin-change-problem-with-dynamic-programming)
+---
 
- dp array is used to store the minimum number of coins needed to make change for each amount from 0 to the target amount (amount). 
+## 🪙 **Coin Change Problem**
 
-For each coin, the algorithm iterates through the dp array from coin to amount.
+**Problem Statement:**
+Given coins of different denominations and a total amount, return the *minimum number of coins* needed to make up that amount. If that amount cannot be made, return -1.
 
-It updates dp[i] if there is a valid solution for the current amount (i) using the current coin.
+### Example:
 
-The goal is to find the minimum number of coins needed to make change for each amount.
+```text
+coins = [1, 2, 5], amount = 11
+Answer: 3 (5 + 5 + 1)
+```
 
-dp[i - coin] represents the minimum number of coins needed to make change for the amount i - coin
+---
 
-min(dp[i - coin], d[p]) is the current value 
+## ✅ The 5 Questions (and Answers for Coin Change)
 
-Time complexity O(numberOfCoins*TotalAmount) 
+---
 
+### **1. Can I break this problem into smaller subproblems?**
 
-### Code
-``` java
+> ❓ *Can solving for smaller amounts help solve the bigger amount?*
+
+**Yes.**
+To get amount `11`, I can:
+
+* Try using a `1` coin → then solve for `10`
+* Try using a `2` coin → then solve for `9`
+* Try using a `5` coin → then solve for `6`
+
+So, if I can find the **minimum coins for smaller amounts**, I can use them to find the answer for the bigger amount.
+
+---
+
+### **2. What is my “state”? What do I need to remember?**
+
+> ❓ *What info do I need to build the solution step-by-step?*
+
+Let’s define:
+
+```java
+dp[x] = minimum coins needed to make amount x
+```
+
+So, the **state** is: for every `x`, what's the minimum number of coins needed.
+
+---
+
+### **3. What is my “transition”? How do I go from one state to another?**
+
+> ❓ *How does dp\[x] depend on previous values?*
+
+Try every coin:
+
+```java
+dp[x] = min(dp[x - coin] + 1 for all coin in coins)
+```
+
+Why `+1`? Because you're using one coin now, and adding it to the best solution of a smaller amount.
+
+---
+
+### **4. What is the base case (starting point)?**
+
+> ❓ *What do I already know without doing anything?*
+
+**dp\[0] = 0**
+No coins are needed to make amount 0.
+
+---
+
+### **5. What is the final answer I care about?**
+
+> ❓ *Which dp value is my final goal?*
+
+**dp\[amount]**
+If it's still infinity (unreachable), return `-1`. Otherwise, return `dp[amount]`.
+
+---
+
+## 🧠 Summary Table for Coin Change
+
+| Question                   | Answer                                 |
+| -------------------------- | -------------------------------------- |
+| 1. Break into subproblems? | Yes, subtract a coin and solve smaller |
+| 2. State                   | `dp[x] = min coins to make amount x`   |
+| 3. Transition              | `dp[x] = min(dp[x - coin] + 1)`        |
+| 4. Base Case               | `dp[0] = 0`                            |
+| 5. Final Answer            | `dp[amount]`, or `-1` if unreachable   |
+
+---
+
+## ✨ Code (Java)
+
+```java
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        // Create an array to store the fewest number of coins needed for each amount
         int[] dp = new int[amount + 1];
-
-        // Initialize dp array with a value greater than the maximum possible number of coins
-        Arrays.fill(dp, Integer.MAX_VALUE - 1);
-        
-        // The fewest number of coins needed to make change for 0 is 0.
+        Arrays.fill(dp, amount + 1); // fill with "infinity"
         dp[0] = 0;
 
-        // Update the dp array by considering each coin
-        for (int coin : coins) {
-            // Loop through the dp array to update values based on the current coin
-            for (int i = coin; i <= amount; i++) {
-                // Update dp[i] with the minimum ( current value , dp[i - coin] + 1)
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i >= coin) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
             }
         }
 
-        // If dp[amount] remains its initial value, no valid combination was found
-        return dp[amount] == Integer.MAX_VALUE - 1 ? -1 : dp[amount];
+        return dp[amount] > amount ? -1 : dp[amount];
     }
 }
 ```
 
+---
 
-| Coin | Current Amount | Old Value                  | New Value | Updated dp          |
-|------|-----------------|----------------------------|-----------|----------------------|
-|      | 1               | Integer.MAX_VALUE          | 1         | [0, 1, 2, 3, 4]      |
-|      | 2               | Integer.MAX_VALUE          | 2         | [0, 1, 2, 3, 4]      |
-|      | 3               | Integer.MAX_VALUE          | 3         | [0, 1, 2, 3, 4]      |
-|      | 4               | Integer.MAX_VALUE          | 4         | [0, 1, 2, 3, 4]      |
-|      |                 |                            |           |                      |
-| 2    | 2               | 2                          | 1         | [0, 1, 1, 2, 2]      |
-|      | 3               | 3                          | 2         | [0, 1, 1, 2, 2]      |
-|      | 4               | 4                          | 2         | [0, 1, 1, 2, 2]      |
-|      |                 |                            |           |                      |
-| 3    | 4               | 2                          | 1         | [0, 1, 1, 1, 2]      |
-|      |                 | 2                          | 2         | [0, 1, 1, 1, 2]      |
+### 🧩 How to Internalize
 
+* Imagine building a wall of height `amount`.
+* At each level, you ask: "Can I reach here by placing a 1, 2, or 5-height block below it?"
+* You solve all smaller heights before solving a taller one (bottom-up).
+* DP remembers the best way to get to smaller amounts so you don’t redo work.
 
-![image](https://github.com/bruhathisp/dsa_java/assets/91585301/b744bccb-21e2-46e3-921d-cbb77dc5d5ea)
+---
 
+Would you like to visualize this step-by-step (JavaScript tracer style) or move on to the next problem like **Longest Palindromic Substring** or **Knapsack** using the same method?
