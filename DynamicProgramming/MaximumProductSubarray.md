@@ -59,6 +59,7 @@ Take this as an example [2, 3, 0, -2, 4, 5, -7 ]
 
 
 tempmax         2 6 0 0   4  20 -7
+
 tempmin         2 2 0 -2 -6 -30 210
 
 
