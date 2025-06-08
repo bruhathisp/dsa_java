@@ -165,3 +165,102 @@ Because:
 
 ---
 
+
+> "If we already found an increasing path from `(i, j)` to `(x, y)`, why do we still do `maxPath = Math.max(maxPath, 1 + dfs(...))`? Shouldn’t we just return `1 + dfs(...)`?"
+
+Let’s clear this up **simply** and **step by step**.
+
+---
+
+## 🔍 You're Right That...
+
+Yes — when we call:
+
+```java
+1 + dfs(matrix, x, y)
+```
+
+We're getting **a valid increasing path** by going from `(i, j)` ➝ `(x, y)` ➝ ...longest path from there.
+
+So you're wondering:
+
+> "Why do we need to check `Math.max()`? Isn’t there only one path?"
+
+---
+
+## 💡 The Key Realization
+
+From cell `(i, j)`, we might have **many valid directions** to move:
+
+```java
+for (each direction) {
+    if (matrix[x][y] > matrix[i][j]) {
+        maxPath = Math.max(maxPath, 1 + dfs(matrix, x, y));
+    }
+}
+```
+
+You're choosing the **best** one.
+
+> We take the `max` because **more than one increasing path can start from a cell**, and **we want the longest one**.
+
+---
+
+## 🧪 Example: Multiple Choices
+
+Matrix:
+
+```
+[ [1, 2, 3],
+  [6, 5, 4] ]
+```
+
+Start at `(1, 0)` → value = 6
+
+Valid directions:
+
+* Up → `(0,0)` = 1 ❌ (not increasing)
+* Right → `(1,1)` = 5 ❌ (not increasing)
+
+Wait... what about `(1, 0)`? That’s a **dead end** — longest path is just `6` ➝ length 1.
+
+Now consider `(0, 0)` = 1
+
+* Right → 2 → 3 → 4 → 5 → 6
+
+That’s a long path!
+
+So from `(0,0)`:
+
+* One option: go right to `(0,1)` → keep growing
+* Another option: go down to `(1,0)` → valid, but shorter path
+
+Thus:
+
+```java
+maxPath = Math.max(maxPath, 1 + dfs(next))
+```
+
+picks **the best** among all possible valid next steps.
+
+---
+
+## ✅ Final Intuition
+
+Even if one direction gives a valid increasing path,
+
+> **another direction might give an even longer path**.
+
+So, we:
+
+* Try all 4 directions (only if they go to a bigger number)
+* Use `Math.max()` to find the **longest path among them**
+
+---
+
+## 📌 Final Answer to Your Question
+
+> **We take `Math.max(...)` because there may be multiple increasing paths starting from `(i, j)` — and we want the longest one**.
+
+
+
