@@ -148,5 +148,155 @@ public class Solution {
     }
 }
 
+```
+
+
+Main Intuition:
+
+---
+
+So, you split at some point `p`, and the current sum of the last part is `prefixSum[i] - prefixSum[p]`. This gives you the sum of the subarray from `p` to `i-1`. Now, to find the **worst-case (largest) part sum** for this split, you compare this current sum with the largest sum from the earlier parts, which is stored in `dp[p][j-1]`. You take the `max(dp[p][j-1], current)` because you care about the biggest piece in that split, and then across all possible `p`, you want to find the split that gives the **minimum** of these maximums.
+
+For example, say you want to split the first 4 numbers into 3 parts (`i = 4`, `j = 3`), and your array is `[26, 3, 5, 11]`. You try splitting at `p = 1`. That divides the array into:
+
+* First part: `nums[0] = 26`
+* Last part: `nums[1..3] = [3, 5, 11]`
+
+The sum of the last part is `prefixSum[4] - prefixSum[1] = 45 - 26 = 19`.
+Then you look at `dp[1][2]`, which is the best way to split the first element (`nums[0]`) into 2 parts — but since we can't split one number into 2 parts, `dp[1][2] = INF`, so we skip it.
+
+But if you try another valid `p`, say `p = 2`, then:
+
+* First 2 numbers `[26, 3]` are split into 2 parts (from `dp[2][2]`)
+* Last part is `[5, 11]`, sum = `prefixSum[4] - prefixSum[2] = 45 - 29 = 16`
+* And `dp[2][2] = 26`, so worst-case part sum = `max(26, 16) = 26`
+
+You try all such `p` and pick the split where that `max()` is smallest — that becomes your `dp[4][3]`.
+
+---
+
+
+
+
+nums = [26, 3, 5, 11, 15, 25]
+
+prefixSum = [0, 26, 29, 34, 45, 60, 85]
+
+
+
+---
+
+### 🔁 We're looping over all `p < i`
+
+We are calculating `dp[i][j]` — the **minimum largest sum** you can get by splitting `nums[0..i-1]` into `j` parts.
+
+Each `p` is a **split point** — we imagine the last part starts at index `p`.
+
+---
+
+### 🧠 So, what does that mean?
+
+* You split the array at index `p`.
+* You assume:
+
+  * The first `j-1` parts are `nums[0..p-1]` → so the best you can do for this is `dp[p][j-1]`.
+  * The **j-th part** (last one) is `nums[p..i-1]`, and its sum is `current = prefixSum[i] - prefixSum[p]`.
+
+---
+
+### ✨ Intuition:
+
+You're asking:
+
+> “If I make the last subarray from `p` to `i-1`, and I already split everything before `p` into `j-1` parts in the best possible way (dp\[p]\[j-1])... what’s the worst sum (biggest subarray sum) in this configuration?”
+
+The answer is:
+
+```java
+max(dp[p][j-1], current)
+```
+
+Because one part could be very large — and we always care about the **worst-case (largest)** part size.
+
+---
+
+### 🎯 Goal:
+
+Find the best place to split (`p`) such that the **maximum subarray sum is minimized**.
+
+```java
+dp[i][j] = min over all valid p of: max(dp[p][j-1], prefixSum[i] - prefixSum[p])
+```
+
+---
+
+### ✅ TL;DR:
+
+* You’re splitting at `p`
+* The **last subarray** is `nums[p..i-1]` (length `i - p`)
+* The **previous subarrays** are handled by `dp[p][j - 1]`
+* You compare the largest part between those two (`max`)
+* Then, over all possible `p`, take the **min** of these maximums
+
+---
+
+
+
+nums = [26, 3, 5, 11, 15, 25]
+
+prefixSum = [0, 26, 29, 34, 45, 60, 85]
+
+So prefixSum[3] = 34
+
+Entire DP table
+
+``` css
+DP Table (dp[i][j]):
+i\j   0     1     2     3
+-----------------------------
+0   |  0   INF   INF   INF
+1   | INF  26    INF   INF
+2   | INF  29     26   INF
+3   | INF  34     26    26
+4   | INF  45     26    26
+5   | INF  60     31    26
+6   | INF  85     45    31
 
 ```
+
+
+for each `dp[3][j]` value:
+
+---
+
+### ✅ `dp[3][1]`
+
+```plaintext
+dp[3][1] = min(INF, max(dp[0][0], 34)) = min(INF, max(0, 34)) = 34
+```
+
+(Other `p = 1, 2` are skipped because `dp[1][0]`, `dp[2][0]` = INF)
+
+---
+
+### ✅ `dp[3][2]`
+
+```plaintext
+dp[3][2] = min(INF, max(dp[1][1], 8)) = min(INF, max(26, 8)) = 26
+dp[3][2] = min(26, max(dp[2][1], 5)) = min(26, max(29, 5)) = 26
+```
+
+---
+
+### ✅ `dp[3][3]`
+
+```plaintext
+dp[3][3] = min(INF, max(dp[2][2], 5)) = min(INF, max(26, 5)) = 26
+```
+
+(Other `p = 0, 1` skipped since `dp[0][2]`, `dp[1][2]` = INF)
+
+---
+
+
+
